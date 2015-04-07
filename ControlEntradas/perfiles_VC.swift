@@ -1,0 +1,275 @@
+//
+//  HorarioControl
+//
+//  Created by desarm on 25/03/15.
+//  Copyright (c) 2015 Desarrollo RM. All rights reserved.
+//
+
+import UIKit
+
+class perfiles_VC: UIViewController,ESTBeaconManagerDelegate,SFSwiftNotificationProtocol {
+
+    // MARK: -----------
+    // MARK: Propiedades
+    // MARK: -----------
+    private var tabla: tablaUsuarios!
+    private var Usuarios:[CeldaBase] = []
+    private var btn_Registrar: UIButton!
+    private var logoEmpresa:logoView!
+    private var celdaEntradasSalidas:[Cell_EntradaSalida] = []
+    private var registroActual:registrado = .ninguna
+    private var arrayAccess:[accesos] = []
+    
+    var formatterES = NSDateFormatter()
+    var formatterFecha = NSDateFormatter()
+    
+    let beaconManager = ESTBeaconManager()
+    let region = CLBeaconRegion(proximityUUID: NSUUID(UUIDString: "B9407F30-F5F8-466E-AFF9-25556B57FE6D"),
+                                major: 22373, minor: 48664, identifier: "RepublicaMobile's HeadQuarters") //Beacon ice
+
+    var hayBeacon:Bool = false
+    var notifyView:SFSwiftNotification!
+    var notifyFrame:CGRect!
+    
+    // MARK: -------------------
+    // MARK: Inicializar widgets
+    // MARK: -------------------
+    override func viewDidLoad() {
+        println("Cargado en memoria")
+        beaconManager.delegate = self
+        region.notifyOnEntry = true
+        
+        super.viewDidLoad()
+        self.title = "Perfiles"
+        var superVDim = self.view.frame
+        getInfo() // Obtener los datos de los usuarios
+        
+        //************************** Posicion de los wigets **************************//
+        logoEmpresa = logoView(superVDim: superVDim)
+        tabla = tablaUsuarios(superVDim: superVDim, datosUsuarios: Usuarios,
+                                        viewArriba: self, historial: celdaEntradasSalidas)
+        
+        btn_Registrar = UIButton.buttonWithType(UIButtonType.System) as UIButton
+        
+        btn_Registrar.frame = CGRect(x: (superVDim.width - 70 )/2,
+                                     y: tabla.viewTabla.frame.maxY + 20.0,
+                                     width: 70, height: 35)
+        //***************************************************************************//
+        
+        //######################### Personalizando los widgets #######################//
+        btn_Registrar.backgroundColor = UIColor.blueColor();
+        btn_Registrar.setTitle("Registrar", forState: .Normal)
+        btn_Registrar.addTarget(self, action: "tapRegistrar",
+            forControlEvents: UIControlEvents.TouchUpInside)
+        notifyFrame = CGRectMake(0, 0, CGRectGetMaxX(self.view.frame), 50)
+        notifyView = SFSwiftNotification(frame: notifyFrame,
+                                         animationType: AnimationType.AnimationTypeCollision,
+                                         direction: Direction.LeftToRight,delegate: self)
+        
+//        notifyView.backgroundColor = UIColor.orangeColor()
+//        notifyView.label.textColor = UIColor.whiteColor()
+//        notifyView.label.text = "This is an SFSwiftNotification"
+    
+        formatterES.timeStyle = NSDateFormatterStyle.ShortStyle //Set time style
+        formatterES.timeZone = NSTimeZone()
+        
+        formatterFecha.dateStyle = NSDateFormatterStyle.ShortStyle
+        //###########################################################################//
+        
+        //////////////////////////  BEACONS  /////////////////////////
+ 
+//        self.beaconManager.requestAlwaysAuthorization()
+        self.beaconManager.requestWhenInUseAuthorization()
+        self.beaconManager.startRangingBeaconsInRegion(self.region)
+        ////////////////////////////////////////////////////////////
+        
+        self.view.addSubview(tabla.viewTabla)
+        self.view.addSubview(btn_Registrar)
+        self.view.addSubview(logoEmpresa.container)
+        self.view.addSubview(notifyView)
+        
+//        println("cargado en memoria exitosa")
+    }
+    
+    // MARK: ----------------------------------------
+    // MARK: Acciones para la interacción con Buttons
+    // MARK: ----------------------------------------
+    
+    @IBAction func tapRegistrar() {
+//        var vc:UIViewController!
+
+        if (hayBeacon){
+            
+            if enviaRegistro()
+            {
+                notifyView!.backgroundColor = UIColor.greenColor()
+                notifyView!.label.textColor = UIColor.whiteColor()
+                notifyView!.label.text = "Registro Exitoso"
+                notifyView.animate(notifyFrame, delay: 1)
+            }
+
+//            if i < 2
+//            {
+//                connection.readTemperatureWithCompletion({ (tempe, error) -> Void in
+//                    println(tempe)
+//                })
+//                
+//                i++
+//            }
+        }
+        else{
+            println("no hay beacon")
+//            vc = storyboard!.instantiateViewControllerWithIdentifier("Fallo Registro") as UIViewController
+            notifyView!.backgroundColor = UIColor.redColor()
+            notifyView!.label.textColor = UIColor.whiteColor()
+            notifyView!.label.text = "Fallo Registro"
+            notifyView.animate(notifyFrame, delay: 5)
+        }
+
+//        vc.modalPresentationStyle = .OverFullScreen
+//        vc.modalTransitionStyle = .CrossDissolve
+//        
+//        presentViewController(vc, animated: true) {
+//            
+//        }
+        
+                self.view.addSubview(notifyView)
+    }
+    
+    // MARK: -------------------------------------------------------
+    // MARK: Funciones delegadas para la interacción con los beacons
+    // MARK: -------------------------------------------------------
+    
+    func beaconManager(manager: ESTBeaconManager!, didRangeBeacons beacons: [AnyObject]!, inRegion region: CLBeaconRegion!) {
+        
+        if beacons.count > 0 {
+            let bTmporal = beacons.first! as CLBeacon
+            
+            if (/*bTmporal.proximity == .Near ||*/ bTmporal.proximity == .Immediate) {
+                
+                hayBeacon = true
+            }
+            else{
+                    
+                hayBeacon = false
+//                println("no se encuentra cerca")
+            }
+            
+        }
+        else {
+            hayBeacon = false
+            println("ningun Beacon")
+        }
+    }
+    
+    func beaconManager(manager: ESTBeaconManager!, didEnterRegion region: CLBeaconRegion!) {
+
+//        if region == self.region
+//        {
+            var notification : UILocalNotification = UILocalNotification()
+            notification.alertBody = "Bienvenido a RepublicaMobile"
+            notification.soundName = "Default.mp3"
+            println("Youve entered")
+            UIApplication.sharedApplication().presentLocalNotificationNow(notification)
+//        }
+    }
+    
+    // MARK: --------------------------------------------------------------
+    // MARK: Funciones delegadas para la interacción con los Notificaciones
+    // MARK: --------------------------------------------------------------
+    
+    func didTapNotification() {
+        println("Tap")
+    }
+    
+    func didNotifyFinishedAnimation(results: Bool) {
+        
+    }
+    
+    // MARK: -----------------
+    // MARK: Obtecion de datos
+    // MARK: -----------------
+    
+    func getInfo(){
+        Usuarios.append(Celda_Usuario(style: .Default, reuseIdentifier: "Usuario"))
+        
+//        var celda = Cell_EntradaSalida(style: .Default, reuseIdentifier: "Entrada_o_Salida")
+        
+//        var formatter = NSDateFormatter()
+//        formatter.timeStyle = NSDateFormatterStyle.ShortStyle //Set time style
+//        formatter.timeZone = NSTimeZone()
+//        
+//        celda.lbl_entrada.text! = formatter.stringFromDate(arrayAccess[i].fechaEntrada)
+//        celda.lbl_salida.text! = formatter.stringFromDate(arrayAccess[i].fechaSalida)
+        
+//        celdaEntradasSalidas.append(celda)
+        
+    }
+    
+    private var i = 0
+    private var primeraVez = true
+    func enviaRegistro() -> Bool{
+        
+        if (registroActual == .ninguna){ //agregamos una celda cuando no hay ningun registro y registramos la entrada
+            
+            if primeraVez == true
+            {
+                primeraVez = false
+            }
+            else { i++ }
+            
+            celdaEntradasSalidas.append(Cell_EntradaSalida( style: .Default,
+                                                            reuseIdentifier: "Entrada_o_Salida"))
+            var entrada = NSDate()
+            
+            celdaEntradasSalidas[i].lbl_fecha.text = formatterFecha.stringFromDate(entrada)
+            celdaEntradasSalidas[i].lbl_DiaSemana.text = getDayOfWeek(celdaEntradasSalidas[i].lbl_fecha.text!)
+            celdaEntradasSalidas[i].lbl_entrada.text = formatterES.stringFromDate(entrada)
+        }
+        
+        else if(registroActual == .entrada){ //si ya hay una entrada registrada la salida
+            var salida = NSDate()
+            celdaEntradasSalidas[i].lbl_salida.text = formatterES.stringFromDate(salida)
+
+        }
+        else{ //Si se quiere resgitrar una salida segimos registrandola
+            var salida = NSDate()
+            celdaEntradasSalidas[i].lbl_salida.text = formatterES.stringFromDate(salida)
+        }
+        
+        checkInfo()
+        return true
+    }
+    
+    func checkInfo(){
+        if celdaEntradasSalidas[i].lbl_entrada.text != "" && celdaEntradasSalidas[i].lbl_salida.text == ""
+        {
+            registroActual = .entrada
+            println("Entrada registrada")
+        }
+        else if celdaEntradasSalidas[i].lbl_entrada.text != "" && celdaEntradasSalidas[i].lbl_salida.text != ""
+        {
+            registroActual = .salida
+            println("Salida registrada")
+        }
+        else
+        {
+            registroActual = .ninguna
+            println("Nuevo item")
+        }
+    }
+    
+    func getDayOfWeek(today:String) -> String {
+        
+        let formatter  = NSDateFormatter()
+        formatter.dateFormat = "dd/MM/yyyy"
+        let todayDate = formatter.dateFromString(today)!
+        let myCalendar = NSCalendar(calendarIdentifier: NSGregorianCalendar)
+        
+        let myComponents = myCalendar?.components(.WeekdayCalendarUnit, fromDate: todayDate)
+        let weekDay = myComponents?.weekday
+        
+        let dias = ["","Domingo","Lunes", "Martes","Miércoles", "Jueves", "Viernes", "Sábado"]
+        return dias[weekDay!]
+    }
+}
