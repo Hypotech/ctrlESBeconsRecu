@@ -19,6 +19,7 @@ class home_VC: UIViewController {
     var img_fondo = UIImage(named:"nature.png")
     var lbl_nomUsr = UILabel()
     private var btn_Registrar: UIButton!
+    var CelEntradasSalidas:[Cell_EntradaSalida] = []
     
     // MARK: -------------------
     // MARK: Inicializar widgets
@@ -54,7 +55,7 @@ class home_VC: UIViewController {
         var posicion_Historial = superView
         posicion_Historial.origin.y = contdor_i_fondo.frame.maxY
         
-        historial = tablaHsitorial(superVDim: posicion_Historial)
+        historial = tablaHsitorial(superVDim: posicion_Historial, historial: CelEntradasSalidas)
         
         btn_Registrar = UIButton.buttonWithType(UIButtonType.System) as UIButton
         btn_Registrar.frame = CGRect(x: (superView.width - 70 )/2,
@@ -112,6 +113,9 @@ class home_VC: UIViewController {
     
     func irEditarPerfil(){
         var editPerfViewCtrl = editarPerfil_VC()
+        //Se agrega una animación entre su transición
+//        editPerfViewCtrl.modalPresentationStyle = .OverFullScreen
+//        editPerfViewCtrl.modalTransitionStyle = .CrossDissolve
         
         var navController = UINavigationController(rootViewController: editPerfViewCtrl)
         
@@ -121,6 +125,9 @@ class home_VC: UIViewController {
     
     func irAjustes(){
         var ajustesViewCtrl = ajustes_VC()
+        //Se agrega una animación entre su transición
+//        ajustesViewCtrl.modalPresentationStyle = .OverFullScreen
+//        ajustesViewCtrl.modalTransitionStyle = .CrossDissolve
         
         var navController = UINavigationController(rootViewController: ajustesViewCtrl)
         

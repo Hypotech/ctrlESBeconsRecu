@@ -16,6 +16,9 @@ class login_VC: UIViewController {
     var btn_Aceptar:UIButton! //boton para disparar el "logeo"
     var btn_cuentaNueva:UIButton!
     
+    // MARK: ---------------------------------------
+    // MARK: Inicializar widgets y personalizar view
+    // MARK: ---------------------------------------
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -85,22 +88,25 @@ class login_VC: UIViewController {
         self.view.addSubview(view_rectLogin)
         self.view.addGestureRecognizer(tap)
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
-    func ejecutarLogin() {
-        println("Presinado")
-        var viewCtrl_Siguiente = home_VC()
-//        var viewCtrl_Siguiente = perfiles_VC()
-        self.presentViewController(viewCtrl_Siguiente, animated: true, completion: nil)
-    }
     
     func desaparecerTeclado(){
         tFi_nomUsur.resignFirstResponder()
         tFi_contraseña.resignFirstResponder()
+    }
+
+    // MARK: ----------------------------------------
+    // MARK: Acciones para la interacción con Buttons
+    // MARK: ----------------------------------------
+    
+    func ejecutarLogin() { //validar datos y pasar a la siguiente escena
+        println("Login exitoso")
+        var viewCtrl_Siguiente = home_VC()
+//        var viewCtrl_Siguiente = perfiles_VC()
+        
+//        viewCtrl_Siguiente.modalPresentationStyle = .OverFullScreen
+        viewCtrl_Siguiente.modalTransitionStyle = .FlipHorizontal
+        
+        self.presentViewController(viewCtrl_Siguiente, animated: true, completion: nil)
     }
 }
 

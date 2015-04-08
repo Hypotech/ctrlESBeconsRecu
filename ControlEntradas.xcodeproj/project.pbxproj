@@ -7,7 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AB3CBF4D1AD432FF00AC043E /* beaconManipulador.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB3CBF4C1AD432FF00AC043E /* beaconManipulador.swift */; };
+		AB3CBF511AD4575900AC043E /* comunicacion.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB3CBF501AD4575900AC043E /* comunicacion.swift */; };
 		AB3F0D0B1ACCA1AA00D03898 /* home_VC.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB3F0D0A1ACCA1AA00D03898 /* home_VC.swift */; };
+		AB5375001AD4A0270030F786 /* tablaConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB5374FF1AD4A0270030F786 /* tablaConfig.swift */; };
 		AB6C721E1ACB19A700B87704 /* Celda_Usuario.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB6C721D1ACB19A700B87704 /* Celda_Usuario.swift */; };
 		AB8583EF1ACB3FC300353DC4 /* historial_VC.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB8583EE1ACB3FC300353DC4 /* historial_VC.swift */; };
 		AB88FE091ACB0CEB00A57D2A /* logoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB88FE081ACB0CEB00A57D2A /* logoView.swift */; };
@@ -58,7 +61,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		AB3CBF4C1AD432FF00AC043E /* beaconManipulador.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = beaconManipulador.swift; sourceTree = "<group>"; };
+		AB3CBF501AD4575900AC043E /* comunicacion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = comunicacion.swift; sourceTree = "<group>"; };
 		AB3F0D0A1ACCA1AA00D03898 /* home_VC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = home_VC.swift; sourceTree = "<group>"; };
+		AB5374FF1AD4A0270030F786 /* tablaConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = tablaConfig.swift; sourceTree = "<group>"; };
 		AB6C721D1ACB19A700B87704 /* Celda_Usuario.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Celda_Usuario.swift; sourceTree = "<group>"; };
 		AB8583EE1ACB3FC300353DC4 /* historial_VC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = historial_VC.swift; sourceTree = "<group>"; };
 		AB88FE081ACB0CEB00A57D2A /* logoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = logoView.swift; sourceTree = "<group>"; };
@@ -125,13 +131,37 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		AB88FE0A1ACB11B600A57D2A /* Notificaciones (Clases) */ = {
+		AB3CBF4A1AD4328B00AC043E /* Bridging */ = {
+			isa = PBXGroup;
+			children = (
+				ABC005211AC5B3DD005B309F /* SDKObjC.h */,
+			);
+			name = Bridging;
+			sourceTree = "<group>";
+		};
+		AB3CBF4B1AD432A700AC043E /* BeaconsManipulacion */ = {
+			isa = PBXGroup;
+			children = (
+				AB3CBF4C1AD432FF00AC043E /* beaconManipulador.swift */,
+			);
+			name = BeaconsManipulacion;
+			sourceTree = "<group>";
+		};
+		AB3CBF4F1AD4572E00AC043E /* Comunicacion */ = {
+			isa = PBXGroup;
+			children = (
+				AB3CBF501AD4575900AC043E /* comunicacion.swift */,
+			);
+			name = Comunicacion;
+			sourceTree = "<group>";
+		};
+		AB88FE0A1ACB11B600A57D2A /* Notificaciones */ = {
 			isa = PBXGroup;
 			children = (
 				ABC005351AC5BAD9005B309F /* SFSwiftNotification.swift */,
 				ABC005341AC5BAD9005B309F /* registro_E_S_Notificaciones.swift */,
 			);
-			name = "Notificaciones (Clases)";
+			name = Notificaciones;
 			sourceTree = "<group>";
 		};
 		ABC004F01AC5B354005B309F = {
@@ -159,11 +189,12 @@
 		ABC004FB1AC5B354005B309F /* ControlEntradas */ = {
 			isa = PBXGroup;
 			children = (
-				AB88FE0A1ACB11B600A57D2A /* Notificaciones (Clases) */,
+				AB3CBF4F1AD4572E00AC043E /* Comunicacion */,
 				ABC0054A1AC5BB98005B309F /* Imagenes */,
-				ABC0051E1AC5B366005B309F /* Bridging Estimote SDK */,
-				ABC0054B1AC5BBC3005B309F /* Tablas Personalizadas */,
-				ABC005491AC5BB5A005B309F /* Defines */,
+				AB88FE0A1ACB11B600A57D2A /* Notificaciones */,
+				ABC0051E1AC5B366005B309F /* Estimote SDK */,
+				ABC0054B1AC5BBC3005B309F /* Tablas */,
+				ABC005491AC5BB5A005B309F /* Generales */,
 				ABC005481AC5BB08005B309F /* Views Controllers */,
 				ABC004FE1AC5B354005B309F /* AppDelegate.swift */,
 				ABC005001AC5B354005B309F /* ViewController.swift */,
@@ -171,7 +202,6 @@
 				ABC005051AC5B354005B309F /* Images.xcassets */,
 				ABC005071AC5B354005B309F /* LaunchScreen.xib */,
 				ABC004FC1AC5B354005B309F /* Supporting Files */,
-				AB88FE081ACB0CEB00A57D2A /* logoView.swift */,
 			);
 			path = ControlEntradas;
 			sourceTree = "<group>";
@@ -201,12 +231,13 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		ABC0051E1AC5B366005B309F /* Bridging Estimote SDK */ = {
+		ABC0051E1AC5B366005B309F /* Estimote SDK */ = {
 			isa = PBXGroup;
 			children = (
-				ABC005211AC5B3DD005B309F /* SDKObjC.h */,
+				AB3CBF4B1AD432A700AC043E /* BeaconsManipulacion */,
+				AB3CBF4A1AD4328B00AC043E /* Bridging */,
 			);
-			name = "Bridging Estimote SDK";
+			name = "Estimote SDK";
 			sourceTree = "<group>";
 		};
 		ABC005481AC5BB08005B309F /* Views Controllers */ = {
@@ -224,13 +255,14 @@
 			name = "Views Controllers";
 			sourceTree = "<group>";
 		};
-		ABC005491AC5BB5A005B309F /* Defines */ = {
+		ABC005491AC5BB5A005B309F /* Generales */ = {
 			isa = PBXGroup;
 			children = (
+				AB88FE081ACB0CEB00A57D2A /* logoView.swift */,
 				ABC005371AC5BAD9005B309F /* structuras.swift */,
 				AB88FE0B1ACB11FC00A57D2A /* constantesSimbolicas.swift */,
 			);
-			name = Defines;
+			name = Generales;
 			sourceTree = "<group>";
 		};
 		ABC0054A1AC5BB98005B309F /* Imagenes */ = {
@@ -248,7 +280,7 @@
 			name = Imagenes;
 			sourceTree = "<group>";
 		};
-		ABC0054B1AC5BBC3005B309F /* Tablas Personalizadas */ = {
+		ABC0054B1AC5BBC3005B309F /* Tablas */ = {
 			isa = PBXGroup;
 			children = (
 				ABC0052A1AC5BAD9005B309F /* CeldaBase.swift */,
@@ -256,8 +288,9 @@
 				ABE7BF471ACA116900AF8FB9 /* Historial */,
 				ABC0052B1AC5BAD9005B309F /* CeldaTitulo.swift */,
 				ABC005301AC5BAD9005B309F /* horarios_Tabla.swift */,
+				AB5374FF1AD4A0270030F786 /* tablaConfig.swift */,
 			);
-			name = "Tablas Personalizadas";
+			name = Tablas;
 			sourceTree = "<group>";
 		};
 		ABE7BF471ACA116900AF8FB9 /* Historial */ = {
@@ -391,6 +424,7 @@
 				AB3F0D0B1ACCA1AA00D03898 /* home_VC.swift in Sources */,
 				ABC005011AC5B354005B309F /* ViewController.swift in Sources */,
 				ABC005391AC5BAD9005B309F /* CeldaBase.swift in Sources */,
+				AB3CBF4D1AD432FF00AC043E /* beaconManipulador.swift in Sources */,
 				ABC0053A1AC5BAD9005B309F /* CeldaTitulo.swift in Sources */,
 				ABE976891AD34F98004FB2F3 /* editarPerfil_VC.swift in Sources */,
 				ABC0053B1AC5BAD9005B309F /* Cell_EntradaSalida.swift in Sources */,
@@ -399,6 +433,7 @@
 				AB6C721E1ACB19A700B87704 /* Celda_Usuario.swift in Sources */,
 				ABC005461AC5BAD9005B309F /* structuras.swift in Sources */,
 				ABC005441AC5BAD9005B309F /* SFSwiftNotification.swift in Sources */,
+				AB3CBF511AD4575900AC043E /* comunicacion.swift in Sources */,
 				ABC005421AC5BAD9005B309F /* perfiles_VC.swift in Sources */,
 				AB8583EF1ACB3FC300353DC4 /* historial_VC.swift in Sources */,
 				ABE7BF4A1ACA11EE00AF8FB9 /* tablaHistorial.swift in Sources */,
@@ -409,6 +444,7 @@
 				AB88FE0C1ACB11FC00A57D2A /* constantesSimbolicas.swift in Sources */,
 				ABC005431AC5BAD9005B309F /* registro_E_S_Notificaciones.swift in Sources */,
 				ABC005401AC5BAD9005B309F /* login_VC.swift in Sources */,
+				AB5375001AD4A0270030F786 /* tablaConfig.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

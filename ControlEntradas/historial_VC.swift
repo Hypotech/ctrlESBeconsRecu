@@ -38,16 +38,17 @@ class historial_VC:UIViewController{
 //        customTitle.addSubview(titleImage)
 //        customTitle.addSubview(titleText)
 //        navigationItem.titleView = customTitle
-        
-        tabla = tablaHsitorial(superVDim: superDimensiones)
+
         getHistorial()
 
         self.navigationController?.navigationBar.barStyle  = UIBarStyle.Black
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "〈 Perfiles", style: .Plain, target: self, action: "tapButton")
         self.navigationItem.leftBarButtonItem?.tintColor = UIColor.greenColor()
         navigationItem.titleView = UIImageView (image: UIImage(named:"testnavbar.png"))
+        
+        superDimensiones.origin.y = self.navigationController!.navigationBar.frame.maxY
+        tabla = tablaHsitorial(superVDim: superDimensiones, historial: celdaEntradasSalidas)
 
-//        nav.navigationBar.barStyle = UIBarStyle.Black
         self.view.backgroundColor = UIColor.whiteColor()
         self.view.addSubview(tabla.view)
     }

@@ -7,27 +7,24 @@
 
 import UIKit
 
-class perfiles_VC: UIViewController,ESTBeaconManagerDelegate,SFSwiftNotificationProtocol {
+class perfiles_VC: UIViewController,SFSwiftNotificationProtocol {
 
     // MARK: -----------
     // MARK: Propiedades
     // MARK: -----------
     private var tabla: tablaUsuarios!
-    private var Usuarios:[CeldaBase] = []
+    private var Usuarios:[Celda_Usuario] = []
     private var btn_Registrar: UIButton!
     private var logoEmpresa:logoView!
     private var celdaEntradasSalidas:[Cell_EntradaSalida] = []
     private var registroActual:registrado = .ninguna
     private var arrayAccess:[accesos] = []
+    private var beacon = beaconManipulador()
     
     var formatterES = NSDateFormatter()
     var formatterFecha = NSDateFormatter()
     
-    let beaconManager = ESTBeaconManager()
-    let region = CLBeaconRegion(proximityUUID: NSUUID(UUIDString: "B9407F30-F5F8-466E-AFF9-25556B57FE6D"),
-                                major: 22373, minor: 48664, identifier: "RepublicaMobile's HeadQuarters") //Beacon ice
 
-    var hayBeacon:Bool = false
     var notifyView:SFSwiftNotification!
     var notifyFrame:CGRect!
     
@@ -36,8 +33,6 @@ class perfiles_VC: UIViewController,ESTBeaconManagerDelegate,SFSwiftNotification
     // MARK: -------------------
     override func viewDidLoad() {
         println("Cargado en memoria")
-        beaconManager.delegate = self
-        region.notifyOnEntry = true
         
         super.viewDidLoad()
         self.title = "Perfiles"
@@ -46,8 +41,8 @@ class perfiles_VC: UIViewController,ESTBeaconManagerDelegate,SFSwiftNotification
         
         //************************** Posicion de los wigets **************************//
         logoEmpresa = logoView(superVDim: superVDim)
-        tabla = tablaUsuarios(superVDim: superVDim, datosUsuarios: Usuarios,
-                                        viewArriba: self, historial: celdaEntradasSalidas)
+        tabla = tablaUsuarios(superVDim: superVDim, infoUsuarios: Usuarios,
+                                        ViewControlador: self)
         
         btn_Registrar = UIButton.buttonWithType(UIButtonType.System) as UIButton
         
@@ -65,10 +60,6 @@ class perfiles_VC: UIViewController,ESTBeaconManagerDelegate,SFSwiftNotification
         notifyView = SFSwiftNotification(frame: notifyFrame,
                                          animationType: AnimationType.AnimationTypeCollision,
                                          direction: Direction.LeftToRight,delegate: self)
-        
-//        notifyView.backgroundColor = UIColor.orangeColor()
-//        notifyView.label.textColor = UIColor.whiteColor()
-//        notifyView.label.text = "This is an SFSwiftNotification"
     
         formatterES.timeStyle = NSDateFormatterStyle.ShortStyle //Set time style
         formatterES.timeZone = NSTimeZone()
@@ -76,12 +67,6 @@ class perfiles_VC: UIViewController,ESTBeaconManagerDelegate,SFSwiftNotification
         formatterFecha.dateStyle = NSDateFormatterStyle.ShortStyle
         //###########################################################################//
         
-        //////////////////////////  BEACONS  /////////////////////////
- 
-//        self.beaconManager.requestAlwaysAuthorization()
-        self.beaconManager.requestWhenInUseAuthorization()
-        self.beaconManager.startRangingBeaconsInRegion(self.region)
-        ////////////////////////////////////////////////////////////
         
         self.view.addSubview(tabla.viewTabla)
         self.view.addSubview(btn_Registrar)
@@ -98,7 +83,7 @@ class perfiles_VC: UIViewController,ESTBeaconManagerDelegate,SFSwiftNotification
     @IBAction func tapRegistrar() {
 //        var vc:UIViewController!
 
-        if (hayBeacon){
+        if (beacon.hayBeacon){
             
             if enviaRegistro()
             {
@@ -136,44 +121,6 @@ class perfiles_VC: UIViewController,ESTBeaconManagerDelegate,SFSwiftNotification
                 self.view.addSubview(notifyView)
     }
     
-    // MARK: -------------------------------------------------------
-    // MARK: Funciones delegadas para la interacción con los beacons
-    // MARK: -------------------------------------------------------
-    
-    func beaconManager(manager: ESTBeaconManager!, didRangeBeacons beacons: [AnyObject]!, inRegion region: CLBeaconRegion!) {
-        
-        if beacons.count > 0 {
-            let bTmporal = beacons.first! as CLBeacon
-            
-            if (/*bTmporal.proximity == .Near ||*/ bTmporal.proximity == .Immediate) {
-                
-                hayBeacon = true
-            }
-            else{
-                    
-                hayBeacon = false
-//                println("no se encuentra cerca")
-            }
-            
-        }
-        else {
-            hayBeacon = false
-            println("ningun Beacon")
-        }
-    }
-    
-    func beaconManager(manager: ESTBeaconManager!, didEnterRegion region: CLBeaconRegion!) {
-
-//        if region == self.region
-//        {
-            var notification : UILocalNotification = UILocalNotification()
-            notification.alertBody = "Bienvenido a RepublicaMobile"
-            notification.soundName = "Default.mp3"
-            println("Youve entered")
-            UIApplication.sharedApplication().presentLocalNotificationNow(notification)
-//        }
-    }
-    
     // MARK: --------------------------------------------------------------
     // MARK: Funciones delegadas para la interacción con los Notificaciones
     // MARK: --------------------------------------------------------------
@@ -192,25 +139,13 @@ class perfiles_VC: UIViewController,ESTBeaconManagerDelegate,SFSwiftNotification
     
     func getInfo(){
         Usuarios.append(Celda_Usuario(style: .Default, reuseIdentifier: "Usuario"))
-        
-//        var celda = Cell_EntradaSalida(style: .Default, reuseIdentifier: "Entrada_o_Salida")
-        
-//        var formatter = NSDateFormatter()
-//        formatter.timeStyle = NSDateFormatterStyle.ShortStyle //Set time style
-//        formatter.timeZone = NSTimeZone()
-//        
-//        celda.lbl_entrada.text! = formatter.stringFromDate(arrayAccess[i].fechaEntrada)
-//        celda.lbl_salida.text! = formatter.stringFromDate(arrayAccess[i].fechaSalida)
-        
-//        celdaEntradasSalidas.append(celda)
-        
     }
     
     private var i = 0
     private var primeraVez = true
     func enviaRegistro() -> Bool{
         
-        if (registroActual == .ninguna){ //agregamos una celda cuando no hay ningun registro y registramos la entrada
+        if (registroActual == .ninguna){ //si no hay ningun registro agregamos una celda y se registra la entrada
             
             if primeraVez == true
             {
@@ -227,7 +162,7 @@ class perfiles_VC: UIViewController,ESTBeaconManagerDelegate,SFSwiftNotification
             celdaEntradasSalidas[i].lbl_entrada.text = formatterES.stringFromDate(entrada)
         }
         
-        else if(registroActual == .entrada){ //si ya hay una entrada registrada la salida
+        else if(registroActual == .entrada){ //si ya hay una entrada registrada,registra la salida
             var salida = NSDate()
             celdaEntradasSalidas[i].lbl_salida.text = formatterES.stringFromDate(salida)
 
@@ -238,6 +173,8 @@ class perfiles_VC: UIViewController,ESTBeaconManagerDelegate,SFSwiftNotification
         }
         
         checkInfo()
+        tabla.historial = celdaEntradasSalidas
+        
         return true
     }
     

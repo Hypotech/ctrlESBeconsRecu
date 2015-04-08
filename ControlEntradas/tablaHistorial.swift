@@ -12,17 +12,31 @@ import UIKit
 // MARK: Definicion de la clase
 // MARK: -----------------------
 class tablaHsitorial:NSObject, UITableViewDataSource, UITableViewDelegate {
-    private var viewTabla:UITableView! //Contiene toda la información acerca del historial
-    private var lbl_fecha = UILabel()
-    private var lbl_entrada = UILabel()
-    private var lbl_salida = UILabel()
-    var celdaEntradasSalidas:[Cell_EntradaSalida] = []
     
+    // MARK: -----------
+    // MARK: Propiedades
+    // MARK: -----------
+    private var viewTabla:UITableView! //Contiene toda la información acerca del historial
+
+    private var celdaEntradasSalidas:[Cell_EntradaSalida] = []
     var view:UIView!
     
-    init(superVDim:CGRect){
+    var historial:[Cell_EntradaSalida]{
+        get{
+            return celdaEntradasSalidas
+        }
+        set{
+            celdaEntradasSalidas = newValue
+        }
+    }
+    
+    init(superVDim:CGRect, historial:[Cell_EntradaSalida]){
 
         super.init()
+        var lbl_fecha = UILabel()
+        var lbl_entrada = UILabel()
+        var lbl_salida = UILabel()
+        
         lbl_fecha = UILabel(frame: CGRect(x: RECT_FECHA.minX, y: RECT_FECHA.minY,
                                               width: RECT_FECHA.width,
                                               height: RECT_FECHA.height))
@@ -41,9 +55,9 @@ class tablaHsitorial:NSObject, UITableViewDataSource, UITableViewDelegate {
         lbl_entrada.textAlignment = .Center
         lbl_salida.textAlignment = .Center
         
-        lbl_fecha.backgroundColor = UIColor.greenColor()
-        lbl_entrada.backgroundColor = UIColor.brownColor()
-        lbl_salida.backgroundColor = UIColor.yellowColor()
+//        lbl_fecha.backgroundColor = UIColor.greenColor()
+//        lbl_entrada.backgroundColor = UIColor.brownColor()
+//        lbl_salida.backgroundColor = UIColor.yellowColor()
         
         view = UIView(frame: CGRect(  x: 0, y: superVDim.minY,
                                             width: superVDim.width,
@@ -55,6 +69,7 @@ class tablaHsitorial:NSObject, UITableViewDataSource, UITableViewDelegate {
                                                 height: view.frame.height - RECT_FECHA.height),
                                   style: .Plain)
         
+        self.historial = historial
         
         view.addSubview(lbl_fecha)
         view.addSubview(lbl_entrada)
