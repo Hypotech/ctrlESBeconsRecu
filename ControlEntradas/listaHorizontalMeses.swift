@@ -8,13 +8,21 @@
 
 import UIKit
 
+protocol listaHorizontalMesesDelegado{
+    func llevarTareaBotonPresionado(MES:mes)
+}
+
 class listaHorizontalMeses: NSObject {
     private var botonesMeses:[UIButton] = []
-    var Selecionado:mes
-    var scroll:UIScrollView!
+    var Seleccionado:mes
+    var viewContent:UIScrollView!
+    var delegado:listaHorizontalMesesDelegado?
     
     
     init(superVDim:CGRect) {
+        
+        Seleccionado = .Ninguno
+        super.init()
         
         var listaMeses = [  "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
             "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]
@@ -32,6 +40,8 @@ class listaHorizontalMeses: NSObject {
             tmp_btn.frame = rect_ubiBoton
             tmp_btn.setTitle(i, forState: .Normal)
             
+            tmp_btn.addTarget(self, action: "mesPresionado:", forControlEvents: .TouchUpInside)
+            
             var sizeExperado:CGSize = tmp_btn.titleLabel!.sizeThatFits(CGSize(width: 0,height: 40))
             tmp_btn.frame.size = sizeExperado
             tmp_btn.frame.size.height = 40
@@ -42,7 +52,7 @@ class listaHorizontalMeses: NSObject {
         }
         
         //*************************** Posicion de los wigets ************************** //
-        scroll = UIScrollView(frame: CGRect(x: 0,
+        viewContent = UIScrollView(frame: CGRect(x: 0,
                                             y: 0,
                                             width: superVDim.width,
                                             height: 40))
@@ -50,16 +60,50 @@ class listaHorizontalMeses: NSObject {
         //****************************************************************************//
         
         //####################### Personalizando los widgets ########################//
-        Selecionado = .Ninguno
-        scroll.contentSize = CGSize(width:  botonesMeses.last!.frame.maxX + 10, height: 40)
-        scroll.showsVerticalScrollIndicator = false
-        scroll.showsHorizontalScrollIndicator = false
+        viewContent.contentSize = CGSize(width:  botonesMeses.last!.frame.maxX + 10, height: 40)
+        viewContent.showsVerticalScrollIndicator = false
+        viewContent.showsHorizontalScrollIndicator = false
 //        scroll.backgroundColor = UIColor.greenColor()
         
         for i in botonesMeses{
-            scroll.addSubview(i)
+            viewContent.addSubview(i)
         }
         
         //##########################################################################//
+    }
+    
+    func mesPresionado(sender:UIButton!) {
+        var Seleccionado:mes
+        
+        switch (sender.titleLabel!.text!) {
+        case "Enero":
+            Seleccionado = .Enero
+        case "Febrero":
+            Seleccionado = .Febrero
+        case "Marzo":
+            Seleccionado = .Marzo
+        case "Abril":
+            Seleccionado = .Abril
+        case "Mayo":
+            Seleccionado = .Mayo
+        case "Junio":
+            Seleccionado = .Junio
+        case "Julio":
+            Seleccionado = .Julio
+        case "Agosto":
+            Seleccionado = .Agosto
+        case "Septiembre":
+            Seleccionado = .Septiembre
+        case "Octubre":
+            Seleccionado = .Octubre
+        case "Noviembre":
+            Seleccionado = .Noviembre
+        case "Diciembre":
+            Seleccionado = .Diciembre
+        default:
+            Seleccionado = .Ninguno
+        }
+        
+        self.delegado?.llevarTareaBotonPresionado(Seleccionado)
     }
 }

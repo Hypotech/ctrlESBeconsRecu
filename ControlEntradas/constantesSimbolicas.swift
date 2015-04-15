@@ -13,7 +13,7 @@ import UIKit
 // MARK: --------------------------
 //Nota: coordenas relativas a su contenedor
 
-let RECT_DIASEM = CGRect(x: 20, y: 0, width: 75, height: 40)
+let RECT_DIASEM = CGRect(x: 20, y: 0, width: 40, height: 40)
 let RECT_FECHA = CGRect(x: RECT_DIASEM.maxX + 12, y: 0, width: 70, height: 30)
 let RECT_ENTRADA = CGRect(x: RECT_FECHA.maxX + 12, y: RECT_FECHA.minY, width: RECT_FECHA.width - 10, height: RECT_FECHA.height)
 let RECT_SALIDA = CGRect(x: RECT_ENTRADA.maxX + 12, y: RECT_ENTRADA.minY, width: RECT_ENTRADA.width - 6, height: RECT_ENTRADA.height)

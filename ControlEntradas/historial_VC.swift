@@ -10,7 +10,7 @@ import UIKit
 
 
 class historial_VC:UIViewController{
-    var tabla:tablaHsitorial!
+    var tabla:tablaMensualHsitorial!
     var celdaEntradasSalidas:[Cell_EntradaSalida] = []
     
 //    var ArrayE_S:[Cell_EntradaSalida]{
@@ -47,10 +47,10 @@ class historial_VC:UIViewController{
         navigationItem.titleView = UIImageView (image: UIImage(named:"testnavbar.png"))
         
         superDimensiones.origin.y = self.navigationController!.navigationBar.frame.maxY
-        tabla = tablaHsitorial(superVDim: superDimensiones, historial: celdaEntradasSalidas)
+//        tabla = tablaMensualHsitorial(ubicacion: superDimensiones, historial: celdaEntradasSalidas)
 
         self.view.backgroundColor = UIColor.whiteColor()
-        self.view.addSubview(tabla.view)
+//        self.view.addSubview(tabla.view)
     }
     
 

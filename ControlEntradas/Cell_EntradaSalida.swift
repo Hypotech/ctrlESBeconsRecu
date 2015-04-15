@@ -9,15 +9,37 @@
 import UIKit
 
 class Cell_EntradaSalida:CeldaBase {
+
+    // MARK: -----------
+    // MARK: Propiedades
+    // MARK: -----------
+     var lbl_fecha = UILabel()
+     var lbl_entrada = UILabel()
+     var lbl_salida = UILabel()
+     var lbl_DiaSemana = UILabel()
     
-    var lbl_fecha = UILabel()
-    var lbl_entrada = UILabel()
-    var lbl_salida = UILabel()
-    var lbl_DiaSemana = UILabel()
     
-    var entrada:NSDate =  NSDate()
+    var diaMes:Int{
+        get{
+            return lbl_DiaSemana.text!.toInt()!
+        }
+        set{
+            
+            if (0 < newValue && newValue < 10){
+                
+                lbl_DiaSemana.text = "0" + String(newValue)
+            }
+            else{
+                lbl_DiaSemana.text = String(newValue)
+            }
+        }
+    }
+//    var entrada:NSDate =  NSDate()
 //    var salida:NSDate =  NSDate()
     
+    // MARK: ----------------------------------------
+    // MARK: Inicializar widgets y personalizar views
+    // MARK: ----------------------------------------
      override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
 
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -54,13 +76,15 @@ class Cell_EntradaSalida:CeldaBase {
         lbl_entrada.textAlignment = .Center
         lbl_salida.textAlignment = .Center
         lbl_DiaSemana.textAlignment = .Left
+        
+        lbl_DiaSemana.textColor = UIColor.lightGrayColor()
         //###########################################################################//
 
         
         lbl_fecha.text = ""
         lbl_entrada.text = ""
         lbl_salida.text = ""
-        lbl_DiaSemana.text = ""
+        lbl_DiaSemana.text = "0"
 //        lbl_DiaSemana.text = getDayOfWeek(lbl_fecha.text!)
         
 
@@ -73,7 +97,11 @@ class Cell_EntradaSalida:CeldaBase {
     required init(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
-
+    
+    // MARK: ----------------------------------------
+    // MARK: Otros metodos
+    // MARK: ----------------------------------------
+    
     func getDayOfWeek(today:String) -> String {
         
         let formatter  = NSDateFormatter()

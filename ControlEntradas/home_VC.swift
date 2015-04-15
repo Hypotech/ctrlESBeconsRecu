@@ -16,11 +16,11 @@ class home_VC: UIViewController {
     // MARK: -----------
     
     var logo:logoView!
-    var historial: tablaHsitorial!
+    var historial: tablaAnualHsitorial!
 //    var img_usuario:UIImage!
 //    var img_fondo = UIImage(named:"nature.png")
     var lbl_nomUsr = UILabel()
-    private var btn_Registrar: UIButton!
+//    private var btn_Registrar: UIButton!
     var CelEntradasSalidas:[Cell_EntradaSalida] = []
     var podio: PKTClient!
     var contdor_i_usr:UIImageView!
@@ -58,15 +58,20 @@ class home_VC: UIViewController {
                                                 y: contdor_i_usr.frame.minY,
                                                 width: 15,
                                                 height: 20))
-        var posicion_Historial = superView
+//        var posicion_Historial = superView
+        var posicion_Historial = CGRect(x: superView.minX,
+                                        y: contdor_i_mascara.frame.maxY,
+                                        width: superView.width,
+                                        height: superView.height - contdor_i_mascara.frame.maxY /*- ESPACIO_BOTTOM*/)
+        
         posicion_Historial.origin.y = contdor_i_mascara.frame.maxY
         
-        historial = tablaHsitorial(superVDim: posicion_Historial, historial: CelEntradasSalidas)
+        historial = tablaAnualHsitorial(ubicacion: posicion_Historial)
         
-        btn_Registrar = UIButton.buttonWithType(UIButtonType.System) as UIButton
-        btn_Registrar.frame = CGRect(x: (superView.width - 70 )/2,
-            y: historial.view.frame.maxY + 20.0,
-            width: 70, height: 35)
+//        btn_Registrar = UIButton.buttonWithType(UIButtonType.System) as UIButton
+//        btn_Registrar.frame = CGRect(x: (superView.width - 70 )/2,
+//            y: historial.view.frame.maxY + 20.0,
+//            width: 70, height: 35)
         //***************************************************************************//
 
         //######### Personalización de los widgets #########//
@@ -83,9 +88,9 @@ class home_VC: UIViewController {
         lbl_nomUsr.font = lbl_nomUsr.font.fontWithSize(12.0)
 //        lbl_nomUsr.backgroundColor = UIColor.blackColor()
         
-        btn_Registrar.backgroundColor = UIColor.blueColor();
-        btn_Registrar.setTitle("Registrar", forState: .Normal)
-        btn_Registrar.addTarget(self, action: "tapRegistrar", forControlEvents: UIControlEvents.TouchUpInside)
+//        btn_Registrar.backgroundColor = UIColor.blueColor();
+//        btn_Registrar.setTitle("Registrar", forState: .Normal)
+//        btn_Registrar.addTarget(self, action: "tapRegistrar", forControlEvents: UIControlEvents.TouchUpInside)
         //#############################################//
         
         self.view.backgroundColor = UIColor.whiteColor()
@@ -96,7 +101,7 @@ class home_VC: UIViewController {
         self.view.addSubview(btn_ajustes)
         self.view.addSubview(lbl_nomUsr)
         self.view.addSubview(historial.view)
-        self.view.addSubview(btn_Registrar)
+//        self.view.addSubview(btn_Registrar)
     }
 
     func calcularAncho(inout label:UILabel){

@@ -122,6 +122,7 @@
 		ABA0113F1ADC2B5E00E04ACF /* UIButton+PKTRemoteImage.m in Sources */ = {isa = PBXBuildFile; fileRef = ABA010D51ADC2B5E00E04ACF /* UIButton+PKTRemoteImage.m */; };
 		ABA011401ADC2B5E00E04ACF /* UIImageView+PKTRemoteImage.m in Sources */ = {isa = PBXBuildFile; fileRef = ABA010D71ADC2B5E00E04ACF /* UIImageView+PKTRemoteImage.m */; };
 		ABA011411ADC2B5E00E04ACF /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = ABA010D81ADC2B5E00E04ACF /* README.md */; };
+		ABA0388E1ADEB4E500293C86 /* tablaAnualHsitorial.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABA0388D1ADEB4E500293C86 /* tablaAnualHsitorial.swift */; };
 		ABC004FF1AC5B354005B309F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABC004FE1AC5B354005B309F /* AppDelegate.swift */; };
 		ABC005011AC5B354005B309F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABC005001AC5B354005B309F /* ViewController.swift */; };
 		ABC005041AC5B354005B309F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ABC005021AC5B354005B309F /* Main.storyboard */; };
@@ -147,7 +148,7 @@
 		ABC005451AC5BAD9005B309F /* smile-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = ABC005361AC5BAD9005B309F /* smile-icon.png */; };
 		ABC005461AC5BAD9005B309F /* structuras.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABC005371AC5BAD9005B309F /* structuras.swift */; };
 		ABC005471AC5BAD9005B309F /* testnavbar.png in Resources */ = {isa = PBXBuildFile; fileRef = ABC005381AC5BAD9005B309F /* testnavbar.png */; };
-		ABE7BF4A1ACA11EE00AF8FB9 /* tablaHistorial.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABE7BF491ACA11EE00AF8FB9 /* tablaHistorial.swift */; };
+		ABE7BF4A1ACA11EE00AF8FB9 /* tablaMensualHsitorial.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABE7BF491ACA11EE00AF8FB9 /* tablaMensualHsitorial.swift */; };
 		ABE9767D1AD2FFBD004FB2F3 /* Settings-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = ABE9767C1AD2FFBD004FB2F3 /* Settings-icon.png */; };
 		ABE9767F1AD3002A004FB2F3 /* user.png in Resources */ = {isa = PBXBuildFile; fileRef = ABE9767E1AD3002A004FB2F3 /* user.png */; };
 		ABE976831AD3085C004FB2F3 /* nature.png in Resources */ = {isa = PBXBuildFile; fileRef = ABE976821AD3085C004FB2F3 /* nature.png */; };
@@ -390,6 +391,7 @@
 		ABA010D61ADC2B5E00E04ACF /* UIImageView+PKTRemoteImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+PKTRemoteImage.h"; sourceTree = "<group>"; };
 		ABA010D71ADC2B5E00E04ACF /* UIImageView+PKTRemoteImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+PKTRemoteImage.m"; sourceTree = "<group>"; };
 		ABA010D81ADC2B5E00E04ACF /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		ABA0388D1ADEB4E500293C86 /* tablaAnualHsitorial.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = tablaAnualHsitorial.swift; sourceTree = "<group>"; };
 		ABC004F91AC5B354005B309F /* ControlEntradas.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ControlEntradas.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ABC004FD1AC5B354005B309F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		ABC004FE1AC5B354005B309F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -420,7 +422,7 @@
 		ABC005361AC5BAD9005B309F /* smile-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "smile-icon.png"; sourceTree = "<group>"; };
 		ABC005371AC5BAD9005B309F /* structuras.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = structuras.swift; sourceTree = "<group>"; };
 		ABC005381AC5BAD9005B309F /* testnavbar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testnavbar.png; sourceTree = "<group>"; };
-		ABE7BF491ACA11EE00AF8FB9 /* tablaHistorial.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = tablaHistorial.swift; sourceTree = "<group>"; };
+		ABE7BF491ACA11EE00AF8FB9 /* tablaMensualHsitorial.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = tablaMensualHsitorial.swift; sourceTree = "<group>"; };
 		ABE9767C1AD2FFBD004FB2F3 /* Settings-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Settings-icon.png"; sourceTree = "<group>"; };
 		ABE9767E1AD3002A004FB2F3 /* user.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = user.png; sourceTree = "<group>"; };
 		ABE976821AD3085C004FB2F3 /* nature.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = nature.png; sourceTree = "<group>"; };
@@ -934,8 +936,9 @@
 			isa = PBXGroup;
 			children = (
 				ABC0052C1AC5BAD9005B309F /* Cell_EntradaSalida.swift */,
-				ABE7BF491ACA11EE00AF8FB9 /* tablaHistorial.swift */,
+				ABE7BF491ACA11EE00AF8FB9 /* tablaMensualHsitorial.swift */,
 				AB21EFB01ADD993500FEA659 /* Scroll Meses */,
+				ABA0388D1ADEB4E500293C86 /* tablaAnualHsitorial.swift */,
 			);
 			name = Historial;
 			sourceTree = "<group>";
@@ -1088,6 +1091,7 @@
 				ABA010E41ADC2B5E00E04ACF /* AFNetworkActivityIndicatorManager.m in Sources */,
 				ABE976891AD34F98004FB2F3 /* editarPerfil_VC.swift in Sources */,
 				ABA0111F1ADC2B5E00E04ACF /* PKTReference.m in Sources */,
+				ABA0388E1ADEB4E500293C86 /* tablaAnualHsitorial.swift in Sources */,
 				ABA010DE1ADC2B5E00E04ACF /* AFURLConnectionOperation.m in Sources */,
 				ABA011031ADC2B5E00E04ACF /* PKTAppFieldConfig.m in Sources */,
 				ABA010F71ADC2B5E00E04ACF /* PKTTaskRequestParameters.m in Sources */,
@@ -1153,7 +1157,7 @@
 				ABA0111D1ADC2B5E00E04ACF /* PKTProfile.m in Sources */,
 				ABA010DC1ADC2B5E00E04ACF /* AFNetworkReachabilityManager.m in Sources */,
 				ABA011101ADC2B5E00E04ACF /* PKTEmbedItemFieldValue.m in Sources */,
-				ABE7BF4A1ACA11EE00AF8FB9 /* tablaHistorial.swift in Sources */,
+				ABE7BF4A1ACA11EE00AF8FB9 /* tablaMensualHsitorial.swift in Sources */,
 				ABA0112A1ADC2B5E00E04ACF /* NSDateFormatter+PKTAdditions.m in Sources */,
 				ABA010DB1ADC2B5E00E04ACF /* AFHTTPSessionManager.m in Sources */,
 				ABA010DF1ADC2B5E00E04ACF /* AFURLRequestSerialization.m in Sources */,
