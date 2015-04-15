@@ -16,6 +16,7 @@ class editarPerfil_VC: UIViewController {
     var viewBar:UIView!
     var lbl_title:UILabel!
     var infoUsuario:tablaConfig!
+    var Podio:PKTClient!
     
     // MARK: -------------------
     // MARK: Inicializar widgets
@@ -53,6 +54,7 @@ class editarPerfil_VC: UIViewController {
         
         var ubicTabla = superVDim
         ubicTabla.origin.y = self.navigationController!.navigationBar.frame.maxY + 20
+        Podio =  PKTClient.sharedClient()
         
         println("La altura del navigatioCtrl: \(ubicTabla.origin.y - 20)")
         
@@ -64,5 +66,19 @@ class editarPerfil_VC: UIViewController {
     
     func tapButton(){
         self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    func foo(){
+        
+//        let profile: AnyObject? = respuesta.body.objectForKey("profile")
+//        
+//        if profile != nil{
+//            let image: AnyObject? = profile!.objectForKey("image")
+//            if image != nil{
+//                let link: AnyObject? = image!.objectForKey("link")
+//                if link != nil{
+//                }
+//            }
+//        }
     }
 }

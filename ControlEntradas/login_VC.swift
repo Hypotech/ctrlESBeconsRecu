@@ -15,6 +15,11 @@ class login_VC: UIViewController {
     var tFi_contraseña:UITextField! //Recibe la contraseña
     var btn_Aceptar:UIButton! //boton para disparar el "logeo"
     var btn_cuentaNueva:UIButton!
+    private var idCliente = "prueba-bkh64f"
+    private var secretCode = "aAa5sgR8D6hlKVBJSORdhMLPdihFJlCPHZseunLcBI42rXnmthNjZwYWbkoF90cJ"
+    private var podio:PKTClient!
+    private var indicadorActividad:UIActivityIndicatorView!
+    private var infoPerfil:Perfil = Perfil()
     
     // MARK: ---------------------------------------
     // MARK: Inicializar widgets y personalizar view
@@ -25,7 +30,7 @@ class login_VC: UIViewController {
         var superVDim = self.view.frame //Superview dimensiones
         let view_altDeseado:CGFloat = 240
         
-        //********* Posicion de los wigets ********* //
+        //*************************** Posicion de los wigets ************************** //
         view_rectLogin = UIView(frame: CGRect(  x: 25,
                                                 y: (superVDim.height-view_altDeseado)/4,
                                                 width: superVDim.width - 50,
@@ -49,9 +54,14 @@ class login_VC: UIViewController {
                                         y: btn_Aceptar.frame.maxY +  20,
                                         width: tFi_contraseña.frame.width/2,
                                         height: btn_Aceptar.frame.height - 10)
-        //*****************************************//
         
-        //######### Personalizando los widgets #########//
+        indicadorActividad = UIActivityIndicatorView(frame: CGRect( x: btn_Aceptar.frame.maxX + 10,
+                                                                        y: btn_Aceptar.frame.minY,
+                                                                        width: btn_Aceptar.frame.height, //mismo que altura
+                                                                        height: btn_Aceptar.frame.height))
+        //****************************************************************************//
+        
+        //####################### Personalizando los widgets ########################//
         tFi_nomUsur.borderStyle = .RoundedRect
         
 //        lbl_cuentaNueva.attributedText = NSAttributedString
@@ -62,6 +72,7 @@ class login_VC: UIViewController {
         tFi_contraseña.placeholder = "Contraseña"
         tFi_contraseña.textColor = UIColor.blackColor()
         tFi_contraseña.secureTextEntry =  true
+        tFi_contraseña.clearButtonMode = .WhileEditing
         
         btn_Aceptar.backgroundColor = UIColor.blueColor();
         btn_Aceptar.setTitle("Aceptar", forState: .Normal)
@@ -73,16 +84,26 @@ class login_VC: UIViewController {
         btn_cuentaNueva.setTitleColor(UIColor.grayColor(), forState: .Normal)
         btn_cuentaNueva.titleLabel?.font =  btn_cuentaNueva.titleLabel?.font.fontWithSize(11.0)
         
+//        indicadorActividad.activityIndicatorViewStyle = .Gray
+        indicadorActividad.color = UIColor.blackColor()
+        indicadorActividad.stopAnimating()
+//        indicadorActividad.hidesWhenStopped = false
+        
         view_rectLogin.userInteractionEnabled = true
         
         view_rectLogin.addSubview(tFi_nomUsur)
         view_rectLogin.addSubview(tFi_contraseña)
         view_rectLogin.addSubview(btn_Aceptar)
         view_rectLogin.addSubview(btn_cuentaNueva)
+        view_rectLogin.addSubview(indicadorActividad)
         view_rectLogin.backgroundColor = UIColor.whiteColor()
-        //#############################################//
+        
+        //##########################################################################//
         
         var tap = UITapGestureRecognizer(target: self, action: "desaparecerTeclado")
+        
+        PodioKit.setupWithAPIKey(idCliente, secret: secretCode)
+        podio =  PKTClient.sharedClient()
         
         self.view.backgroundColor = UIColor.grayColor()
         self.view.addSubview(view_rectLogin)
@@ -99,14 +120,101 @@ class login_VC: UIViewController {
     // MARK: ----------------------------------------
     
     func ejecutarLogin() { //validar datos y pasar a la siguiente escena
-        println("Login exitoso")
-        var viewCtrl_Siguiente = home_VC()
-//        var viewCtrl_Siguiente = perfiles_VC()
+        var viewCtrl_Siguiente = home_VC() //view controller siguiente
+        //        var viewCtrl_Siguiente = perfiles_VC()
         
-//        viewCtrl_Siguiente.modalPresentationStyle = .OverFullScreen
+        //        viewCtrl_Siguiente.modalPresentationStyle = .OverFullScreen
         viewCtrl_Siguiente.modalTransitionStyle = .FlipHorizontal
-        
         self.presentViewController(viewCtrl_Siguiente, animated: true, completion: nil)
+        
+//        var alerta:UIAlertController!
+//        indicadorActividad.startAnimating()
+        
+//        podio.authenticateAsUserWithEmail(tFi_nomUsur.text, password: tFi_contraseña.text, completion: {
+//                (respuesta, error) -> () in
+//                
+//                if respuesta.statusCode == OK_login{
+////                    println("Login exitoso")
+//                    
+//                    self.pasarSiguienteEscena()
+//                    
+//                }
+//                else if(respuesta.statusCode == ContraseñaUsuario_Invalido){
+//                    println("Error login")
+//                    
+//                    alerta = UIAlertController(title: "Error", message: "Usuario o contraseña incorrecta. Intenta de nuevo", preferredStyle: UIAlertControllerStyle.Alert)
+//                    alerta.addAction(UIAlertAction(title: "Aceptar", style: UIAlertActionStyle.Cancel, handler: nil))
+//                    self.presentViewController(alerta, animated: true, completion: nil)
+//                    self.indicadorActividad.stopAnimating()
+//                    
+//                }
+//                else{
+//                    alerta = UIAlertController(title: "Error", message: respuesta.body.objectForKey("error_description") as? String, preferredStyle: UIAlertControllerStyle.Alert)
+//                    alerta.addAction(UIAlertAction(title: "Aceptar", style: UIAlertActionStyle.Cancel, handler: nil))
+//                    self.presentViewController(alerta, animated: true, completion: nil)
+//                    self.indicadorActividad.stopAnimating()
+//                }
+//        })
+        
+    }
+    
+    func pasarSiguienteEscena(){
+        
+        podio.performRequest(PKTUserAPI.requestForUserStatus(), completion: {
+            (respuesta,error) -> () in
+            
+            let perfil:AnyObject? = respuesta.body.objectForKey("profile")
+            
+            if !(perfil is NSNull){
+                let image: AnyObject? = perfil!.objectForKey("image")
+                if !(image is NSNull){
+                    let link: AnyObject? = image!.objectForKey("link")
+                    if !(link is NSNull){
+                        
+                        var cadena = link as NSString
+                        
+                        var data = NSData(contentsOfURL: NSURL(string: cadena)!)
+                        self.infoPerfil.imagenUsuario = UIImage(data: data!)
+                        
+                        println("Se ha cargado la imagen")
+                    }
+                }
+                
+                let nombre: AnyObject? = perfil!.objectForKey("name")
+                if !(nombre is NSNull){
+                    self.infoPerfil.nombre = nombre as NSString
+                    
+                    println(nombre as NSString)
+                    
+                }
+                
+                let telefono: AnyObject? = perfil!.objectForKey("phone")
+                println("telefono: \(telefono)")
+                if !(telefono is NSNull) && telefono != nil{
+                    self.infoPerfil.telefono = telefono as NSArray
+                }
+                
+                let email: AnyObject? = perfil!.objectForKey("mail")
+                if !(email is NSNull) && email != nil {
+                    self.infoPerfil.email = email! as NSArray
+                    println("\(self.infoPerfil.email)")
+                }
+                
+                var viewCtrl_Siguiente = home_VC() //view controller siguiente
+                //        var viewCtrl_Siguiente = perfiles_VC()
+                
+                //        viewCtrl_Siguiente.modalPresentationStyle = .OverFullScreen
+                viewCtrl_Siguiente.modalTransitionStyle = .FlipHorizontal
+
+                //Inicializar las propiedades de home_vc
+                viewCtrl_Siguiente.infoPerfil = self.infoPerfil
+                viewCtrl_Siguiente.podio = self.podio
+                ///////////////////////////////////////
+                
+                self.indicadorActividad.stopAnimating()
+                self.presentViewController(viewCtrl_Siguiente, animated: true, completion: nil)
+            }
+        })
     }
 }
 

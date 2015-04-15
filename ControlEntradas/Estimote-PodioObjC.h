@@ -10,5 +10,6 @@
 #define ControlEntradas_SDKObjC_h
 
 #import <EstimoteSDK/EstimoteSDK.h>
+#import "PodioKit.h"
 
 #endif

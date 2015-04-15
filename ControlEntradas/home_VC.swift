@@ -10,20 +10,26 @@ import UIKit
 
 
 class home_VC: UIViewController {
+    
     // MARK: -----------
     // MARK: Propiedades
     // MARK: -----------
+    
     var logo:logoView!
     var historial: tablaHsitorial!
-    var img_usuario = UIImage(named:"user.png")
-    var img_fondo = UIImage(named:"nature.png")
+//    var img_usuario:UIImage!
+//    var img_fondo = UIImage(named:"nature.png")
     var lbl_nomUsr = UILabel()
     private var btn_Registrar: UIButton!
     var CelEntradasSalidas:[Cell_EntradaSalida] = []
+    var podio: PKTClient!
+    var contdor_i_usr:UIImageView!
+    var infoPerfil:Perfil = Perfil()
     
     // MARK: -------------------
     // MARK: Inicializar widgets
     // MARK: -------------------
+    
     override func viewDidLoad() {
         var superView = self.view.frame
         var img_ajustes = UIImage(named:"Settings-icon.png")
@@ -37,12 +43,12 @@ class home_VC: UIViewController {
                                     width: 40,
                                     height: 40)
         
-        var contdor_i_fondo = UIImageView(frame: CGRect(x: logo.container.frame.minX,
+        var contdor_i_mascara = UIImageView(frame: CGRect(x: logo.container.frame.minX,
                                                         y: logo.container.frame.maxY,
                                                         width: logo.container.frame.width,
                                                         height: 120))
         
-        var contdor_i_usr = UIImageView(frame: CGRect(  x: logo.container.frame.minX + logo.container.frame.maxX/2 - 60/2,
+        contdor_i_usr = UIImageView(frame: CGRect(  x: logo.container.frame.minX + logo.container.frame.maxX/2 - 60/2,
                                                         y: logo.container.frame.maxY + 25,
                                                         width: 60,
                                                         height: 60))
@@ -53,7 +59,7 @@ class home_VC: UIViewController {
                                                 width: 15,
                                                 height: 20))
         var posicion_Historial = superView
-        posicion_Historial.origin.y = contdor_i_fondo.frame.maxY
+        posicion_Historial.origin.y = contdor_i_mascara.frame.maxY
         
         historial = tablaHsitorial(superVDim: posicion_Historial, historial: CelEntradasSalidas)
         
@@ -64,22 +70,18 @@ class home_VC: UIViewController {
         //***************************************************************************//
 
         //######### Personalización de los widgets #########//
-        contdor_i_fondo.image = img_fondo
-        contdor_i_usr.image = img_usuario
-        
+//        contdor_i_fondo.image = img_fondo
+        llenarConPerfil()
         btn_edit_perf.setBackgroundImage(UIImage(named:"Edit_icon.png"), forState: .Normal)
-        btn_edit_perf.addTarget(self, action: "irEditarPerfil", forControlEvents: UIControlEvents.TouchUpInside)
+        btn_edit_perf.addTarget(self, action: "irEditarPerfilEscena", forControlEvents: UIControlEvents.TouchUpInside)
         
         btn_ajustes.setBackgroundImage(img_ajustes, forState: .Normal)
-        btn_ajustes.addTarget(self, action: "irAjustes", forControlEvents: UIControlEvents.TouchUpInside)
+        btn_ajustes.addTarget(self, action: "irAjustesEscena", forControlEvents: UIControlEvents.TouchUpInside)
         
-        lbl_nomUsr.text = "Nombre de usuario"
+//        lbl_nomUsr.text = "Nombre de usuario"
         lbl_nomUsr.textColor = UIColor.lightTextColor()
         lbl_nomUsr.font = lbl_nomUsr.font.fontWithSize(12.0)
 //        lbl_nomUsr.backgroundColor = UIColor.blackColor()
-        calcularAncho(&lbl_nomUsr)
-        lbl_nomUsr.frame.origin = CGPoint(  x: contdor_i_usr.frame.minX +  (contdor_i_usr.frame.width - lbl_nomUsr.frame.width)/2,
-                                            y: contdor_i_usr.frame.maxY - 2)
         
         btn_Registrar.backgroundColor = UIColor.blueColor();
         btn_Registrar.setTitle("Registrar", forState: .Normal)
@@ -89,7 +91,7 @@ class home_VC: UIViewController {
         self.view.backgroundColor = UIColor.whiteColor()
         self.view.addSubview(logo.container)
         self.view.addSubview(contdor_i_usr)
-        self.view.addSubview(contdor_i_fondo)
+        self.view.addSubview(contdor_i_mascara)
         self.view.addSubview(btn_edit_perf)
         self.view.addSubview(btn_ajustes)
         self.view.addSubview(lbl_nomUsr)
@@ -105,13 +107,16 @@ class home_VC: UIViewController {
 //        var newFrame = label.frame
 //        newFrame.size.width = expectSize.width //cambia solo el ancho
         label.frame.size = expectSize
+        
+        label.frame.origin = CGPoint(  x: contdor_i_usr.frame.minX +  (contdor_i_usr.frame.width - lbl_nomUsr.frame.width)/2,
+            y: contdor_i_usr.frame.maxY - 2)
     }
     
     // MARK: ----------------------------------------
     // MARK: Acciones para la interacción con Buttons
     // MARK: ----------------------------------------
     
-    func irEditarPerfil(){
+    func irEditarPerfilEscena(){
         var editPerfViewCtrl = editarPerfil_VC()
         //Se agrega una animación entre su transición
 //        editPerfViewCtrl.modalPresentationStyle = .OverFullScreen
@@ -123,7 +128,7 @@ class home_VC: UIViewController {
         self.presentViewController(navController, animated: true, completion: nil)
     }
     
-    func irAjustes(){
+    func irAjustesEscena(){
         var ajustesViewCtrl = ajustes_VC()
         //Se agrega una animación entre su transición
 //        ajustesViewCtrl.modalPresentationStyle = .OverFullScreen
@@ -137,5 +142,74 @@ class home_VC: UIViewController {
     
     func tapRegistrar() {
         
+    }
+    
+    func obtenerPerfil(){
+        
+        podio.performRequest(PKTUserAPI.requestForUserStatus(), completion: {
+            (respuesta,error) -> () in
+            
+            let profile:AnyObject? = respuesta.body.objectForKey("profile")
+            
+            if !(profile is NSNull){
+                let image: AnyObject? = profile!.objectForKey("image")
+                if !(image is NSNull){
+                    let link: AnyObject? = image!.objectForKey("link")
+                    if !(link is NSNull){
+                        
+                        var cadena = link as NSString
+                        
+                        var data = NSData(contentsOfURL: NSURL(string: cadena)!)
+                        self.contdor_i_usr.image = UIImage(data: data!)
+                        
+                        println("Se ha cargado la imagen")
+                    }
+                }
+                
+                let nombre: AnyObject? = profile!.objectForKey("name")
+                if !(nombre is NSNull){
+                    self.infoPerfil.nombre = nombre as NSString
+                    
+                    println(nombre as NSString)
+                    
+                    self.lbl_nomUsr.text = self.infoPerfil.nombre
+                    self.lbl_nomUsr.text = self.lbl_nomUsr.text?.capitalizedString
+                    self.calcularAncho(&(self.lbl_nomUsr))
+                }
+                
+                let telefono: AnyObject? = profile!.objectForKey("phone")
+                println("telefono: \(telefono)")
+                if !(telefono is NSNull) && telefono != nil{
+                    self.infoPerfil.telefono = telefono as NSArray
+                }
+                
+                let email: AnyObject? = profile!.objectForKey("mail")
+                if !(email is NSNull) && email != nil {
+                    self.infoPerfil.email = email! as NSArray
+                    println("\(self.infoPerfil.email)")
+                }
+//                let id_org: AnyObject? = profile!.objectForKey("org_id")
+//                println("organizacion: \(id_org)")
+//                if !(id_org is NSNull){
+//                    println("no es NSnull")
+//                    self.infoPerfil.empresa = id_org! as NSString
+//                    
+//                    PKTOrganization.fetchAllWithCompletion({(organizaciones,error) -> () in
+//                        
+//                    })
+//                }
+                return
+            }
+            self.contdor_i_usr.image = UIImage(named:"smile-icon.png") //si no tiene imagen asignada se pone una por defecto
+            println("No se pudo cargar imagen")
+            
+        })
+        
+    }
+    
+    func llenarConPerfil(){
+        contdor_i_usr.image = infoPerfil.imagenUsuario
+        lbl_nomUsr.text = infoPerfil.nombre
+        calcularAncho(&(self.lbl_nomUsr))
     }
 }

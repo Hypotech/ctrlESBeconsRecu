@@ -1,6 +1,5 @@
-//
-//  tablaHistorial.swift
-//  ControlEntradas
+//  Administra la tabla que retiene el historial de entradas y salidas, que han sido registradas por
+//  el usuario
 //
 //  Created by desarrolloRM on 30/03/15.
 //  Copyright (c) 2015 Desarrollo RM. All rights reserved.
@@ -16,10 +15,11 @@ class tablaHsitorial:NSObject, UITableViewDataSource, UITableViewDelegate {
     // MARK: -----------
     // MARK: Propiedades
     // MARK: -----------
-    private var viewTabla:UITableView! //Contiene toda la información acerca del historial
-
-    private var celdaEntradasSalidas:[Cell_EntradaSalida] = []
-    var view:UIView!
+    
+    private var viewTabla:UITableView! //Contiene las celdas con información acerca de las entradas y salidas del usuario
+    private var mesesTabs:listaHorizontalMeses //una vista que agrupa los meses (meses que hacen alución al historial de entradas y salidas de meses previos y el actual)
+    private var celdaEntradasSalidas:[Cell_EntradaSalida] = [] //alamcena las entradas y salidas del usuario
+    var view:UIView! //contiene todos los elementos graficos (widgets) de un historial
     
     var historial:[Cell_EntradaSalida]{
         get{
@@ -30,8 +30,13 @@ class tablaHsitorial:NSObject, UITableViewDataSource, UITableViewDelegate {
         }
     }
     
+    // MARK: ----------------------------------------
+    // MARK: Inicializar widgets y personalizar views
+    // MARK: ----------------------------------------
+    
     init(superVDim:CGRect, historial:[Cell_EntradaSalida]){
-
+        
+        mesesTabs = listaHorizontalMeses(superVDim: superVDim)
         super.init()
         var lbl_fecha = UILabel()
         var lbl_entrada = UILabel()
@@ -48,6 +53,7 @@ class tablaHsitorial:NSObject, UITableViewDataSource, UITableViewDelegate {
         lbl_salida = UILabel(frame: CGRect( x: RECT_SALIDA.minX, y: RECT_SALIDA.minY,
                                                 width: RECT_SALIDA.width,
                                                 height: RECT_SALIDA.height))
+        
         lbl_fecha.text = "Fecha"
         lbl_entrada.text = "Entrada"
         lbl_salida.text = "Salida"
@@ -63,17 +69,17 @@ class tablaHsitorial:NSObject, UITableViewDataSource, UITableViewDelegate {
                                             width: superVDim.width,
                                             height: superVDim.height - superVDim.minY - ESPACIO_BOTTOM))
         
-        viewTabla =  UITableView(frame:
-                                        CGRect( x: 0, y: RECT_FECHA.maxY,
+        viewTabla =  UITableView(frame: CGRect (x: 0, y: mesesTabs.scroll.frame.maxY,
                                                 width: superVDim.width,
-                                                height: view.frame.height - RECT_FECHA.height),
-                                  style: .Plain)
+                                                height: view.frame.height - mesesTabs.scroll.frame.height),
+                                 style: .Plain)
         
         self.historial = historial
         
-        view.addSubview(lbl_fecha)
-        view.addSubview(lbl_entrada)
-        view.addSubview(lbl_salida)
+//        view.addSubview(lbl_fecha)
+//        view.addSubview(lbl_entrada)
+//        view.addSubview(lbl_salida)
+        view.addSubview(mesesTabs.scroll)
         view.addSubview(viewTabla)
         
         viewTabla.dataSource = self
