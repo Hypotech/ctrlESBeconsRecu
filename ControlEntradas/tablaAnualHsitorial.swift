@@ -8,14 +8,15 @@
 
 import UIKit
 
-class tablaAnualHsitorial:NSObject,listaHorizontalMesesDelegado{
+class tablaAnualHsitorial:NSObject,listaHorizontalMesesDelegado, UIScrollViewDelegate{
     
     // MARK: -----------
     // MARK: Propiedades
     // MARK: -----------
     
-    private var tablaExample1:tablaMensualHsitorial
-    private var tablaExample2:tablaMensualHsitorial
+    private var tablaMes1:tablaMensualHsitorial
+    private var tablaMes2:tablaMensualHsitorial
+    private var tablaMes3:tablaMensualHsitorial
     private var selectorMes:listaHorizontalMeses //seleciona el mes que se desea consultar su historial
     private var contenedorTablas:UIScrollView
     var CelEntradasSalidas:[Cell_EntradaSalida] = []
@@ -32,12 +33,12 @@ class tablaAnualHsitorial:NSObject,listaHorizontalMesesDelegado{
         
         let ubicacionSelectorMes = CGRect(x: 0, y: 0, width: view.frame.width, height: 40)
         
-        selectorMes = listaHorizontalMeses(superVDim: ubicacionSelectorMes)
+
         var lineaSeparadora = UIView (frame: CGRect(  x: ubicacionSelectorMes.minX,
                                             y: ubicacionSelectorMes.maxY,
                                             width: ubicacionSelectorMes.width,
                                             height: 1))
-        lineaSeparadora.backgroundColor = UIColor.lightGrayColor()
+        lineaSeparadora.backgroundColor = UIColor(red: 237/255, green: 237/255, blue: 237/255, alpha: 1.0)
         
         contenedorTablas = UIScrollView(frame: CGRect(  x: lineaSeparadora.frame.minX,
                                                         y: lineaSeparadora.frame.maxY,
@@ -46,31 +47,51 @@ class tablaAnualHsitorial:NSObject,listaHorizontalMesesDelegado{
         
         var ubicacionTabla = CGRect(x: 0, y: 0, width: contenedorTablas.frame.width, height: contenedorTablas.frame.height)
         
-        tablaExample1 = tablaMensualHsitorial(ubicacion: ubicacionTabla, fecha:NSDate(), historial: CelEntradasSalidas)
+        tablaMes1 = tablaMensualHsitorial(ubicacion: ubicacionTabla, fecha:NSDate(), historial: CelEntradasSalidas, mesHistorial: .Febrero)
         ubicacionTabla.origin.x = ubicacionTabla.maxX //imediatamente contigua
-        tablaExample2 = tablaMensualHsitorial(ubicacion: ubicacionTabla, fecha:NSDate(), historial: CelEntradasSalidas)
-
+        tablaMes2 = tablaMensualHsitorial(ubicacion: ubicacionTabla, fecha:NSDate(), historial: CelEntradasSalidas, mesHistorial: .Marzo)
+        ubicacionTabla.origin.x = ubicacionTabla.maxX //imediatamente contigua
+        tablaMes3 = tablaMensualHsitorial(ubicacion: ubicacionTabla, fecha:NSDate(), historial: CelEntradasSalidas, mesHistorial: .Abril)
+        
+        selectorMes = listaHorizontalMeses(superVDim: ubicacionSelectorMes, botonesMes: tablaMes1.btnMes,tablaMes2.btnMes, tablaMes3.btnMes)
         //****************************************************************************//
         
         //####################### Personalizando los widgets ########################//
-        contenedorTablas.contentSize =  CGSize( width: tablaExample2.viewTabla.frame.maxX,
-            height: ubicacionTabla.height)
+        contenedorTablas.contentSize =  CGSize( width: tablaMes3.viewTabla.frame.maxX,
+            height: ubicacionTabla.height) //dimensiones  que tendra el area de scroll
         contenedorTablas.backgroundColor = UIColor.grayColor()
         contenedorTablas.pagingEnabled = true
         //##########################################################################//
         
-        contenedorTablas.addSubview(tablaExample2.viewTabla)
-        contenedorTablas.addSubview(tablaExample1.viewTabla)
-        view.addSubview(selectorMes.viewContent)
+        contenedorTablas.addSubview(tablaMes2.viewTabla)
+        contenedorTablas.addSubview(tablaMes1.viewTabla)
+        contenedorTablas.addSubview(tablaMes3.viewTabla)
+        
+        view.addSubview(selectorMes.viewScroll)
         view.addSubview(lineaSeparadora)
         view.addSubview(contenedorTablas)
         
         super.init()
         selectorMes.delegado = self
+        contenedorTablas.delegate = self
     }
     
-    func llevarTareaBotonPresionado(MES:mes){
-        println("Mes: \(MES)")
+    func llevarTareaDepuesDeMesSeleccionado(MES:mes, indice:Int){
+        irAPagina(indice)
     }
     
+    func irAPagina(pagina:Int) {
+        
+        var medidasContenedor = contenedorTablas.frame
+        medidasContenedor.origin.x = CGFloat (pagina) * medidasContenedor.maxX
+//        println("\(anchoContenedor)")
+        contenedorTablas.scrollRectToVisible(medidasContenedor, animated: true)
+    }
+    
+    func scrollViewDidEndDecelerating(scrollView: UIScrollView){
+        
+        var indice:Int = Int(scrollView.contentOffset.x / contenedorTablas.frame.width)
+            selectorMes.actualizarSeleccion(indice)
+
+    }
 }

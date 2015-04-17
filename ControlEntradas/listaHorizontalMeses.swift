@@ -9,50 +9,66 @@
 import UIKit
 
 protocol listaHorizontalMesesDelegado{
-    func llevarTareaBotonPresionado(MES:mes)
+    func llevarTareaDepuesDeMesSeleccionado(MES:mes, indice:Int)
 }
 
 class listaHorizontalMeses: NSObject {
-    private var botonesMeses:[UIButton] = []
-    var Seleccionado:mes
-    var viewContent:UIScrollView!
+    private var botonesMeses:[botonMes] = []
+    var viewScroll:UIScrollView!
     var delegado:listaHorizontalMesesDelegado?
     
     
-    init(superVDim:CGRect) {
+    init(superVDim:CGRect,botonesMes:botonMes...) {
         
-        Seleccionado = .Ninguno
         super.init()
-        
-        var listaMeses = [  "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
-            "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"]
 
-        var rect_ubiBoton = CGRect (x: 0, y: 0, width: 68, height: 40)
-        
-        for i in listaMeses{
+        var ubicacionBoton = CGPoint(x: 0, y: 0)
+        for i in botonesMes{
+//            var tmp_btn = UIButton.buttonWithType(UIButtonType.System) as UIButton
+
             
-            var tmp_btn = UIButton.buttonWithType(UIButtonType.System) as UIButton
-
-            if (i != "Enero"){
-                tmp_btn.enabled = false
+            i.frame.origin = ubicacionBoton
+            
+            switch (i.Mes) {
+            case .Enero:
+                i.setTitle("Enero", forState: .Normal)
+            case .Febrero:
+                i.setTitle("Febrero", forState: .Normal)
+            case .Marzo:
+                i.setTitle("Marzo", forState: .Normal)
+            case .Abril:
+                i.setTitle("Abril", forState: .Normal)
+            case .Mayo:
+                i.setTitle("Mayo", forState: .Normal)
+            case .Junio:
+                i.setTitle("Junio", forState: .Normal)
+            case .Julio:
+                i.setTitle("Julio", forState: .Normal)
+            case .Agosto:
+                i.setTitle("Agosto", forState: .Normal)
+            case .Septiembre:
+                i.setTitle("Septiembre", forState: .Normal)
+            case .Octubre:
+                i.setTitle("Octubre", forState: .Normal)
+            case .Noviembre:
+                i.setTitle("Noviembre", forState: .Normal)
+            case .Diciembre:
+                i.setTitle("Diciembre", forState: .Normal)
+            default:
+                i.setTitle("", forState: .Normal)
             }
+ 
+            i.addTarget(self, action: "mesPresionado:", forControlEvents: .TouchUpInside)
+            var sizeExperado:CGSize = i.titleLabel!.sizeThatFits(CGSize(width: 0,height: 40))
+            i.frame.size.width = sizeExperado.width
+            i.frame.size.height = 40
+            ubicacionBoton.x = i.frame.maxX + 12
             
-            tmp_btn.frame = rect_ubiBoton
-            tmp_btn.setTitle(i, forState: .Normal)
-            
-            tmp_btn.addTarget(self, action: "mesPresionado:", forControlEvents: .TouchUpInside)
-            
-            var sizeExperado:CGSize = tmp_btn.titleLabel!.sizeThatFits(CGSize(width: 0,height: 40))
-            tmp_btn.frame.size = sizeExperado
-            tmp_btn.frame.size.height = 40
-            rect_ubiBoton.origin.x = tmp_btn.frame.maxX + 12
-            
-//            tmp_btn.backgroundColor = UIColor.redColor()
-            botonesMeses.append(tmp_btn)
+            botonesMeses.append(i)
         }
         
         //*************************** Posicion de los wigets ************************** //
-        viewContent = UIScrollView(frame: CGRect(x: 0,
+        viewScroll = UIScrollView(frame: CGRect(x: 0,
                                             y: 0,
                                             width: superVDim.width,
                                             height: 40))
@@ -60,50 +76,38 @@ class listaHorizontalMeses: NSObject {
         //****************************************************************************//
         
         //####################### Personalizando los widgets ########################//
-        viewContent.contentSize = CGSize(width:  botonesMeses.last!.frame.maxX + 10, height: 40)
-        viewContent.showsVerticalScrollIndicator = false
-        viewContent.showsHorizontalScrollIndicator = false
+        viewScroll.contentSize = CGSize(width:  botonesMeses.last!.frame.maxX + 10, height: 40)
+        viewScroll.showsVerticalScrollIndicator = false
+        viewScroll.showsHorizontalScrollIndicator = false
 //        scroll.backgroundColor = UIColor.greenColor()
         
+        var indice = 0
         for i in botonesMeses{
-            viewContent.addSubview(i)
+            i.setTitleColor(UIColor(red: 17/255, green: 129/255, blue: 131/255, alpha: 1.0), forState: .Disabled)
+            i.setTitleColor(UIColor(red: 213/255, green: 232/255, blue: 232/255, alpha: 1.0), forState: .Normal)
+
+            i.titleLabel!.font = UIFont(name: "HelveticaNeue-ThinItalic", size: 18.0)
+            
+            i.tag = indice
+            indice++
+            viewScroll.addSubview(i)
         }
-        
+        botonesMeses[0].enabled = false
         //##########################################################################//
     }
     
-    func mesPresionado(sender:UIButton!) {
-        var Seleccionado:mes
+    func mesPresionado(sender:botonMes!) {
         
-        switch (sender.titleLabel!.text!) {
-        case "Enero":
-            Seleccionado = .Enero
-        case "Febrero":
-            Seleccionado = .Febrero
-        case "Marzo":
-            Seleccionado = .Marzo
-        case "Abril":
-            Seleccionado = .Abril
-        case "Mayo":
-            Seleccionado = .Mayo
-        case "Junio":
-            Seleccionado = .Junio
-        case "Julio":
-            Seleccionado = .Julio
-        case "Agosto":
-            Seleccionado = .Agosto
-        case "Septiembre":
-            Seleccionado = .Septiembre
-        case "Octubre":
-            Seleccionado = .Octubre
-        case "Noviembre":
-            Seleccionado = .Noviembre
-        case "Diciembre":
-            Seleccionado = .Diciembre
-        default:
-            Seleccionado = .Ninguno
+        actualizarSeleccion(sender.tag)
+        self.delegado?.llevarTareaDepuesDeMesSeleccionado(sender.Mes, indice:sender.tag)
+    }
+    
+    func actualizarSeleccion(indice:Int){
+        
+        for i in botonesMeses{ //todos de color gris menos el presionado
+            i.enabled =  true
         }
         
-        self.delegado?.llevarTareaBotonPresionado(Seleccionado)
+        botonesMeses[indice].enabled = false //boton presionado de color azul
     }
 }

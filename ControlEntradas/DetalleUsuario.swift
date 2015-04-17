@@ -31,9 +31,9 @@ class DetalleUsuario: horarios_Tabla {
 //            var horarios = Cell_EntradaSalida(style: UITableViewCellStyle.Default, reuseIdentifier: "Celda Horario")
 //            for var i = 0; i < entradasSalidas.count; i++
 //            {
-//                horarios.lbl_entrada.text = formateadorFecha.stringFromDate(horariosBeacons[i].fechaEntrada)
-//                horarios.lbl_salida.text = formateadorFecha.stringFromDate(horariosBeacons[i].fechaSalida)
-//                horarios.lbl_fecha.text = formateadorFecha.stringFromDate(horariosBeacons[i].fechaEntrada)
+//                horarios.lbl_hora_entrada.text = formateadorFecha.stringFromDate(horariosBeacons[i].fechaEntrada)
+//                horarios.lbl_hora_salida.text = formateadorFecha.stringFromDate(horariosBeacons[i].fechaSalida)
+//                horarios.lbl_dia.text = formateadorFecha.stringFromDate(horariosBeacons[i].fechaEntrada)
 //            }
 //        }
     }

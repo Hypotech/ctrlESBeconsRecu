@@ -15,9 +15,9 @@ class login_VC: UIViewController {
     var tFi_contraseña:UITextField! //Recibe la contraseña
     var btn_Aceptar:UIButton! //boton para disparar el "logeo"
     var btn_cuentaNueva:UIButton!
+    var podio:PKTClient!
     private var idCliente = "prueba-bkh64f"
     private var secretCode = "aAa5sgR8D6hlKVBJSORdhMLPdihFJlCPHZseunLcBI42rXnmthNjZwYWbkoF90cJ"
-    private var podio:PKTClient!
     private var indicadorActividad:UIActivityIndicatorView!
     private var infoPerfil:Perfil = Perfil()
     

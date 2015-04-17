@@ -13,11 +13,11 @@ class Cell_EntradaSalida:CeldaBase {
     // MARK: -----------
     // MARK: Propiedades
     // MARK: -----------
-     var lbl_fecha = UILabel()
-     var lbl_entrada = UILabel()
-     var lbl_salida = UILabel()
-     var lbl_DiaSemana = UILabel()
-    
+    var lbl_dia = UILabel()
+    var lbl_hora_entrada = UILabel()
+    var lbl_hora_salida = UILabel()
+    var lbl_DiaSemana = UILabel()
+    var anchoCelda = CGFloat(375)
     
     var diaMes:Int{
         get{
@@ -41,57 +41,77 @@ class Cell_EntradaSalida:CeldaBase {
     // MARK: Inicializar widgets y personalizar views
     // MARK: ----------------------------------------
      override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
-
+        
+        var img_entrada = UIImageView(frame:CGRect(x: RECT_DIASEM.maxX + (anchoCelda - RECT_DIASEM.maxX) / 2 - S_IMG_ENTRADA.width - 80,//- 20 - 50 - 10
+                                                    y: 0,
+                                                    width: S_IMG_ENTRADA.width,
+                                                    height: S_IMG_ENTRADA.height))
+        
+        var img_salida = UIImageView(frame:CGRect( x: RECT_DIASEM.maxX + (anchoCelda - RECT_DIASEM.maxX) / 2 + 20,
+                                                    y: 0,
+                                                    width: S_IMG_SALIDA.width,
+                                                    height: S_IMG_SALIDA.height))
+        
+        var lbl_ausencia = UILabel (frame: CGRect(  x: (anchoCelda - RECT_DIASEM.maxX - S_LBL_AUSENCIA.width) / 2,
+                                                    y: 0,
+                                                    width: S_LBL_AUSENCIA.width,
+                                                    height: S_LBL_AUSENCIA.height))
+        
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        lbl_fecha.frame = CGRect(x: RECT_FECHA.minX, y: RECT_FECHA.minY,
-                                    width: RECT_FECHA.width,
-                                    height: RECT_FECHA.height)
+//        lbl_dia.frame = CGRect(x: RECT_DIA.minX, y: RECT_DIA.minY,
+//                                    width: RECT_DIA.width,
+//                                    height: RECT_DIA.height)
         
-        lbl_entrada.frame = CGRect( x: RECT_ENTRADA.minX,
-                                    y: RECT_ENTRADA.minY,
-                                    width: RECT_ENTRADA.width,
-                                    height: RECT_ENTRADA.height)
+        lbl_hora_entrada.frame = CGRect(x: img_entrada.frame.maxX + 10,
+                                        y: 0,
+                                        width: 50,
+                                        height: 40)
         
-        lbl_salida.frame = CGRect ( x: RECT_SALIDA.minX,
-                                    y: RECT_SALIDA.minY,
-                                    width: RECT_SALIDA.width,
-                                    height: RECT_SALIDA.height)
+        lbl_hora_salida.frame = CGRect (x: img_salida.frame.maxX + 10,
+                                        y: 0,
+                                        width: lbl_hora_entrada.frame.width,
+                                        height: lbl_hora_entrada.frame.height)
         
         lbl_DiaSemana.frame = CGRect(x: RECT_DIASEM.minX, y: RECT_DIASEM.minY,
                                      width: RECT_DIASEM.width,
                                      height: RECT_DIASEM.height)
         
         //######################### Personalizando los widgets #######################//
-        lbl_fecha.backgroundColor = UIColor.greenColor()
-        lbl_entrada.backgroundColor = UIColor.brownColor()
-        lbl_salida.backgroundColor = UIColor.yellowColor()
+//        lbl_dia.backgroundColor = UIColor.greenColor()
+        img_entrada.backgroundColor = UIColor.greenColor()
+        img_salida.backgroundColor = UIColor.redColor()
         
-        lbl_fecha.font = lbl_fecha.font.fontWithSize(11.0)
-        lbl_entrada.font = lbl_fecha.font.fontWithSize(11.0)
-        lbl_salida.font = lbl_fecha.font.fontWithSize(11.0)
-        lbl_DiaSemana.font = lbl_fecha.font.fontWithSize(12.0)
+        lbl_hora_entrada.backgroundColor = UIColor.grayColor()
+        lbl_hora_salida.backgroundColor = UIColor.grayColor()
+        lbl_DiaSemana.backgroundColor = UIColor.blueColor()
         
-        lbl_fecha.textAlignment = .Center
-        lbl_entrada.textAlignment = .Center
-        lbl_salida.textAlignment = .Center
+//        lbl_dia.font = lbl_dia.font.fontWithSize(11.0)
+        lbl_hora_entrada.font = lbl_hora_entrada.font.fontWithSize(11.0)
+        lbl_hora_salida.font = lbl_hora_entrada.font.fontWithSize(11.0)
+        lbl_DiaSemana.font = lbl_hora_entrada.font.fontWithSize(12.0)
+        
+//        lbl_dia.textAlignment = .Center
+        lbl_hora_entrada.textAlignment = .Center
+        lbl_hora_salida.textAlignment = .Center
         lbl_DiaSemana.textAlignment = .Left
         
         lbl_DiaSemana.textColor = UIColor.lightGrayColor()
+        
+        //        lbl_dia.text = ""
+        lbl_hora_entrada.text = ""
+        lbl_hora_salida.text = ""
+        lbl_DiaSemana.text = "0"
+        //        lbl_DiaSemana.text = getDayOfWeek(lbl_dia.text!)
+        
         //###########################################################################//
 
-        
-        lbl_fecha.text = ""
-        lbl_entrada.text = ""
-        lbl_salida.text = ""
-        lbl_DiaSemana.text = "0"
-//        lbl_DiaSemana.text = getDayOfWeek(lbl_fecha.text!)
-        
-
         contentView.addSubview(lbl_DiaSemana)
-        contentView.addSubview(lbl_fecha)
-        contentView.addSubview(lbl_entrada)
-        contentView.addSubview(lbl_salida)
+//        contentView.addSubview(lbl_dia)
+        contentView.addSubview(img_entrada)
+        contentView.addSubview(lbl_hora_entrada)
+        contentView.addSubview(img_salida)
+        contentView.addSubview(lbl_hora_salida)
     }
     
     required init(coder aDecoder: NSCoder) {

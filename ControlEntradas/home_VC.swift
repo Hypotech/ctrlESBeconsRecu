@@ -15,16 +15,15 @@ class home_VC: UIViewController {
     // MARK: Propiedades
     // MARK: -----------
     
-    var logo:logoView!
     var historial: tablaAnualHsitorial!
-//    var img_usuario:UIImage!
 //    var img_fondo = UIImage(named:"nature.png")
     var lbl_nomUsr = UILabel()
 //    private var btn_Registrar: UIButton!
     var CelEntradasSalidas:[Cell_EntradaSalida] = []
-    var podio: PKTClient!
-    var contdor_i_usr:UIImageView!
+    var img_usuario:UIImageView!
     var infoPerfil:Perfil = Perfil()
+    var podio: PKTClient!
+    private var btn_beacon:UIButton!
     
     // MARK: -------------------
     // MARK: Inicializar widgets
@@ -32,46 +31,44 @@ class home_VC: UIViewController {
     
     override func viewDidLoad() {
         var superView = self.view.frame
-        var img_ajustes = UIImage(named:"Settings-icon.png")
         
         //************************** Posicion de los wigets **************************//
-        logo = logoView(superVDim: superView)
+        
+//        var contdor_i_mascara = UIImageView(frame: CGRect(x: logo.container.frame.minX,
+//                                                        y: logo.container.frame.maxY,
+//                                                        width: logo.container.frame.width,
+//                                                        height: 120))
+        
+        img_usuario = UIImageView(frame: CGRect(x: 0,
+                                                y: 0,
+                                                width: superView.width,
+                                                height: ALTURA_IMG_USR))
+        
+        var btn_edit_perf = UIButton.buttonWithType(UIButtonType.System) as UIButton
+        btn_edit_perf.frame = (frame: CGRect(   x: img_usuario.frame.minX + 20,
+                                                y: img_usuario.frame.minY + 30,
+                                                width: 15,
+                                                height: 20))
         
         var btn_ajustes = UIButton.buttonWithType(UIButtonType.System) as UIButton
-        btn_ajustes.frame = CGRect( x: logo.container.frame.maxX - 40,
-                                    y: logo.container.frame.minY + 20,
+        btn_ajustes.frame = CGRect( x: img_usuario.frame.maxX - 60,
+                                    y: btn_edit_perf.frame.minY,
                                     width: 40,
                                     height: 40)
         
-        var contdor_i_mascara = UIImageView(frame: CGRect(x: logo.container.frame.minX,
-                                                        y: logo.container.frame.maxY,
-                                                        width: logo.container.frame.width,
-                                                        height: 120))
-        
-        contdor_i_usr = UIImageView(frame: CGRect(  x: logo.container.frame.minX + logo.container.frame.maxX/2 - 60/2,
-                                                        y: logo.container.frame.maxY + 25,
-                                                        width: 60,
-                                                        height: 60))
-        
-        var btn_edit_perf = UIButton.buttonWithType(UIButtonType.System) as UIButton
-        btn_edit_perf.frame = (frame: CGRect(   x: contdor_i_usr.frame.maxX,
-                                                y: contdor_i_usr.frame.minY,
-                                                width: 15,
-                                                height: 20))
-//        var posicion_Historial = superView
-        var posicion_Historial = CGRect(x: superView.minX,
-                                        y: contdor_i_mascara.frame.maxY,
+        btn_beacon =  UIButton.buttonWithType(UIButtonType.System) as UIButton
+        btn_beacon.frame = CGRect(x: img_usuario.frame.minX + (img_usuario.frame.width - S_IMG_BEACON.width)  / 2,
+                                  y: img_usuario.frame.maxY - S_IMG_BEACON.height / 2,
+                                  width: S_IMG_BEACON.width,
+                                  height: S_IMG_BEACON.height)
+
+        var posicion_Historial = CGRect(x: 0,
+                                        y: btn_beacon.frame.maxY,
                                         width: superView.width,
-                                        height: superView.height - contdor_i_mascara.frame.maxY /*- ESPACIO_BOTTOM*/)
-        
-        posicion_Historial.origin.y = contdor_i_mascara.frame.maxY
+                                        height: superView.height - btn_beacon.frame.maxY )
         
         historial = tablaAnualHsitorial(ubicacion: posicion_Historial)
         
-//        btn_Registrar = UIButton.buttonWithType(UIButtonType.System) as UIButton
-//        btn_Registrar.frame = CGRect(x: (superView.width - 70 )/2,
-//            y: historial.view.frame.maxY + 20.0,
-//            width: 70, height: 35)
         //***************************************************************************//
 
         //######### Personalización de los widgets #########//
@@ -80,13 +77,17 @@ class home_VC: UIViewController {
         btn_edit_perf.setBackgroundImage(UIImage(named:"Edit_icon.png"), forState: .Normal)
         btn_edit_perf.addTarget(self, action: "irEditarPerfilEscena", forControlEvents: UIControlEvents.TouchUpInside)
         
-        btn_ajustes.setBackgroundImage(img_ajustes, forState: .Normal)
+        btn_ajustes.setBackgroundImage(UIImage(named:"Settings-icon.png"), forState: .Normal)
         btn_ajustes.addTarget(self, action: "irAjustesEscena", forControlEvents: UIControlEvents.TouchUpInside)
         
-//        lbl_nomUsr.text = "Nombre de usuario"
         lbl_nomUsr.textColor = UIColor.lightTextColor()
         lbl_nomUsr.font = lbl_nomUsr.font.fontWithSize(12.0)
-//        lbl_nomUsr.backgroundColor = UIColor.blackColor()
+        
+        img_usuario.backgroundColor = UIColor.grayColor()
+        
+        btn_beacon.backgroundColor = UIColor.greenColor()
+        btn_beacon.addTarget(self, action: "btnBeconPresionado", forControlEvents: .TouchUpInside)
+        btn_beacon.setTitle("Beacon", forState: .Normal)
         
 //        btn_Registrar.backgroundColor = UIColor.blueColor();
 //        btn_Registrar.setTitle("Registrar", forState: .Normal)
@@ -94,13 +95,13 @@ class home_VC: UIViewController {
         //#############################################//
         
         self.view.backgroundColor = UIColor.whiteColor()
-        self.view.addSubview(logo.container)
-        self.view.addSubview(contdor_i_usr)
-        self.view.addSubview(contdor_i_mascara)
+        self.view.addSubview(img_usuario)
+//        self.view.addSubview(contdor_i_mascara)
         self.view.addSubview(btn_edit_perf)
         self.view.addSubview(btn_ajustes)
         self.view.addSubview(lbl_nomUsr)
         self.view.addSubview(historial.view)
+        self.view.addSubview(btn_beacon)
 //        self.view.addSubview(btn_Registrar)
     }
 
@@ -109,12 +110,10 @@ class home_VC: UIViewController {
         var maximumLabelSize:CGSize = CGSize(width: label.frame.width, height: 15)
         var expectSize:CGSize = label.sizeThatFits(maximumLabelSize)
         
-//        var newFrame = label.frame
-//        newFrame.size.width = expectSize.width //cambia solo el ancho
         label.frame.size = expectSize
         
-        label.frame.origin = CGPoint(  x: contdor_i_usr.frame.minX +  (contdor_i_usr.frame.width - lbl_nomUsr.frame.width)/2,
-            y: contdor_i_usr.frame.maxY - 2)
+        label.frame.origin = CGPoint(  x: img_usuario.frame.minX +  (img_usuario.frame.width - lbl_nomUsr.frame.width)/2,
+            y: img_usuario.frame.maxY - 2)
     }
     
     // MARK: ----------------------------------------
@@ -165,7 +164,7 @@ class home_VC: UIViewController {
                         var cadena = link as NSString
                         
                         var data = NSData(contentsOfURL: NSURL(string: cadena)!)
-                        self.contdor_i_usr.image = UIImage(data: data!)
+                        self.img_usuario.image = UIImage(data: data!)
                         
                         println("Se ha cargado la imagen")
                     }
@@ -205,7 +204,7 @@ class home_VC: UIViewController {
 //                }
                 return
             }
-            self.contdor_i_usr.image = UIImage(named:"smile-icon.png") //si no tiene imagen asignada se pone una por defecto
+            self.img_usuario.image = UIImage(named:"smile-icon.png") //si no tiene imagen asignada se pone una por defecto
             println("No se pudo cargar imagen")
             
         })
@@ -213,8 +212,16 @@ class home_VC: UIViewController {
     }
     
     func llenarConPerfil(){
-        contdor_i_usr.image = infoPerfil.imagenUsuario
+        img_usuario.image = infoPerfil.imagenUsuario
         lbl_nomUsr.text = infoPerfil.nombre
         calcularAncho(&(self.lbl_nomUsr))
+    }
+    
+    func btnBeconPresionado(){
+        var popUp = BeaconEncontrado_VC()
+        popUp.modalPresentationStyle = .OverFullScreen
+        popUp.modalTransitionStyle = .CrossDissolve
+        
+        self.presentViewController(popUp, animated: true, completion: nil)
     }
 }

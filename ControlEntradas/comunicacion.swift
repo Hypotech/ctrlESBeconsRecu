@@ -28,19 +28,19 @@ class comunicacion:NSObject{
 //                reuseIdentifier: "Entrada_o_Salida"))
 //            var entrada = NSDate()
 //            
-//            celdaEntradasSalidas[i].lbl_fecha.text = formatterFecha.stringFromDate(entrada)
-//            celdaEntradasSalidas[i].lbl_DiaSemana.text = getDayOfWeek(celdaEntradasSalidas[i].lbl_fecha.text!)
-//            celdaEntradasSalidas[i].lbl_entrada.text = formatterES.stringFromDate(entrada)
+//            celdaEntradasSalidas[i].lbl_dia.text = formatterFecha.stringFromDate(entrada)
+//            celdaEntradasSalidas[i].lbl_DiaSemana.text = getDayOfWeek(celdaEntradasSalidas[i].lbl_dia.text!)
+//            celdaEntradasSalidas[i].lbl_hora_entrada.text = formatterES.stringFromDate(entrada)
 //        }
 //            
 //        else if(registroActual == .entrada){ //si ya hay una entrada registrada,registra la salida
 //            var salida = NSDate()
-//            celdaEntradasSalidas[i].lbl_salida.text = formatterES.stringFromDate(salida)
+//            celdaEntradasSalidas[i].lbl_hora_salida.text = formatterES.stringFromDate(salida)
 //            
 //        }
 //        else{ //Si se quiere resgitrar una salida segimos registrandola
 //            var salida = NSDate()
-//            celdaEntradasSalidas[i].lbl_salida.text = formatterES.stringFromDate(salida)
+//            celdaEntradasSalidas[i].lbl_hora_salida.text = formatterES.stringFromDate(salida)
 //        }
 //        
 //        checkInfo()
@@ -50,12 +50,12 @@ class comunicacion:NSObject{
 //    }
     
 //    func checkInfo(){
-//        if celdaEntradasSalidas[i].lbl_entrada.text != "" && celdaEntradasSalidas[i].lbl_salida.text == ""
+//        if celdaEntradasSalidas[i].lbl_hora_entrada.text != "" && celdaEntradasSalidas[i].lbl_hora_salida.text == ""
 //        {
 //            registroActual = .entrada
 //            println("Entrada registrada")
 //        }
-//        else if celdaEntradasSalidas[i].lbl_entrada.text != "" && celdaEntradasSalidas[i].lbl_salida.text != ""
+//        else if celdaEntradasSalidas[i].lbl_hora_entrada.text != "" && celdaEntradasSalidas[i].lbl_hora_salida.text != ""
 //        {
 //            registroActual = .salida
 //            println("Salida registrada")

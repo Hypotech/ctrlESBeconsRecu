@@ -16,7 +16,8 @@ class tablaMensualHsitorial:NSObject, UITableViewDataSource, UITableViewDelegate
     var viewTabla:UITableView! //Tabla que contiene las celdas con información acerca de las entradas y salidas del usuario
     private var celdaEntradasSalidas:[Cell_EntradaSalida] = [] //alamcena las entradas y salidas del usuario
     var fecha:NSDate!
-    var numeroDeCeldas:Int
+    private var numeroDeCeldas:Int
+    var btnMes:botonMes
     
     var historial:[Cell_EntradaSalida]{
         get{
@@ -31,8 +32,9 @@ class tablaMensualHsitorial:NSObject, UITableViewDataSource, UITableViewDelegate
     // MARK: Inicializar widgets y personalizar views
     // MARK: ----------------------------------------
     
-    init(ubicacion:CGRect, fecha:NSDate, historial:[Cell_EntradaSalida]){
+    init(ubicacion:CGRect, fecha:NSDate, historial:[Cell_EntradaSalida], mesHistorial:mes){
 
+        btnMes = botonMes(nombreMes: mesHistorial)
         let calendario = NSCalendar.currentCalendar()
         self.fecha = fecha
         numeroDeCeldas = calendario.rangeOfUnit(.DayCalendarUnit , inUnit: .MonthCalendarUnit, forDate: fecha).length
@@ -49,6 +51,7 @@ class tablaMensualHsitorial:NSObject, UITableViewDataSource, UITableViewDelegate
         
         viewTabla.dataSource = self
         viewTabla.delegate = self
+        viewTabla.allowsSelection = false
         
         for var i = 0; i < numeroDeCeldas; i++
         {
@@ -56,7 +59,7 @@ class tablaMensualHsitorial:NSObject, UITableViewDataSource, UITableViewDelegate
             celda.diaMes = i + 1
             celdaEntradasSalidas.append(celda)
         }
-        
+
     }
 
     // MARK: ----------------------------------------------------
