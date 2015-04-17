@@ -15,6 +15,9 @@
 		AB5375001AD4A0270030F786 /* tablaConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB5374FF1AD4A0270030F786 /* tablaConfig.swift */; };
 		AB6C721E1ACB19A700B87704 /* Celda_Usuario.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB6C721D1ACB19A700B87704 /* Celda_Usuario.swift */; };
 		AB7330001AE1582B00D277E9 /* login1eraVez_VC.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB732FFF1AE1582B00D277E9 /* login1eraVez_VC.swift */; };
+		AB7330051AE1988700D277E9 /* Fontfabric - Nexa-Light-Italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = AB7330021AE1988700D277E9 /* Fontfabric - Nexa-Light-Italic.otf */; };
+		AB7330061AE1988700D277E9 /* Lato-Reg.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AB7330031AE1988700D277E9 /* Lato-Reg.ttf */; };
+		AB7330071AE1988700D277E9 /* Nexa Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = AB7330041AE1988700D277E9 /* Nexa Bold.otf */; };
 		AB8583EF1ACB3FC300353DC4 /* historial_VC.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB8583EE1ACB3FC300353DC4 /* historial_VC.swift */; };
 		AB88FE091ACB0CEB00A57D2A /* logoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB88FE081ACB0CEB00A57D2A /* logoView.swift */; };
 		AB88FE0C1ACB11FC00A57D2A /* constantesSimbolicas.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB88FE0B1ACB11FC00A57D2A /* constantesSimbolicas.swift */; };
@@ -179,6 +182,9 @@
 		AB5374FF1AD4A0270030F786 /* tablaConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = tablaConfig.swift; sourceTree = "<group>"; };
 		AB6C721D1ACB19A700B87704 /* Celda_Usuario.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Celda_Usuario.swift; sourceTree = "<group>"; };
 		AB732FFF1AE1582B00D277E9 /* login1eraVez_VC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = login1eraVez_VC.swift; sourceTree = "<group>"; };
+		AB7330021AE1988700D277E9 /* Fontfabric - Nexa-Light-Italic.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Fontfabric - Nexa-Light-Italic.otf"; sourceTree = "<group>"; };
+		AB7330031AE1988700D277E9 /* Lato-Reg.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Reg.ttf"; sourceTree = "<group>"; };
+		AB7330041AE1988700D277E9 /* Nexa Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Nexa Bold.otf"; sourceTree = "<group>"; };
 		AB8583EE1ACB3FC300353DC4 /* historial_VC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = historial_VC.swift; sourceTree = "<group>"; };
 		AB88FE081ACB0CEB00A57D2A /* logoView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = logoView.swift; sourceTree = "<group>"; };
 		AB88FE0B1ACB11FC00A57D2A /* constantesSimbolicas.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = constantesSimbolicas.swift; sourceTree = "<group>"; };
@@ -493,6 +499,16 @@
 				AB3CBF501AD4575900AC043E /* comunicacion.swift */,
 			);
 			name = PODIO;
+			sourceTree = "<group>";
+		};
+		AB7330011AE1986E00D277E9 /* Tipografias */ = {
+			isa = PBXGroup;
+			children = (
+				AB7330021AE1988700D277E9 /* Fontfabric - Nexa-Light-Italic.otf */,
+				AB7330031AE1988700D277E9 /* Lato-Reg.ttf */,
+				AB7330041AE1988700D277E9 /* Nexa Bold.otf */,
+			);
+			name = Tipografias;
 			sourceTree = "<group>";
 		};
 		AB88FE0A1ACB11B600A57D2A /* Notificaciones */ = {
@@ -836,6 +852,7 @@
 		ABC004FB1AC5B354005B309F /* ControlEntradas */ = {
 			isa = PBXGroup;
 			children = (
+				AB7330011AE1986E00D277E9 /* Tipografias */,
 				AB3CBF4A1AD4328B00AC043E /* Bridging */,
 				ABC0051E1AC5B366005B309F /* Estimote SDK */,
 				AB3CBF4F1AD4572E00AC043E /* PODIO */,
@@ -1043,9 +1060,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				ABE976831AD3085C004FB2F3 /* nature.png in Resources */,
+				AB7330071AE1988700D277E9 /* Nexa Bold.otf in Resources */,
 				ABC0053E1AC5BAD9005B309F /* estimote.png in Resources */,
 				ABA010EC1ADC2B5E00E04ACF /* LICENSE in Resources */,
 				ABC005041AC5B354005B309F /* Main.storyboard in Resources */,
+				AB7330051AE1988700D277E9 /* Fontfabric - Nexa-Light-Italic.otf in Resources */,
 				ABE9767F1AD3002A004FB2F3 /* user.png in Resources */,
 				ABE976851AD31CD5004FB2F3 /* Edit_icon.png in Resources */,
 				ABC0053C1AC5BAD9005B309F /* checkMark.jpg in Resources */,
@@ -1055,6 +1074,7 @@
 				ABC005061AC5B354005B309F /* Images.xcassets in Resources */,
 				ABC005451AC5BAD9005B309F /* smile-icon.png in Resources */,
 				ABC005471AC5BAD9005B309F /* testnavbar.png in Resources */,
+				AB7330061AE1988700D277E9 /* Lato-Reg.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

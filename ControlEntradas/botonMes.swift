@@ -12,8 +12,8 @@ class botonMes: UIButton {
 //    private var boton = UIButton.buttonWithType(UIButtonType.System) as UIButton
     var Mes:mes = .Ninguno
     
-    init( nombreMes:mes,frame:CGRect = CGRect.zeroRect) {
-        Mes = nombreMes
+    init( nombre:mes,frame:CGRect = CGRect.zeroRect) {
+        Mes = nombre
         super.init(frame:frame)
     }
     

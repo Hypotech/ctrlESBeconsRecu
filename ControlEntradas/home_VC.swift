@@ -55,7 +55,7 @@ class home_VC: UIViewController {
                                     y: btn_edit_perf.frame.minY,
                                     width: 40,
                                     height: 40)
-        
+
         btn_beacon =  UIButton.buttonWithType(UIButtonType.System) as UIButton
         btn_beacon.frame = CGRect(x: img_usuario.frame.minX + (img_usuario.frame.width - S_IMG_BEACON.width)  / 2,
                                   y: img_usuario.frame.maxY - S_IMG_BEACON.height / 2,
@@ -80,7 +80,7 @@ class home_VC: UIViewController {
         btn_ajustes.setBackgroundImage(UIImage(named:"Settings-icon.png"), forState: .Normal)
         btn_ajustes.addTarget(self, action: "irAjustesEscena", forControlEvents: UIControlEvents.TouchUpInside)
         
-        lbl_nomUsr.textColor = UIColor.lightTextColor()
+        lbl_nomUsr.textColor = UIColor.whiteColor()
         lbl_nomUsr.font = lbl_nomUsr.font.fontWithSize(12.0)
         
         img_usuario.backgroundColor = UIColor.grayColor()
@@ -112,8 +112,8 @@ class home_VC: UIViewController {
         
         label.frame.size = expectSize
         
-        label.frame.origin = CGPoint(  x: img_usuario.frame.minX +  (img_usuario.frame.width - lbl_nomUsr.frame.width)/2,
-            y: img_usuario.frame.maxY - 2)
+        label.frame.origin = CGPoint(  x: img_usuario.frame.minX +  (img_usuario.frame.width - lbl_nomUsr.frame.width) / 2,
+            y: img_usuario.frame.maxY / 2 + 20)
     }
     
     // MARK: ----------------------------------------
@@ -213,7 +213,8 @@ class home_VC: UIViewController {
     
     func llenarConPerfil(){
         img_usuario.image = infoPerfil.imagenUsuario
-        lbl_nomUsr.text = infoPerfil.nombre
+        lbl_nomUsr.text = infoPerfil.nombre.uppercaseString
+        
         calcularAncho(&(self.lbl_nomUsr))
     }
     

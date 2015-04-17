@@ -56,8 +56,6 @@ class editarPerfil_VC: UIViewController {
         ubicTabla.origin.y = self.navigationController!.navigationBar.frame.maxY + 20
         Podio =  PKTClient.sharedClient()
         
-        println("La altura del navigatioCtrl: \(ubicTabla.origin.y - 20)")
-        
         infoUsuario = tablaConfig(superVDim: ubicTabla)
         
         self.view.backgroundColor = UIColor.whiteColor()

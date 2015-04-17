@@ -120,41 +120,40 @@ class login_VC: UIViewController {
     // MARK: ----------------------------------------
     
     func ejecutarLogin() { //validar datos y pasar a la siguiente escena
-        var viewCtrl_Siguiente = home_VC() //view controller siguiente
-        //        var viewCtrl_Siguiente = perfiles_VC()
+//        var viewCtrl_Siguiente = home_VC() //view controller siguiente
+//        //        var viewCtrl_Siguiente = perfiles_VC()
+//        
+//        //        viewCtrl_Siguiente.modalPresentationStyle = .OverFullScreen
+//        viewCtrl_Siguiente.modalTransitionStyle = .FlipHorizontal
+//        self.presentViewController(viewCtrl_Siguiente, animated: true, completion: nil)
         
-        //        viewCtrl_Siguiente.modalPresentationStyle = .OverFullScreen
-        viewCtrl_Siguiente.modalTransitionStyle = .FlipHorizontal
-        self.presentViewController(viewCtrl_Siguiente, animated: true, completion: nil)
+        var alerta:UIAlertController!
+        indicadorActividad.startAnimating()
         
-//        var alerta:UIAlertController!
-//        indicadorActividad.startAnimating()
-        
-//        podio.authenticateAsUserWithEmail(tFi_nomUsur.text, password: tFi_contraseña.text, completion: {
-//                (respuesta, error) -> () in
-//                
-//                if respuesta.statusCode == OK_login{
-////                    println("Login exitoso")
-//                    
-//                    self.pasarSiguienteEscena()
-//                    
-//                }
-//                else if(respuesta.statusCode == ContraseñaUsuario_Invalido){
-//                    println("Error login")
-//                    
-//                    alerta = UIAlertController(title: "Error", message: "Usuario o contraseña incorrecta. Intenta de nuevo", preferredStyle: UIAlertControllerStyle.Alert)
-//                    alerta.addAction(UIAlertAction(title: "Aceptar", style: UIAlertActionStyle.Cancel, handler: nil))
-//                    self.presentViewController(alerta, animated: true, completion: nil)
-//                    self.indicadorActividad.stopAnimating()
-//                    
-//                }
-//                else{
-//                    alerta = UIAlertController(title: "Error", message: respuesta.body.objectForKey("error_description") as? String, preferredStyle: UIAlertControllerStyle.Alert)
-//                    alerta.addAction(UIAlertAction(title: "Aceptar", style: UIAlertActionStyle.Cancel, handler: nil))
-//                    self.presentViewController(alerta, animated: true, completion: nil)
-//                    self.indicadorActividad.stopAnimating()
-//                }
-//        })
+        podio.authenticateAsUserWithEmail(tFi_nomUsur.text, password: tFi_contraseña.text, completion: {
+                (respuesta, error) -> () in
+                
+                if respuesta.statusCode == OK_login{
+                    println("Login exitoso")
+                    
+                    self.pasarSiguienteEscena()
+                    
+                }
+                else if(respuesta.statusCode == ContraseñaUsuario_Invalido){
+                    
+                    alerta = UIAlertController(title: "Error", message: "Usuario o contraseña incorrecta. Intenta de nuevo", preferredStyle: UIAlertControllerStyle.Alert)
+                    alerta.addAction(UIAlertAction(title: "Aceptar", style: UIAlertActionStyle.Cancel, handler: nil))
+                    self.presentViewController(alerta, animated: true, completion: nil)
+                    self.indicadorActividad.stopAnimating()
+                    
+                }
+                else{
+                    alerta = UIAlertController(title: "Error", message: respuesta.body.objectForKey("error_description") as? String, preferredStyle: UIAlertControllerStyle.Alert)
+                    alerta.addAction(UIAlertAction(title: "Aceptar", style: UIAlertActionStyle.Cancel, handler: nil))
+                    self.presentViewController(alerta, animated: true, completion: nil)
+                    self.indicadorActividad.stopAnimating()
+                }
+        })
         
     }
     
@@ -188,17 +187,17 @@ class login_VC: UIViewController {
                     
                 }
                 
-                let telefono: AnyObject? = perfil!.objectForKey("phone")
-                println("telefono: \(telefono)")
-                if !(telefono is NSNull) && telefono != nil{
-                    self.infoPerfil.telefono = telefono as NSArray
-                }
-                
-                let email: AnyObject? = perfil!.objectForKey("mail")
-                if !(email is NSNull) && email != nil {
-                    self.infoPerfil.email = email! as NSArray
-                    println("\(self.infoPerfil.email)")
-                }
+//                let telefono: AnyObject? = perfil!.objectForKey("phone")
+//                println("telefono: \(telefono)")
+//                if !(telefono is NSNull) && telefono != nil{
+//                    self.infoPerfil.telefono = telefono as NSArray
+//                }
+//                
+//                let email: AnyObject? = perfil!.objectForKey("mail")
+//                if !(email is NSNull) && email != nil {
+//                    self.infoPerfil.email = email! as NSArray
+//                    println("\(self.infoPerfil.email)")
+//                }
                 
                 var viewCtrl_Siguiente = home_VC() //view controller siguiente
                 //        var viewCtrl_Siguiente = perfiles_VC()

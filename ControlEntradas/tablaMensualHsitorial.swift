@@ -34,7 +34,7 @@ class tablaMensualHsitorial:NSObject, UITableViewDataSource, UITableViewDelegate
     
     init(ubicacion:CGRect, fecha:NSDate, historial:[Cell_EntradaSalida], mesHistorial:mes){
 
-        btnMes = botonMes(nombreMes: mesHistorial)
+        btnMes = botonMes(nombre: mesHistorial)
         let calendario = NSCalendar.currentCalendar()
         self.fecha = fecha
         numeroDeCeldas = calendario.rangeOfUnit(.DayCalendarUnit , inUnit: .MonthCalendarUnit, forDate: fecha).length
