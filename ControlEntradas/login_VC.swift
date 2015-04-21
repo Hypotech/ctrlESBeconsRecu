@@ -6,7 +6,8 @@
 
 import UIKit
 
-class login_VC: UIViewController {
+class login_VC: UIViewController, UITextFieldDelegate {
+    
     //MARK: -----------
     //MARK: Propiedades
     //MARK: -----------
@@ -56,9 +57,10 @@ class login_VC: UIViewController {
                                         height: btn_Aceptar.frame.height - 10)
         
         indicadorActividad = UIActivityIndicatorView(frame: CGRect( x: btn_Aceptar.frame.maxX + 10,
-                                                                        y: btn_Aceptar.frame.minY,
-                                                                        width: btn_Aceptar.frame.height, //mismo que altura
-                                                                        height: btn_Aceptar.frame.height))
+                                                                    y: btn_Aceptar.frame.minY,
+                                                                    width: btn_Aceptar.frame.height, //mismo que altura
+                                                                    height: btn_Aceptar.frame.height))
+        
         //****************************************************************************//
         
         //####################### Personalizando los widgets ########################//
@@ -67,16 +69,20 @@ class login_VC: UIViewController {
 //        lbl_cuentaNueva.attributedText = NSAttributedString
         tFi_nomUsur.placeholder = "Usuario"
         tFi_nomUsur.textColor = UIColor.blackColor()
+        tFi_nomUsur.addTarget(self, action: "campoEditado", forControlEvents: .EditingChanged)
         
         tFi_contraseña.borderStyle = .RoundedRect
         tFi_contraseña.placeholder = "Contraseña"
         tFi_contraseña.textColor = UIColor.blackColor()
         tFi_contraseña.secureTextEntry =  true
         tFi_contraseña.clearButtonMode = .WhileEditing
+        tFi_contraseña.addTarget(self, action: "campoEditado", forControlEvents: .EditingChanged)
         
-        btn_Aceptar.backgroundColor = UIColor.blueColor();
+        btn_Aceptar.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+        btn_Aceptar.setTitleColor(UIColor.blackColor(), forState: .Disabled)
         btn_Aceptar.setTitle("Aceptar", forState: .Normal)
-        btn_Aceptar.addTarget(self, action: "ejecutarLogin", forControlEvents: UIControlEvents.TouchUpInside)
+        btn_Aceptar.addTarget(self, action: "ejecutarLogin", forControlEvents: .TouchUpInside)
+        campoEditado()
 //        btn_Aceptar.showsTouchWhenHighlighted = true
         
         btn_cuentaNueva.backgroundColor = UIColor.clearColor()
@@ -96,6 +102,7 @@ class login_VC: UIViewController {
         view_rectLogin.addSubview(btn_Aceptar)
         view_rectLogin.addSubview(btn_cuentaNueva)
         view_rectLogin.addSubview(indicadorActividad)
+        
         view_rectLogin.backgroundColor = UIColor.whiteColor()
         
         //##########################################################################//
@@ -173,22 +180,26 @@ class login_VC: UIViewController {
                         var cadena = link as NSString
                         
                         var data = NSData(contentsOfURL: NSURL(string: cadena)!)
-                        self.infoPerfil.imagenUsuario = UIImage(data: data!)
-                        
-                        println("Se ha cargado la imagen")
+                        self.infoPerfil.imagenUsuario = UIImage(data: data!) //Se obtiene la iamgen del usuario
                     }
+                }
+                else{
+                    self.infoPerfil.imagenUsuario = UIImage(named: "user_desconocido.png")
                 }
                 
                 let nombre: AnyObject? = perfil!.objectForKey("name")
                 if !(nombre is NSNull){
-                    self.infoPerfil.nombre = nombre as NSString
+                    self.infoPerfil.nombre = nombre as NSString //Se obtiene el nombre del usuario
                     
                     println(nombre as NSString)
                     
                 }
+                else{
+                    self.infoPerfil.nombre = ""
+                }
                 
 //                let telefono: AnyObject? = perfil!.objectForKey("phone")
-//                println("telefono: \(telefono)")
+//
 //                if !(telefono is NSNull) && telefono != nil{
 //                    self.infoPerfil.telefono = telefono as NSArray
 //                }
@@ -196,24 +207,61 @@ class login_VC: UIViewController {
 //                let email: AnyObject? = perfil!.objectForKey("mail")
 //                if !(email is NSNull) && email != nil {
 //                    self.infoPerfil.email = email! as NSArray
-//                    println("\(self.infoPerfil.email)")
 //                }
                 
-                var viewCtrl_Siguiente = home_VC() //view controller siguiente
-                //        var viewCtrl_Siguiente = perfiles_VC()
-                
-                //        viewCtrl_Siguiente.modalPresentationStyle = .OverFullScreen
-                viewCtrl_Siguiente.modalTransitionStyle = .FlipHorizontal
+                self.podio.performRequest(PKTOrganizationAPI.requestForAllOrganizations(), completion: {
+                    (respuestaOrg,errorORG) -> () in
+                    
+                    let Org = respuestaOrg.body as NSArray
+                    var nombreOrg: AnyObject? = Org.valueForKey("name")
+                    
+                    if !(nombreOrg is NSNull){
+                        self.infoPerfil.organizacion = nombreOrg! as NSArray  //Se obtiene los nombres de las organizaciones
+                    }
+                    else{
+                        self.infoPerfil.organizacion = []
+                    }
+                    
+                    var viewCtrl_Siguiente = home_VC() //view controller siguiente
+                    //        var viewCtrl_Siguiente = perfiles_VC()
+                    
+                    //        viewCtrl_Siguiente.modalPresentationStyle = .OverFullScreen
+                    viewCtrl_Siguiente.modalTransitionStyle = .FlipHorizontal
+                    viewCtrl_Siguiente.previousVC = self
+                    
+                    //Inicializar las propiedades de home_vc
+                    viewCtrl_Siguiente.infoPerfil = self.infoPerfil
+                    viewCtrl_Siguiente.podio = self.podio
+                    ///////////////////////////////////////
+                    
+                    self.indicadorActividad.stopAnimating()
+                    self.presentViewController(viewCtrl_Siguiente, animated: true, completion: nil)
+                })
 
-                //Inicializar las propiedades de home_vc
-                viewCtrl_Siguiente.infoPerfil = self.infoPerfil
-                viewCtrl_Siguiente.podio = self.podio
-                ///////////////////////////////////////
-                
-                self.indicadorActividad.stopAnimating()
-                self.presentViewController(viewCtrl_Siguiente, animated: true, completion: nil)
             }
         })
+    }
+    
+    // MARK: ---------------------------
+    // MARK: Delgados para los textField
+    // MARK: ---------------------------
+
+    func campoEditado() {
+        
+        if tFi_contraseña.text.isEmpty || tFi_nomUsur.text.isEmpty{
+            btn_Aceptar.enabled = false
+            
+            UIView.animateWithDuration(0.4, delay: 0, options: UIViewAnimationOptions.CurveEaseIn, animations: {
+                self.btn_Aceptar.backgroundColor = UIColor.lightGrayColor()
+                }, completion: nil)
+        }
+        else{
+            btn_Aceptar.enabled = true
+            
+            UIView.animateWithDuration(0.4, delay: 0, options: UIViewAnimationOptions.CurveEaseIn, animations: {
+                self.btn_Aceptar.backgroundColor = UIColor.blueColor()
+                }, completion: nil)
+        }
     }
 }
 

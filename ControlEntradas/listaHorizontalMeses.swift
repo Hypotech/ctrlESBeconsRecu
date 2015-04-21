@@ -57,7 +57,8 @@ class listaHorizontalMeses: NSObject {
             default:
                 i.setTitle("", forState: .Normal)
             }
- 
+            
+            i.titleLabel!.font = UIFont(name: "Nexa-Light-Italic", size: 17.0)
             i.addTarget(self, action: "mesPresionado:", forControlEvents: .TouchUpInside)
             var sizeExperado:CGSize = i.titleLabel!.sizeThatFits(CGSize(width: 0,height: 40))
             i.frame.size.width = sizeExperado.width
@@ -83,10 +84,8 @@ class listaHorizontalMeses: NSObject {
         
         var indice = 0
         for i in botonesMeses{
-            i.setTitleColor(UIColor(red: 17/255, green: 129/255, blue: 131/255, alpha: 1.0), forState: .Disabled)
+            i.setTitleColor(UIColor(red: 15/255, green: 133/255, blue: 134/255, alpha: 1.0), forState: .Disabled)
             i.setTitleColor(UIColor(red: 213/255, green: 232/255, blue: 232/255, alpha: 1.0), forState: .Normal)
-
-            i.titleLabel!.font = UIFont(name: "HelveticaNeue-ThinItalic", size: 18.0)
             
             i.tag = indice
             indice++
@@ -94,6 +93,15 @@ class listaHorizontalMeses: NSObject {
         }
         botonesMeses[0].enabled = false
         //##########################################################################//
+        
+//        for family in UIFont.familyNames(){
+//            println(family)
+//            
+//            for name in UIFont.fontNamesForFamilyName(family as String){
+//                var tmp = name as String
+//                println("-" + tmp)
+//            }
+//        }
     }
     
     func mesPresionado(sender:botonMes!) {

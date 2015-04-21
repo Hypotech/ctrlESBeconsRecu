@@ -18,26 +18,14 @@ class tablaConfig:NSObject, UITableViewDataSource, UITableViewDelegate {
     // MARK: -------------------
     // MARK: Inicializar widgets
     // MARK: -------------------
-    init(superVDim:CGRect) {
+    init(superVDim:CGRect, datos:[UITableViewCell]) {
         super.init()
         viewTabla = UITableView(frame: CGRect(  x: superVDim.minX, y: superVDim.minY,
                                                 width: superVDim.width,
                                                 height: superVDim.height - 120.0 - ESPACIO_BOTTOM),
             style: .Grouped)
         
-        var cell0 = UITableViewCell(style: .Subtitle, reuseIdentifier: "config")
-        cell0.textLabel?.text = "Nombre"
-        var cell1 = UITableViewCell(style: .Subtitle, reuseIdentifier: "config")
-        cell1.textLabel?.text = "Teléfono"
-        var cell2 = UITableViewCell(style: .Subtitle, reuseIdentifier: "config")
-        cell2.textLabel?.text = "Email"
-        var cell3 = UITableViewCell(style: .Subtitle, reuseIdentifier: "config")
-        cell3.textLabel?.text = "Empresa"
-        
-        configuraciones.append(cell0)
-        configuraciones.append(cell1)
-        configuraciones.append(cell2)
-        configuraciones.append(cell3)
+        configuraciones = datos
         
 //        viewTabla.backgroundColor = UIColor.greenColor()
         
@@ -77,7 +65,7 @@ class tablaConfig:NSObject, UITableViewDataSource, UITableViewDelegate {
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0{
-            return 1
+            return 2
         }
         else if (section == 1){
             return 4

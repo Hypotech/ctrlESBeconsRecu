@@ -1,11 +1,17 @@
-//  Administra la tabla que retiene el historial de entradas y salidas, que han sido registradas por
-//  el usuario
-//
-//  Created by desarrolloRM on 30/03/15.
-//  Copyright (c) 2015 Desarrollo RM. All rights reserved.
-//
+/*  Clase para el despliegue de una tabla que contiene el historial de entradas y salidas
+*   de un mes dado. El historial (mensual) es pasado a traves de la variable celdaEntradasSalidas.
+*   La clase tablaMensualHsitorial contiene un boton (de tipo botonMes), que puede ser utilizado
+*   con la clase listaHorizontalMeses.
+*
+*  Created by desarrolloRM on 30/03/15.
+*  Copyright (c) 2015 Desarrollo RM. All rights reserved.
+*/
 
 import UIKit
+
+protocol tablaMensHistoDelegate{
+    func actualizarTabla()
+}
 
 class tablaMensualHsitorial:NSObject, UITableViewDataSource, UITableViewDelegate {
     
@@ -14,10 +20,9 @@ class tablaMensualHsitorial:NSObject, UITableViewDataSource, UITableViewDelegate
     // MARK: -----------
     
     var viewTabla:UITableView! //Tabla que contiene las celdas con información acerca de las entradas y salidas del usuario
-    private var celdaEntradasSalidas:[Cell_EntradaSalida] = [] //alamcena las entradas y salidas del usuario
     var fecha:NSDate!
-    private var numeroDeCeldas:Int
     var btnMes:botonMes
+    var delegado:tablaMensHistoDelegate?
     
     var historial:[Cell_EntradaSalida]{
         get{
@@ -27,10 +32,14 @@ class tablaMensualHsitorial:NSObject, UITableViewDataSource, UITableViewDelegate
             celdaEntradasSalidas = newValue
         }
     }
+
+    private var numeroDeCeldas:Int
+    private var celdaEntradasSalidas:[Cell_EntradaSalida] = [] //alamcena las entradas y salidas del usuario
+    private var refCtrl_Animacion = UIRefreshControl() //animación de actualización
     
-    // MARK: ----------------------------------------
-    // MARK: Inicializar widgets y personalizar views
-    // MARK: ----------------------------------------
+    // MARK: -------------------------------------------
+    // MARK: Inicializar y personalizar: widgets y views
+    // MARK: -------------------------------------------
     
     init(ubicacion:CGRect, fecha:NSDate, historial:[Cell_EntradaSalida], mesHistorial:mes){
 
@@ -48,10 +57,14 @@ class tablaMensualHsitorial:NSObject, UITableViewDataSource, UITableViewDelegate
                                  style: .Plain)
         
         self.historial = historial
+        refCtrl_Animacion.addTarget(self, action: "animar", forControlEvents: .ValueChanged)
+        refCtrl_Animacion.attributedTitle = NSAttributedString(string: "Actualizando Contenido...")
+        refCtrl_Animacion.backgroundColor = UIColor.lightGrayColor()
         
         viewTabla.dataSource = self
         viewTabla.delegate = self
         viewTabla.allowsSelection = false
+        viewTabla.addSubview(refCtrl_Animacion)
         
         for var i = 0; i < numeroDeCeldas; i++
         {
@@ -73,4 +86,13 @@ class tablaMensualHsitorial:NSObject, UITableViewDataSource, UITableViewDelegate
         
         return celdaEntradasSalidas[indexPath.row]
     }
+    
+    // MARK: -----------------------------------
+    // MARK: Animacion de actualización de datos
+    // MARK: -----------------------------------
+    func animar(){
+        self.delegado?.actualizarTabla()
+        refCtrl_Animacion.endRefreshing()
+    }
+
 }

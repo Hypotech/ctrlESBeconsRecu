@@ -9,7 +9,7 @@
 import UIKit
 
 
-class home_VC: UIViewController {
+class home_VC: UIViewController, ajustesDelgate {
     
     // MARK: -----------
     // MARK: Propiedades
@@ -23,6 +23,8 @@ class home_VC: UIViewController {
     var img_usuario:UIImageView!
     var infoPerfil:Perfil = Perfil()
     var podio: PKTClient!
+    var previousVC:UIViewController!
+    
     private var btn_beacon:UIButton!
     
     // MARK: -------------------
@@ -81,7 +83,7 @@ class home_VC: UIViewController {
         btn_ajustes.addTarget(self, action: "irAjustesEscena", forControlEvents: UIControlEvents.TouchUpInside)
         
         lbl_nomUsr.textColor = UIColor.whiteColor()
-        lbl_nomUsr.font = lbl_nomUsr.font.fontWithSize(12.0)
+        lbl_nomUsr.font = UIFont(name: "NexaBold", size: 13.0)
         
         img_usuario.backgroundColor = UIColor.grayColor()
         
@@ -122,6 +124,8 @@ class home_VC: UIViewController {
     
     func irEditarPerfilEscena(){
         var editPerfViewCtrl = editarPerfil_VC()
+        editPerfViewCtrl.podio = self.podio
+        
         //Se agrega una animación entre su transición
 //        editPerfViewCtrl.modalPresentationStyle = .OverFullScreen
 //        editPerfViewCtrl.modalTransitionStyle = .CrossDissolve
@@ -134,6 +138,9 @@ class home_VC: UIViewController {
     
     func irAjustesEscena(){
         var ajustesViewCtrl = ajustes_VC()
+        ajustesViewCtrl.delegado = self
+        ajustesViewCtrl.ref_loginVC = self.previousVC
+        
         //Se agrega una animación entre su transición
 //        ajustesViewCtrl.modalPresentationStyle = .OverFullScreen
 //        ajustesViewCtrl.modalTransitionStyle = .CrossDissolve
@@ -224,5 +231,10 @@ class home_VC: UIViewController {
         popUp.modalTransitionStyle = .CrossDissolve
         
         self.presentViewController(popUp, animated: true, completion: nil)
+    }
+    
+    func logout(){
+        println("logout presionado")
+        self.dismissViewControllerAnimated(true, completion: nil)
     }
 }

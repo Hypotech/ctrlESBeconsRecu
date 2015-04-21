@@ -37,7 +37,7 @@ struct Perfil {
     var nombre:String
     var telefono:NSArray
     var email:NSArray
-    var empresa:String
+    var organizacion:NSArray
     var imagenUsuario:UIImage!
     
     init()
@@ -45,6 +45,6 @@ struct Perfil {
         nombre = ""
         telefono = []
         email = []
-        empresa = ""
+        organizacion = []
     }
 }

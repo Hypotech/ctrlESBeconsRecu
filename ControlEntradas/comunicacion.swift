@@ -29,7 +29,7 @@ class comunicacion:NSObject{
 //            var entrada = NSDate()
 //            
 //            celdaEntradasSalidas[i].lbl_dia.text = formatterFecha.stringFromDate(entrada)
-//            celdaEntradasSalidas[i].lbl_DiaSemana.text = getDayOfWeek(celdaEntradasSalidas[i].lbl_dia.text!)
+//            celdaEntradasSalidas[i].lbl_DiaSemana.text = getNombreDia(celdaEntradasSalidas[i].lbl_dia.text!)
 //            celdaEntradasSalidas[i].lbl_hora_entrada.text = formatterES.stringFromDate(entrada)
 //        }
 //            

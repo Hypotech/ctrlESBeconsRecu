@@ -1,26 +1,27 @@
-//
-//  tablaAnualHsitorial.swift
-//  ControlEntradas
-//
-//  Created by desarrolloRM on 15/04/15.
-//  Copyright (c) 2015 Desarrollo RM. All rights reserved.
-//
+/*  Clase que maneja las tablas de los historiales mensuales que se tenga en el año.
+*   Esta clase muestra las tablas a través de un scroll horizontal, no obstante, también
+*   se puede navegar a través de un selector de mes (el cuál relaciona una tabla con
+*   boton).
+*
+*  Created by desarrolloRM on 15/04/15.
+*  Copyright (c) 2015 Desarrollo RM. All rights reserved.
+*/
 
 import UIKit
 
-class tablaAnualHsitorial:NSObject,listaHorizontalMesesDelegado, UIScrollViewDelegate{
+class tablaAnualHsitorial:NSObject,listaHorizontalMesesDelegado, UIScrollViewDelegate, tablaMensHistoDelegate{
     
     // MARK: -----------
     // MARK: Propiedades
     // MARK: -----------
     
+    var CelEntradasSalidas:[Cell_EntradaSalida] = []
+    var view:UIView! //contiene todos los elementos graficos (widgets) del historial anual
     private var tablaMes1:tablaMensualHsitorial
     private var tablaMes2:tablaMensualHsitorial
     private var tablaMes3:tablaMensualHsitorial
     private var selectorMes:listaHorizontalMeses //seleciona el mes que se desea consultar su historial
     private var contenedorTablas:UIScrollView
-    var CelEntradasSalidas:[Cell_EntradaSalida] = []
-    var view:UIView! //contiene todos los elementos graficos (widgets) de un historial
     
     // MARK: ----------------------------------------
     // MARK: Inicializar widgets y personalizar views
@@ -74,13 +75,17 @@ class tablaAnualHsitorial:NSObject,listaHorizontalMesesDelegado, UIScrollViewDel
         super.init()
         selectorMes.delegado = self
         contenedorTablas.delegate = self
+        tablaMes1.delegado =  self
+        tablaMes2.delegado =  self
+        tablaMes3.delegado =  self
+        
     }
     
     func llevarTareaDepuesDeMesSeleccionado(MES:mes, indice:Int){
         irAPagina(indice)
     }
     
-    func irAPagina(pagina:Int) {
+    private func irAPagina(pagina:Int) {
         
         var medidasContenedor = contenedorTablas.frame
         medidasContenedor.origin.x = CGFloat (pagina) * medidasContenedor.maxX
@@ -94,4 +99,12 @@ class tablaAnualHsitorial:NSObject,listaHorizontalMesesDelegado, UIScrollViewDel
             selectorMes.actualizarSeleccion(indice)
 
     }
+    
+    // MARK: ----------------------------------
+    // MARK: Actualizacion de datos de la tabla
+    // MARK: ----------------------------------
+    func actualizarTabla(){
+        println("actulizando Tabla")
+    }
+    
 }

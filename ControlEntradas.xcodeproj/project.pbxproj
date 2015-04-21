@@ -11,6 +11,7 @@
 		AB25A2861AE01016002F80BB /* botonMes.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB25A2851AE01016002F80BB /* botonMes.swift */; };
 		AB3CBF4D1AD432FF00AC043E /* beaconManipulador.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB3CBF4C1AD432FF00AC043E /* beaconManipulador.swift */; };
 		AB3CBF511AD4575900AC043E /* comunicacion.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB3CBF501AD4575900AC043E /* comunicacion.swift */; };
+		AB3EAE0F1AE70A4D00D9D0BB /* user_desconocido.png in Resources */ = {isa = PBXBuildFile; fileRef = AB3EAE0E1AE70A4D00D9D0BB /* user_desconocido.png */; };
 		AB3F0D0B1ACCA1AA00D03898 /* home_VC.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB3F0D0A1ACCA1AA00D03898 /* home_VC.swift */; };
 		AB5375001AD4A0270030F786 /* tablaConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB5374FF1AD4A0270030F786 /* tablaConfig.swift */; };
 		AB6C721E1ACB19A700B87704 /* Celda_Usuario.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB6C721D1ACB19A700B87704 /* Celda_Usuario.swift */; };
@@ -178,6 +179,7 @@
 		AB25A2851AE01016002F80BB /* botonMes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = botonMes.swift; sourceTree = "<group>"; };
 		AB3CBF4C1AD432FF00AC043E /* beaconManipulador.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = beaconManipulador.swift; sourceTree = "<group>"; };
 		AB3CBF501AD4575900AC043E /* comunicacion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = comunicacion.swift; sourceTree = "<group>"; };
+		AB3EAE0E1AE70A4D00D9D0BB /* user_desconocido.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = user_desconocido.png; sourceTree = "<group>"; };
 		AB3F0D0A1ACCA1AA00D03898 /* home_VC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = home_VC.swift; sourceTree = "<group>"; };
 		AB5374FF1AD4A0270030F786 /* tablaConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = tablaConfig.swift; sourceTree = "<group>"; };
 		AB6C721D1ACB19A700B87704 /* Celda_Usuario.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Celda_Usuario.swift; sourceTree = "<group>"; };
@@ -934,6 +936,7 @@
 		ABC0054A1AC5BB98005B309F /* Imagenes */ = {
 			isa = PBXGroup;
 			children = (
+				AB3EAE0E1AE70A4D00D9D0BB /* user_desconocido.png */,
 				ABE976841AD31CD5004FB2F3 /* Edit_icon.png */,
 				ABE976821AD3085C004FB2F3 /* nature.png */,
 				ABE9767E1AD3002A004FB2F3 /* user.png */,
@@ -1072,6 +1075,7 @@
 				ABE9767D1AD2FFBD004FB2F3 /* Settings-icon.png in Resources */,
 				ABC005091AC5B354005B309F /* LaunchScreen.xib in Resources */,
 				ABC005061AC5B354005B309F /* Images.xcassets in Resources */,
+				AB3EAE0F1AE70A4D00D9D0BB /* user_desconocido.png in Resources */,
 				ABC005451AC5BAD9005B309F /* smile-icon.png in Resources */,
 				ABC005471AC5BAD9005B309F /* testnavbar.png in Resources */,
 				AB7330061AE1988700D277E9 /* Lato-Reg.ttf in Resources */,
