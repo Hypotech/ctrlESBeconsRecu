@@ -20,7 +20,6 @@ class tablaMensualHsitorial:NSObject, UITableViewDataSource, UITableViewDelegate
     // MARK: -----------
     
     var viewTabla:UITableView! //Tabla que contiene las celdas con información acerca de las entradas y salidas del usuario
-    var fecha:NSDate!
     var btnMes:botonMes
     var delegado:tablaMensHistoDelegate?
     
@@ -33,7 +32,6 @@ class tablaMensualHsitorial:NSObject, UITableViewDataSource, UITableViewDelegate
         }
     }
 
-    private var numeroDeCeldas:Int
     private var celdaEntradasSalidas:[Cell_EntradaSalida] = [] //alamcena las entradas y salidas del usuario
     private var refCtrl_Animacion = UIRefreshControl() //animación de actualización
     
@@ -41,20 +39,14 @@ class tablaMensualHsitorial:NSObject, UITableViewDataSource, UITableViewDelegate
     // MARK: Inicializar y personalizar: widgets y views
     // MARK: -------------------------------------------
     
-    init(ubicacion:CGRect, fecha:NSDate, historial:[Cell_EntradaSalida], mesHistorial:mes){
+    init(ubicacion:CGRect, historial:[Cell_EntradaSalida], mesHistorial:mes){
 
         btnMes = botonMes(nombre: mesHistorial)
         let calendario = NSCalendar.currentCalendar()
-        self.fecha = fecha
-        numeroDeCeldas = calendario.rangeOfUnit(.DayCalendarUnit , inUnit: .MonthCalendarUnit, forDate: fecha).length
         
         super.init()
         
-        viewTabla =  UITableView(frame: CGRect (x: ubicacion.minX,
-                                                y: ubicacion.minY,
-                                                width: ubicacion.width,
-                                                height: ubicacion.height),
-                                 style: .Plain)
+        viewTabla =  UITableView(frame: ubicacion, style: .Plain)
         
         self.historial = historial
         refCtrl_Animacion.addTarget(self, action: "animar", forControlEvents: .ValueChanged)
@@ -66,12 +58,16 @@ class tablaMensualHsitorial:NSObject, UITableViewDataSource, UITableViewDelegate
         viewTabla.allowsSelection = false
         viewTabla.addSubview(refCtrl_Animacion)
         
-        for var i = 0; i < numeroDeCeldas; i++
-        {
-            var celda =  Cell_EntradaSalida(style: .Default,reuseIdentifier: "Entrada_o_Salida")
-            celda.diaMes = i + 1
-            celdaEntradasSalidas.append(celda)
-        }
+        var celdTmp = Cell_EntradaSalida(ancho: ubicacion.width)
+        celdTmp.setCelda("", salida: "")
+        celdTmp.diaMes = 1
+        celdaEntradasSalidas.append(celdTmp)
+//        for var i = 0; i < numeroDeCeldas; i++
+//        {
+//            var celda =  Cell_EntradaSalida(style: .Default,reuseIdentifier: "Entrada_o_Salida")
+//            celda.diaMes = i + 1
+//            celdaEntradasSalidas.append(celda)
+//        }
 
     }
 

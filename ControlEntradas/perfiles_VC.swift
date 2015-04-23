@@ -150,9 +150,9 @@ class perfiles_VC: UIViewController,SFSwiftNotificationProtocol {
                 primeraVez = false
             }
             else { i++ }
-            
-            celdaEntradasSalidas.append(Cell_EntradaSalida( style: .Default,
-                                                            reuseIdentifier: "Entrada_o_Salida"))
+//            
+//            celdaEntradasSalidas.append(Cell_EntradaSalida( style: .Default,
+//                                                            reuseIdentifier: "Entrada_o_Salida"))
             var entrada = NSDate()
             
 //            celdaEntradasSalidas[i].lbl_dia.text = formatterFecha.stringFromDate(entrada)

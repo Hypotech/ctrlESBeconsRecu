@@ -66,7 +66,6 @@ class login_VC: UIViewController, UITextFieldDelegate {
         //####################### Personalizando los widgets ########################//
         tFi_nomUsur.borderStyle = .RoundedRect
         
-//        lbl_cuentaNueva.attributedText = NSAttributedString
         tFi_nomUsur.placeholder = "Usuario"
         tFi_nomUsur.textColor = UIColor.blackColor()
         tFi_nomUsur.addTarget(self, action: "campoEditado", forControlEvents: .EditingChanged)
@@ -78,8 +77,8 @@ class login_VC: UIViewController, UITextFieldDelegate {
         tFi_contraseña.clearButtonMode = .WhileEditing
         tFi_contraseña.addTarget(self, action: "campoEditado", forControlEvents: .EditingChanged)
         
-        btn_Aceptar.setTitleColor(UIColor.whiteColor(), forState: .Normal)
-        btn_Aceptar.setTitleColor(UIColor.blackColor(), forState: .Disabled)
+        btn_Aceptar.setTitleColor(UIColor.blackColor(), forState: .Normal)
+        btn_Aceptar.setTitleColor(UIColor.whiteColor(), forState: .Disabled)
         btn_Aceptar.setTitle("Aceptar", forState: .Normal)
         btn_Aceptar.addTarget(self, action: "ejecutarLogin", forControlEvents: .TouchUpInside)
         campoEditado()
@@ -90,7 +89,6 @@ class login_VC: UIViewController, UITextFieldDelegate {
         btn_cuentaNueva.setTitleColor(UIColor.grayColor(), forState: .Normal)
         btn_cuentaNueva.titleLabel?.font =  btn_cuentaNueva.titleLabel?.font.fontWithSize(11.0)
         
-//        indicadorActividad.activityIndicatorViewStyle = .Gray
         indicadorActividad.color = UIColor.blackColor()
         indicadorActividad.stopAnimating()
 //        indicadorActividad.hidesWhenStopped = false
@@ -127,51 +125,56 @@ class login_VC: UIViewController, UITextFieldDelegate {
     // MARK: ----------------------------------------
     
     func ejecutarLogin() { //validar datos y pasar a la siguiente escena
-//        var viewCtrl_Siguiente = home_VC() //view controller siguiente
-//        //        var viewCtrl_Siguiente = perfiles_VC()
+        var viewCtrl_Siguiente = home_VC() //view controller siguiente
+        //        var viewCtrl_Siguiente = perfiles_VC()
+        
+        //        viewCtrl_Siguiente.modalPresentationStyle = .OverFullScreen
+        viewCtrl_Siguiente.modalTransitionStyle = .FlipHorizontal
+        viewCtrl_Siguiente.infoPerfil = self.infoPerfil
+        viewCtrl_Siguiente.VC_anterior = self
+        self.presentViewController(viewCtrl_Siguiente, animated: true, completion: nil)
+        
+//        var alerta:UIAlertController!
+//        indicadorActividad.startAnimating()
 //        
-//        //        viewCtrl_Siguiente.modalPresentationStyle = .OverFullScreen
-//        viewCtrl_Siguiente.modalTransitionStyle = .FlipHorizontal
-//        self.presentViewController(viewCtrl_Siguiente, animated: true, completion: nil)
-        
-        var alerta:UIAlertController!
-        indicadorActividad.startAnimating()
-        
-        podio.authenticateAsUserWithEmail(tFi_nomUsur.text, password: tFi_contraseña.text, completion: {
-                (respuesta, error) -> () in
-                
-                if respuesta.statusCode == OK_login{
-                    println("Login exitoso")
-                    
-                    self.pasarSiguienteEscena()
-                    
-                }
-                else if(respuesta.statusCode == ContraseñaUsuario_Invalido){
-                    
-                    alerta = UIAlertController(title: "Error", message: "Usuario o contraseña incorrecta. Intenta de nuevo", preferredStyle: UIAlertControllerStyle.Alert)
-                    alerta.addAction(UIAlertAction(title: "Aceptar", style: UIAlertActionStyle.Cancel, handler: nil))
-                    self.presentViewController(alerta, animated: true, completion: nil)
-                    self.indicadorActividad.stopAnimating()
-                    
-                }
-                else{
-                    alerta = UIAlertController(title: "Error", message: respuesta.body.objectForKey("error_description") as? String, preferredStyle: UIAlertControllerStyle.Alert)
-                    alerta.addAction(UIAlertAction(title: "Aceptar", style: UIAlertActionStyle.Cancel, handler: nil))
-                    self.presentViewController(alerta, animated: true, completion: nil)
-                    self.indicadorActividad.stopAnimating()
-                }
-        })
+//        podio.authenticateAsUserWithEmail(tFi_nomUsur.text, password: tFi_contraseña.text, completion: {
+//                (respuesta, error) -> () in
+//                
+//                if respuesta.statusCode == OK_login{
+//                    println("Login exitoso")
+//                    
+//                    self.pasarSiguienteEscena()
+//                    
+//                }
+//                else if(respuesta.statusCode == ContraseñaUsuario_Invalido){
+//                    
+//                    alerta = UIAlertController(title: "Error", message: "Usuario o contraseña incorrecta. Intenta de nuevo", preferredStyle: UIAlertControllerStyle.Alert)
+//                    alerta.addAction(UIAlertAction(title: "Aceptar", style: UIAlertActionStyle.Cancel, handler: nil))
+//                    self.presentViewController(alerta, animated: true, completion: nil)
+//                    self.indicadorActividad.stopAnimating()
+//                    
+//                }
+//                else{
+//                    alerta = UIAlertController(title: "Error", message: respuesta.body.objectForKey("error_description") as? String, preferredStyle: UIAlertControllerStyle.Alert)
+//                    alerta.addAction(UIAlertAction(title: "Aceptar", style: UIAlertActionStyle.Cancel, handler: nil))
+//                    self.presentViewController(alerta, animated: true, completion: nil)
+//                    self.indicadorActividad.stopAnimating()
+//                }
+//        })
         
     }
     
     func pasarSiguienteEscena(){
         
+        //************************************* Obtener datos usuario *************************************//
         podio.performRequest(PKTUserAPI.requestForUserStatus(), completion: {
             (respuesta,error) -> () in
             
             let perfil:AnyObject? = respuesta.body.objectForKey("profile")
             
             if !(perfil is NSNull){
+                
+                //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& Imagen de Usuario &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&//
                 let image: AnyObject? = perfil!.objectForKey("image")
                 if !(image is NSNull){
                     let link: AnyObject? = image!.objectForKey("link")
@@ -187,6 +190,7 @@ class login_VC: UIViewController, UITextFieldDelegate {
                     self.infoPerfil.imagenUsuario = UIImage(named: "user_desconocido.png")
                 }
                 
+                //&&&&&&&&&&&&&&&&&&&&&&&&&&&&& Nombre de Usuario &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&//
                 let nombre: AnyObject? = perfil!.objectForKey("name")
                 if !(nombre is NSNull){
                     self.infoPerfil.nombre = nombre as NSString //Se obtiene el nombre del usuario
@@ -197,18 +201,7 @@ class login_VC: UIViewController, UITextFieldDelegate {
                 else{
                     self.infoPerfil.nombre = ""
                 }
-                
-//                let telefono: AnyObject? = perfil!.objectForKey("phone")
-//
-//                if !(telefono is NSNull) && telefono != nil{
-//                    self.infoPerfil.telefono = telefono as NSArray
-//                }
-//                
-//                let email: AnyObject? = perfil!.objectForKey("mail")
-//                if !(email is NSNull) && email != nil {
-//                    self.infoPerfil.email = email! as NSArray
-//                }
-                
+                //********************************* Obtener Organizacion *******************************//
                 self.podio.performRequest(PKTOrganizationAPI.requestForAllOrganizations(), completion: {
                     (respuestaOrg,errorORG) -> () in
                     
@@ -227,11 +220,11 @@ class login_VC: UIViewController, UITextFieldDelegate {
                     
                     //        viewCtrl_Siguiente.modalPresentationStyle = .OverFullScreen
                     viewCtrl_Siguiente.modalTransitionStyle = .FlipHorizontal
-                    viewCtrl_Siguiente.previousVC = self
                     
                     //Inicializar las propiedades de home_vc
                     viewCtrl_Siguiente.infoPerfil = self.infoPerfil
                     viewCtrl_Siguiente.podio = self.podio
+                    viewCtrl_Siguiente.VC_anterior = self
                     ///////////////////////////////////////
                     
                     self.indicadorActividad.stopAnimating()
@@ -248,16 +241,24 @@ class login_VC: UIViewController, UITextFieldDelegate {
 
     func campoEditado() {
         
-        if tFi_contraseña.text.isEmpty || tFi_nomUsur.text.isEmpty{
+        if tFi_nomUsur.text.isEmpty{
+            btn_Aceptar.enabled = false
+            
+            UIView.animateWithDuration(0.4, delay: 0, options: UIViewAnimationOptions.CurveEaseIn, animations: {
+                self.btn_Aceptar.backgroundColor = UIColor.lightGrayColor()
+                self.tFi_contraseña.text = ""
+                }, completion: nil)
+        }
+        else if tFi_contraseña.text.isEmpty {
             btn_Aceptar.enabled = false
             
             UIView.animateWithDuration(0.4, delay: 0, options: UIViewAnimationOptions.CurveEaseIn, animations: {
                 self.btn_Aceptar.backgroundColor = UIColor.lightGrayColor()
                 }, completion: nil)
+            
         }
         else{
             btn_Aceptar.enabled = true
-            
             UIView.animateWithDuration(0.4, delay: 0, options: UIViewAnimationOptions.CurveEaseIn, animations: {
                 self.btn_Aceptar.backgroundColor = UIColor.blueColor()
                 }, completion: nil)

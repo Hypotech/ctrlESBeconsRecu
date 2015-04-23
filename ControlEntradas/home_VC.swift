@@ -1,31 +1,30 @@
-//
-//  home_VC.swift
-//  ControlEntradas
-//
-//  Created by desarrolloRM on 01/04/15.
-//  Copyright (c) 2015 Desarrollo RM. All rights reserved.
-//
+/*  Este viewController es el mostrado después de que le usuario se ha logueado coorectamente,
+*   aquí el usuario puede consultar su historial que tenga disponible hasta el momento.
+*   Este viewController despliega los viewsControllers:  editarPerfil_VC
+*
+*  Created by desarrolloRM on 01/04/15.
+*  Copyright (c) 2015 Desarrollo RM. All rights reserved.
+*/
 
 import UIKit
 
 
-class home_VC: UIViewController, ajustesDelgate {
+class home_VC: UIViewController{
     
     // MARK: -----------
     // MARK: Propiedades
     // MARK: -----------
     
     var historial: tablaAnualHsitorial!
-//    var img_fondo = UIImage(named:"nature.png")
-    var lbl_nomUsr = UILabel()
-//    private var btn_Registrar: UIButton!
     var CelEntradasSalidas:[Cell_EntradaSalida] = []
-    var img_usuario:UIImageView!
     var infoPerfil:Perfil = Perfil()
     var podio: PKTClient!
-    var previousVC:UIViewController!
+    var VC_anterior:UIViewController!
     
+    private var lbl_nomUsr = UILabel()
+    private var img_usuario:UIImageView!
     private var btn_beacon:UIButton!
+    private var img_filtro:UIImageView!
     
     // MARK: -------------------
     // MARK: Inicializar widgets
@@ -34,35 +33,29 @@ class home_VC: UIViewController, ajustesDelgate {
     override func viewDidLoad() {
         var superView = self.view.frame
         
-        //************************** Posicion de los wigets **************************//
-        
-//        var contdor_i_mascara = UIImageView(frame: CGRect(x: logo.container.frame.minX,
-//                                                        y: logo.container.frame.maxY,
-//                                                        width: logo.container.frame.width,
-//                                                        height: 120))
+        //****************************** Posicion de los wigets ******************************//
         
         img_usuario = UIImageView(frame: CGRect(x: 0,
                                                 y: 0,
                                                 width: superView.width,
                                                 height: ALTURA_IMG_USR))
         
-        var btn_edit_perf = UIButton.buttonWithType(UIButtonType.System) as UIButton
-        btn_edit_perf.frame = (frame: CGRect(   x: img_usuario.frame.minX + 20,
-                                                y: img_usuario.frame.minY + 30,
-                                                width: 15,
-                                                height: 20))
+        img_filtro = UIImageView(frame: img_usuario.frame)
         
-        var btn_ajustes = UIButton.buttonWithType(UIButtonType.System) as UIButton
-        btn_ajustes.frame = CGRect( x: img_usuario.frame.maxX - 60,
-                                    y: btn_edit_perf.frame.minY,
-                                    width: 40,
-                                    height: 40)
+        var btn_edit_perf = UIButton(frame: CGRect(x: img_usuario.frame.minX + 20,
+                                                y: img_usuario.frame.minY + 30,
+                                                width: 25,
+                                                height: 25))
+        
+        var btn_ajustes = UIButton(frame:CGRect(origin: CGPoint(
+                                                            x: img_usuario.frame.maxX - 50,
+                                                            y: btn_edit_perf.frame.minY),
+                                                size:   btn_edit_perf.frame.size))
 
-        btn_beacon =  UIButton.buttonWithType(UIButtonType.System) as UIButton
-        btn_beacon.frame = CGRect(x: img_usuario.frame.minX + (img_usuario.frame.width - S_IMG_BEACON.width)  / 2,
-                                  y: img_usuario.frame.maxY - S_IMG_BEACON.height / 2,
-                                  width: S_IMG_BEACON.width,
-                                  height: S_IMG_BEACON.height)
+        btn_beacon = UIButton(frame: CGRect(origin: CGPoint(
+            x: img_usuario.frame.minX + (img_usuario.frame.width - S_IMG_BEACON.width)  / 2,
+            y: img_usuario.frame.maxY - S_IMG_BEACON.height / 2),
+                                            size: S_IMG_BEACON))
 
         var posicion_Historial = CGRect(x: 0,
                                         y: btn_beacon.frame.maxY,
@@ -70,41 +63,43 @@ class home_VC: UIViewController, ajustesDelgate {
                                         height: superView.height - btn_beacon.frame.maxY )
         
         historial = tablaAnualHsitorial(ubicacion: posicion_Historial)
-        
-        //***************************************************************************//
+//        var celdTmp = Cell_EntradaSalida(style: .Default, reuseIdentifier: "foo")
+//        celdTmp.setCelda("9:30 am", salida: "7:00 pm")
+//        historial.CelEntradasSalidas.append(celdTmp)
+        //***********************************************************************************//
 
-        //######### Personalización de los widgets #########//
-//        contdor_i_fondo.image = img_fondo
+        //######################### Personalización de los widgets #########################//
+        lbl_nomUsr.font = UIFont(name: "NexaBold", size: 13.0)
+        lbl_nomUsr.textColor = UIColor.whiteColor()
+        lbl_nomUsr.shadowColor = UIColor.blackColor()
+        lbl_nomUsr.shadowOffset = CGSize(width: 1, height: 1)
+        
         llenarConPerfil()
-        btn_edit_perf.setBackgroundImage(UIImage(named:"Edit_icon.png"), forState: .Normal)
+        btn_edit_perf.setImage(UIImage(named:"boton_editar.png"), forState: .Normal)
+        btn_edit_perf.setImage(UIImage(named:"boton_editar_on.png"), forState: .Highlighted)
         btn_edit_perf.addTarget(self, action: "irEditarPerfilEscena", forControlEvents: UIControlEvents.TouchUpInside)
         
-        btn_ajustes.setBackgroundImage(UIImage(named:"Settings-icon.png"), forState: .Normal)
+        btn_ajustes.setImage(UIImage(named:"boton_configuracion.png"), forState: .Normal)
+        btn_ajustes.setImage(UIImage(named:"boton_configuracion_on.png"), forState: .Highlighted)
         btn_ajustes.addTarget(self, action: "irAjustesEscena", forControlEvents: UIControlEvents.TouchUpInside)
         
-        lbl_nomUsr.textColor = UIColor.whiteColor()
-        lbl_nomUsr.font = UIFont(name: "NexaBold", size: 13.0)
-        
         img_usuario.backgroundColor = UIColor.grayColor()
+        img_usuario.contentMode = .ScaleAspectFit
+        img_filtro.image = UIImage(named: "filtro_foto.png")
         
-        btn_beacon.backgroundColor = UIColor.greenColor()
         btn_beacon.addTarget(self, action: "btnBeconPresionado", forControlEvents: .TouchUpInside)
-        btn_beacon.setTitle("Beacon", forState: .Normal)
-        
-//        btn_Registrar.backgroundColor = UIColor.blueColor();
-//        btn_Registrar.setTitle("Registrar", forState: .Normal)
-//        btn_Registrar.addTarget(self, action: "tapRegistrar", forControlEvents: UIControlEvents.TouchUpInside)
-        //#############################################//
+        btn_beacon.setImage(UIImage(named: "boton_buscar.png"), forState: .Normal)
+        btn_beacon.setImage(UIImage(named: "boton_buscar_on.png"), forState: .Highlighted)
+        //###############################################################################//
         
         self.view.backgroundColor = UIColor.whiteColor()
         self.view.addSubview(img_usuario)
-//        self.view.addSubview(contdor_i_mascara)
+        self.view.addSubview(img_filtro)
         self.view.addSubview(btn_edit_perf)
         self.view.addSubview(btn_ajustes)
         self.view.addSubview(lbl_nomUsr)
         self.view.addSubview(historial.view)
         self.view.addSubview(btn_beacon)
-//        self.view.addSubview(btn_Registrar)
     }
 
     func calcularAncho(inout label:UILabel){
@@ -138,8 +133,7 @@ class home_VC: UIViewController, ajustesDelgate {
     
     func irAjustesEscena(){
         var ajustesViewCtrl = ajustes_VC()
-        ajustesViewCtrl.delegado = self
-        ajustesViewCtrl.ref_loginVC = self.previousVC
+        ajustesViewCtrl.ref_loginVC = self.VC_anterior
         
         //Se agrega una animación entre su transición
 //        ajustesViewCtrl.modalPresentationStyle = .OverFullScreen
@@ -199,20 +193,10 @@ class home_VC: UIViewController, ajustesDelgate {
                     self.infoPerfil.email = email! as NSArray
                     println("\(self.infoPerfil.email)")
                 }
-//                let id_org: AnyObject? = profile!.objectForKey("org_id")
-//                println("organizacion: \(id_org)")
-//                if !(id_org is NSNull){
-//                    println("no es NSnull")
-//                    self.infoPerfil.empresa = id_org! as NSString
-//                    
-//                    PKTOrganization.fetchAllWithCompletion({(organizaciones,error) -> () in
-//                        
-//                    })
-//                }
+
                 return
             }
-            self.img_usuario.image = UIImage(named:"smile-icon.png") //si no tiene imagen asignada se pone una por defecto
-            println("No se pudo cargar imagen")
+            println("Imposible obtener perfil")
             
         })
         
@@ -226,15 +210,11 @@ class home_VC: UIViewController, ajustesDelgate {
     }
     
     func btnBeconPresionado(){
+
         var popUp = BeaconEncontrado_VC()
         popUp.modalPresentationStyle = .OverFullScreen
         popUp.modalTransitionStyle = .CrossDissolve
         
         self.presentViewController(popUp, animated: true, completion: nil)
-    }
-    
-    func logout(){
-        println("logout presionado")
-        self.dismissViewControllerAnimated(true, completion: nil)
     }
 }

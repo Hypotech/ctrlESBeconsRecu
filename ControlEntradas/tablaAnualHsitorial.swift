@@ -48,11 +48,11 @@ class tablaAnualHsitorial:NSObject,listaHorizontalMesesDelegado, UIScrollViewDel
         
         var ubicacionTabla = CGRect(x: 0, y: 0, width: contenedorTablas.frame.width, height: contenedorTablas.frame.height)
         
-        tablaMes1 = tablaMensualHsitorial(ubicacion: ubicacionTabla, fecha:NSDate(), historial: CelEntradasSalidas, mesHistorial: .Febrero)
+        tablaMes1 = tablaMensualHsitorial(ubicacion: ubicacionTabla, historial: CelEntradasSalidas, mesHistorial: .Febrero)
         ubicacionTabla.origin.x = ubicacionTabla.maxX //imediatamente contigua
-        tablaMes2 = tablaMensualHsitorial(ubicacion: ubicacionTabla, fecha:NSDate(), historial: CelEntradasSalidas, mesHistorial: .Marzo)
+        tablaMes2 = tablaMensualHsitorial(ubicacion: ubicacionTabla, historial: CelEntradasSalidas, mesHistorial: .Marzo)
         ubicacionTabla.origin.x = ubicacionTabla.maxX //imediatamente contigua
-        tablaMes3 = tablaMensualHsitorial(ubicacion: ubicacionTabla, fecha:NSDate(), historial: CelEntradasSalidas, mesHistorial: .Abril)
+        tablaMes3 = tablaMensualHsitorial(ubicacion: ubicacionTabla,historial: CelEntradasSalidas, mesHistorial: .Abril)
         
         selectorMes = listaHorizontalMeses(superVDim: ubicacionSelectorMes, botonesMes: tablaMes1.btnMes,tablaMes2.btnMes, tablaMes3.btnMes)
         //****************************************************************************//

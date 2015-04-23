@@ -8,10 +8,6 @@
 
 import UIKit
 
-protocol ajustesDelgate {
-    func logout()
-}
-
 class ajustes_VC:UIViewController {
 
     // MARK: -----------
@@ -19,7 +15,6 @@ class ajustes_VC:UIViewController {
     // MARK: -----------
     
     var podio:PKTClient!
-    var delegado:ajustesDelgate!
     var ref_loginVC:UIViewController! //referencia a login_VC
     
     override func viewDidLoad() {
@@ -30,8 +25,6 @@ class ajustes_VC:UIViewController {
         self.navigationController?.navigationBar.barStyle  = UIBarStyle.Black
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "〈 Inicio", style: .Plain, target: self, action: "irAInicio")
         self.navigationItem.leftBarButtonItem?.tintColor = UIColor.greenColor()
-//        navigationItem.titleView = UIImageView (image: UIImage(named:"testnavbar.png"))
-        
         
         var btn_logout  = UIButton.buttonWithType(UIButtonType.System) as UIButton
         btn_logout.frame = CGRect(  x: (superVDim.width - 70)/2,
@@ -55,10 +48,10 @@ class ajustes_VC:UIViewController {
     
     
     func irAInicio(){
-        self.dismissViewControllerAnimated(true, completion: nil) //regresa al view anterior (inicio)
+        self.dismissViewControllerAnimated(true, completion: nil) //regresa al viewController anterior (inicio)
     }
     
     func tapLogout() {
-        ref_loginVC.dismissViewControllerAnimated(true, completion: nil)
+        ref_loginVC.dismissViewControllerAnimated(true, completion: nil) //ir al viewController de login
     }
 }

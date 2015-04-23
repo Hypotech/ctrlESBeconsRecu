@@ -13,36 +13,35 @@ class login1eraVez_VC: UIViewController {
     override func viewDidLoad() {
         var superView = self.view.frame
         
-        var registroXEmail = UIButton.buttonWithType(.System) as UIButton
-        var EntrarXPodio = UIButton.buttonWithType(.System) as UIButton
         
         //************************** Posicion de los wigets **************************//
 
-        var img_Empresa = UIImageView(frame: CGRect(x: 0,
-                                                    y: superView.width / 2 - 90,
-                                                    width: superView.width,
-                                                    height: 170))
+        var img_Empresa = UIImageView(frame: CGRect(x: 55,
+                                                    y: superView.width / 2 - 50,
+                                                    width: superView.width - 110,
+                                                    height: 100))
 
-        registroXEmail.frame = CGRect(  x: superView.width / 2 - 150,
-                                        y: superView.maxY - 50,
-                                        width: 300,
-                                        height: 40)
+        var registroXEmail = UIButton(frame:CGRect(x: (superView.width - S_REG_EMAIL.width) / 2 ,
+                                                   y: superView.maxY - S_REG_EMAIL.height - 30,
+                                                   width: S_REG_EMAIL.width,
+                                                   height: S_REG_EMAIL.height))
 
-        EntrarXPodio.frame = CGRect(  x: registroXEmail.frame.minX,
-                                        y: registroXEmail.frame.minY - 50,
-                                        width: registroXEmail.frame.width,
-                                        height: registroXEmail.frame.height)
+        var EntrarXPodio = UIButton(frame:CGRect(origin: CGPoint(x: registroXEmail.frame.minX,
+                                      y: registroXEmail.frame.minY - S_REG_PODIO.height - 10),
+                                                 size: S_REG_PODIO))
+        
         //***************************************************************************//
 
         //######### Personalización de los widgets #########//
 
-        img_Empresa.backgroundColor = UIColor.grayColor()
-        EntrarXPodio.setTitleColor(UIColor.whiteColor(), forState: .Normal)
-        EntrarXPodio.setTitle("ENTRAR CON PODIO", forState: .Normal)
-        EntrarXPodio.backgroundColor = UIColor(red: 80/255, green: 145/255, blue: 189/255, alpha: 1.0)
+        img_Empresa.image = UIImage(named: "Logo_republica.png")
+
+        EntrarXPodio.setImage(UIImage(named:"boton_podio.png"), forState: .Normal)
+        EntrarXPodio.setImage(UIImage(named:"boton_podio_on.png"), forState: .Highlighted)
         EntrarXPodio.addTarget(self, action: "loginxPodio", forControlEvents: .TouchUpInside)
         
-        registroXEmail.backgroundColor = UIColor(red: 0.1, green: 0.1, blue: 0.7, alpha: 1.0)
+        registroXEmail.setImage(UIImage(named:"boton_mail.png"), forState: .Normal)
+        registroXEmail.setImage(UIImage(named:"boton_mail_on.png"), forState: .Highlighted)
         //#############################################//
         
         self.view.addSubview(img_Empresa)

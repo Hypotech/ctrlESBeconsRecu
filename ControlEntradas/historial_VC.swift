@@ -66,7 +66,7 @@ class historial_VC:UIViewController{
     // MARK: Obtecion de datos
     // MARK: -----------------
     func getHistorial(){
-        celdaEntradasSalidas.append(Cell_EntradaSalida(style: .Default, reuseIdentifier: "MyCustES"))
+//        celdaEntradasSalidas.append(Cell_EntradaSalida(style: .Default, reuseIdentifier: "MyCustES"))
         
     }
 }

@@ -11,7 +11,6 @@ import UIKit
 class BeaconEncontrado_VC: UIViewController {
     
     private var contenedor:UIView!
-    private var img_Becon:UIImageView!
     
     override func viewDidLoad() {
         var superView = self.view.frame
@@ -28,20 +27,26 @@ class BeaconEncontrado_VC: UIViewController {
             width: S_CONTENEDOR.width,
             height: S_CONTENEDOR.height))
         
-        img_Becon = UIImageView(frame: R_IMG_BECON)
+        var img_BackgroungContenedor = UIImageView(frame: CGRect(origin: CGPoint.zeroPoint,
+                                                                 size: CGSize(width: S_CONTENEDOR.width, height: S_CONTENEDOR.height + 6)))
         
-        var lbl_popUp = UILabel(frame: R_LBL_POPUP)
+        var img_Becon = UIImageView(frame: R_IMG_BECON)
+        
+        var lbl_beacon = UILabel(frame: R_LBL_POPUP)
         var lbl_hora = UILabel(frame: R_LBL_HORA)
         
-        btn_reg_Entrada.frame =  R_INCONO_E
-        btn_reg_Salida.frame = R_INCONO_S
+        btn_reg_Entrada.frame =  R_ICONO_E
+        btn_reg_Salida.frame  = R_ICONO_S
+        
+        var lbl_abajo_Entrada = UILabel(frame: R_LBL_A_E)
+        var lbl_abajo_Salida  = UILabel(frame: R_LBL_A_S)
         //***************************************************************************//
         
         //######### Personalización de los widgets #########//
         
-        img_Becon.backgroundColor = UIColor.greenColor()
+        img_Becon.image = UIImage(named: "beacon_popup.png")
         
-        lbl_popUp.text =  "Beacon encontrado, marque por favor su \nregistro."
+        lbl_beacon.text =  "Beacon encontrado, marque por favor su \nregistro."
 
         let dateFormatter = NSDateFormatter()
         
@@ -49,29 +54,43 @@ class BeaconEncontrado_VC: UIViewController {
         dateFormatter.timeZone = NSTimeZone()
         
         lbl_hora.text = dateFormatter.stringFromDate(NSDate())//formatemos la fecha
-        
-        lbl_popUp.font = lbl_popUp.font.fontWithSize(10.0)
-        lbl_popUp.textColor = UIColor.grayColor()
-        lbl_popUp.numberOfLines = 2
-//        lbl_popUp.backgroundColor = UIColor.blueColor()
-        
-        lbl_hora.textColor = UIColor.redColor()
+        lbl_hora.textColor = naranja_texto
         lbl_hora.font = lbl_hora.font.fontWithSize(18.0)
         
-        btn_reg_Entrada.backgroundColor = UIColor.greenColor()
-        btn_reg_Salida.backgroundColor = UIColor.redColor()
+        lbl_beacon.font = lbl_beacon.font.fontWithSize(11.0)
+        lbl_beacon.textColor = UIColor.grayColor()
+        lbl_beacon.numberOfLines = 2
+
         
+        btn_reg_Entrada.setBackgroundImage(UIImage(named: "icono_entrada.png"), forState: .Normal)
         btn_reg_Entrada.addTarget(self, action: "registrarEntrada", forControlEvents: .TouchUpInside)
+        
+        btn_reg_Salida.setBackgroundImage(UIImage(named: "icono_salida.png"), forState: .Normal)
         btn_reg_Salida.addTarget(self, action: "registrarSalida", forControlEvents: .TouchUpInside)
         
-        //#############################################//
+        lbl_abajo_Entrada.text = "Entrada"
+        lbl_abajo_Entrada.textAlignment = .Center
+        lbl_abajo_Entrada.font = lbl_abajo_Entrada.font.fontWithSize(11.0)
+        lbl_abajo_Entrada.textColor = UIColor.grayColor()
         
+        lbl_abajo_Salida.text = "Salida"
+        lbl_abajo_Salida.textAlignment = .Center
+        lbl_abajo_Salida.font = lbl_abajo_Entrada.font
+        lbl_abajo_Salida.textColor = UIColor.grayColor()
+        
+        img_BackgroungContenedor.image = UIImage(named: "pop_up.png")
+//        img_BackgroungContenedor.backgroundColor = UIColor.greenColor()
+//        contenedor.backgroundColor = UIColor.whiteColor()
+        //#############################################//
+
+        contenedor.addSubview(img_BackgroungContenedor)
         contenedor.addSubview(img_Becon)
-        contenedor.addSubview(lbl_popUp)
+        contenedor.addSubview(lbl_beacon)
         contenedor.addSubview(lbl_hora)
-        contenedor.backgroundColor = UIColor.whiteColor()
         contenedor.addSubview(btn_reg_Entrada)
+        contenedor.addSubview(lbl_abajo_Entrada)
         contenedor.addSubview(btn_reg_Salida)
+        contenedor.addSubview(lbl_abajo_Salida)
         
         var algo = UITapGestureRecognizer(target: self, action: "noHaceNada")
         contenedor.addGestureRecognizer(algo)

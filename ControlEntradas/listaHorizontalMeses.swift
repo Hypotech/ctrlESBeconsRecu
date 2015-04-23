@@ -84,8 +84,8 @@ class listaHorizontalMeses: NSObject {
         
         var indice = 0
         for i in botonesMeses{
-            i.setTitleColor(UIColor(red: 15/255, green: 133/255, blue: 134/255, alpha: 1.0), forState: .Disabled)
-            i.setTitleColor(UIColor(red: 213/255, green: 232/255, blue: 232/255, alpha: 1.0), forState: .Normal)
+            i.setTitleColor(verde_textoSelect, forState: .Disabled)
+            i.setTitleColor(verde_textoDeselect, forState: .Normal)
             
             i.tag = indice
             indice++
