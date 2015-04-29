@@ -15,7 +15,7 @@ class perfiles_VC: UIViewController,SFSwiftNotificationProtocol {
     private var tabla: tablaUsuarios!
     private var Usuarios:[Celda_Usuario] = []
     private var btn_Registrar: UIButton!
-    private var logoEmpresa:logoView!
+    private var logoEmpresa:usuario_View!
     private var celdaEntradasSalidas:[Cell_EntradaSalida] = []
     private var registroActual:registrado = .ninguna
     private var arrayAccess:[accesos] = []
@@ -38,7 +38,7 @@ class perfiles_VC: UIViewController,SFSwiftNotificationProtocol {
         getInfo() // Obtener los datos de los usuarios
         
         //************************** Posicion de los wigets **************************//
-        logoEmpresa = logoView(superVDim: superVDim)
+//        logoEmpresa = usuario_View(superVDim: superVDim)
         tabla = tablaUsuarios(superVDim: superVDim, infoUsuarios: Usuarios,
                                         ViewControlador: self)
         

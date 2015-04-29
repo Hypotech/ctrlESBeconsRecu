@@ -6,7 +6,7 @@
 
 import UIKit
 
-class login_VC: UIViewController, UITextFieldDelegate {
+class login_VC: UIViewController,UITextFieldDelegate {
     
     //MARK: -----------
     //MARK: Propiedades
@@ -15,12 +15,13 @@ class login_VC: UIViewController, UITextFieldDelegate {
     var tFi_nomUsur:UITextField! //Recibe el nombre del usuario
     var tFi_contraseña:UITextField! //Recibe la contraseña
     var btn_Aceptar:UIButton! //boton para disparar el "logeo"
-    var btn_cuentaNueva:UIButton!
     var podio:PKTClient!
+    
     private var idCliente = "prueba-bkh64f"
     private var secretCode = "aAa5sgR8D6hlKVBJSORdhMLPdihFJlCPHZseunLcBI42rXnmthNjZwYWbkoF90cJ"
     private var indicadorActividad:UIActivityIndicatorView!
     private var infoPerfil:Perfil = Perfil()
+    private var tecladoHabilitado = false
     
     // MARK: ---------------------------------------
     // MARK: Inicializar widgets y personalizar view
@@ -29,11 +30,19 @@ class login_VC: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
 
         var superVDim = self.view.frame //Superview dimensiones
-        let view_altDeseado:CGFloat = 240
+        let view_altDeseado:CGFloat = 220
         
-        //*************************** Posicion de los wigets ************************** //
+        //************************************* Posicion de los wigets ******************************************//
+
+        var btn_atras = UIButton(frame: CGRect(origin: CGPoint(x: 10, y: 30), size:S_BTN_ATRS))
+        
+        var img_Empresa = UIImageView(frame: CGRect(x: 55,
+                                                    y: superVDim.width / 2 - 50,
+                                                    width: superVDim.width - 110,
+                                                    height: 100))
+        
         view_rectLogin = UIView(frame: CGRect(  x: 25,
-                                                y: (superVDim.height-view_altDeseado)/4,
+                                                y: (superVDim.height-view_altDeseado),
                                                 width: superVDim.width - 50,
                                                 height: view_altDeseado))
         
@@ -50,55 +59,53 @@ class login_VC: UIViewController, UITextFieldDelegate {
                                     width: tFi_contraseña.frame.width/4,
                                     height: 35)
         
-        btn_cuentaNueva = UIButton.buttonWithType(UIButtonType.System) as UIButton
-        btn_cuentaNueva.frame = CGRect( x: tFi_contraseña.frame.width/2 - tFi_contraseña.frame.width/4,
-                                        y: btn_Aceptar.frame.maxY +  20,
-                                        width: tFi_contraseña.frame.width/2,
-                                        height: btn_Aceptar.frame.height - 10)
-        
         indicadorActividad = UIActivityIndicatorView(frame: CGRect( x: btn_Aceptar.frame.maxX + 10,
                                                                     y: btn_Aceptar.frame.minY,
-                                                                    width: btn_Aceptar.frame.height, //mismo que altura
+                                                                    width: btn_Aceptar.frame.height,
                                                                     height: btn_Aceptar.frame.height))
         
-        //****************************************************************************//
+        //*******************************************************************************************************//
         
         //####################### Personalizando los widgets ########################//
+        
+        btn_atras.backgroundColor = UIColor.greenColor()
+        btn_atras.addTarget(self, action: "irAtras", forControlEvents: .TouchUpInside)
+        img_Empresa.image = UIImage(named: "Logo_republica.png")
+        
         tFi_nomUsur.borderStyle = .RoundedRect
         
-        tFi_nomUsur.placeholder = "Usuario"
+        tFi_nomUsur.placeholder = "Email"
         tFi_nomUsur.textColor = UIColor.blackColor()
-        tFi_nomUsur.addTarget(self, action: "campoEditado", forControlEvents: .EditingChanged)
+        tFi_nomUsur.addTarget(self, action: "comenzoEdiccionCampo", forControlEvents: .EditingChanged)
+        tFi_nomUsur.keyboardType = .EmailAddress
+        tFi_nomUsur.autocapitalizationType = .None
+        tFi_nomUsur.autocorrectionType = .No
         
         tFi_contraseña.borderStyle = .RoundedRect
         tFi_contraseña.placeholder = "Contraseña"
         tFi_contraseña.textColor = UIColor.blackColor()
         tFi_contraseña.secureTextEntry =  true
         tFi_contraseña.clearButtonMode = .WhileEditing
-        tFi_contraseña.addTarget(self, action: "campoEditado", forControlEvents: .EditingChanged)
+        tFi_contraseña.addTarget(self, action: "comenzoEdiccionCampo", forControlEvents: .EditingChanged)
+
         
         btn_Aceptar.setTitleColor(UIColor.blackColor(), forState: .Normal)
         btn_Aceptar.setTitleColor(UIColor.whiteColor(), forState: .Disabled)
         btn_Aceptar.setTitle("Aceptar", forState: .Normal)
         btn_Aceptar.addTarget(self, action: "ejecutarLogin", forControlEvents: .TouchUpInside)
-        campoEditado()
-//        btn_Aceptar.showsTouchWhenHighlighted = true
-        
-        btn_cuentaNueva.backgroundColor = UIColor.clearColor()
-        btn_cuentaNueva.setTitle("¿Nuevo? Registrate aquí", forState: .Normal)
-        btn_cuentaNueva.setTitleColor(UIColor.grayColor(), forState: .Normal)
-        btn_cuentaNueva.titleLabel?.font =  btn_cuentaNueva.titleLabel?.font.fontWithSize(11.0)
+        btn_Aceptar.enabled = false
+        btn_Aceptar.backgroundColor = UIColor.lightGrayColor()
         
         indicadorActividad.color = UIColor.blackColor()
         indicadorActividad.stopAnimating()
-//        indicadorActividad.hidesWhenStopped = false
+
         
         view_rectLogin.userInteractionEnabled = true
         
         view_rectLogin.addSubview(tFi_nomUsur)
         view_rectLogin.addSubview(tFi_contraseña)
         view_rectLogin.addSubview(btn_Aceptar)
-        view_rectLogin.addSubview(btn_cuentaNueva)
+//        view_rectLogin.addSubview(btn_cuentaNueva)
         view_rectLogin.addSubview(indicadorActividad)
         
         view_rectLogin.backgroundColor = UIColor.whiteColor()
@@ -110,7 +117,12 @@ class login_VC: UIViewController, UITextFieldDelegate {
         PodioKit.setupWithAPIKey(idCliente, secret: secretCode)
         podio =  PKTClient.sharedClient()
         
-        self.view.backgroundColor = UIColor.grayColor()
+        tFi_contraseña.delegate = self
+        tFi_nomUsur.delegate = self
+        
+        self.view.backgroundColor = UIColor.whiteColor()
+        self.view.addSubview(btn_atras)
+        self.view.addSubview(img_Empresa)
         self.view.addSubview(view_rectLogin)
         self.view.addGestureRecognizer(tap)
     }
@@ -124,43 +136,47 @@ class login_VC: UIViewController, UITextFieldDelegate {
     // MARK: Acciones para la interacción con Buttons
     // MARK: ----------------------------------------
     
+    func irAtras(){
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
     func ejecutarLogin() { //validar datos y pasar a la siguiente escena
-        var viewCtrl_Siguiente = home_VC() //view controller siguiente
-        //        var viewCtrl_Siguiente = perfiles_VC()
-        
-        //        viewCtrl_Siguiente.modalPresentationStyle = .OverFullScreen
-        viewCtrl_Siguiente.modalTransitionStyle = .FlipHorizontal
-        viewCtrl_Siguiente.infoPerfil = self.infoPerfil
-        viewCtrl_Siguiente.VC_anterior = self
-        self.presentViewController(viewCtrl_Siguiente, animated: true, completion: nil)
-        
-//        var alerta:UIAlertController!
-//        indicadorActividad.startAnimating()
+//        var viewCtrl_Siguiente = inicio_VC() //view controller siguiente
+//        //        var viewCtrl_Siguiente = perfiles_VC()
 //        
-//        podio.authenticateAsUserWithEmail(tFi_nomUsur.text, password: tFi_contraseña.text, completion: {
-//                (respuesta, error) -> () in
-//                
-//                if respuesta.statusCode == OK_login{
-//                    println("Login exitoso")
-//                    
-//                    self.pasarSiguienteEscena()
-//                    
-//                }
-//                else if(respuesta.statusCode == ContraseñaUsuario_Invalido){
-//                    
-//                    alerta = UIAlertController(title: "Error", message: "Usuario o contraseña incorrecta. Intenta de nuevo", preferredStyle: UIAlertControllerStyle.Alert)
-//                    alerta.addAction(UIAlertAction(title: "Aceptar", style: UIAlertActionStyle.Cancel, handler: nil))
-//                    self.presentViewController(alerta, animated: true, completion: nil)
-//                    self.indicadorActividad.stopAnimating()
-//                    
-//                }
-//                else{
-//                    alerta = UIAlertController(title: "Error", message: respuesta.body.objectForKey("error_description") as? String, preferredStyle: UIAlertControllerStyle.Alert)
-//                    alerta.addAction(UIAlertAction(title: "Aceptar", style: UIAlertActionStyle.Cancel, handler: nil))
-//                    self.presentViewController(alerta, animated: true, completion: nil)
-//                    self.indicadorActividad.stopAnimating()
-//                }
-//        })
+//        //        viewCtrl_Siguiente.modalPresentationStyle = .OverFullScreen
+//        viewCtrl_Siguiente.modalTransitionStyle = .FlipHorizontal
+//        viewCtrl_Siguiente.infoPerfil = self.infoPerfil
+//        viewCtrl_Siguiente.VC_anterior = self
+//        self.presentViewController(viewCtrl_Siguiente, animated: true, completion: nil)
+        
+        var alerta:UIAlertController!
+        indicadorActividad.startAnimating()
+        
+        podio.authenticateAsUserWithEmail(tFi_nomUsur.text, password: tFi_contraseña.text, completion: {
+                (respuesta, error) -> () in
+                
+                if respuesta.statusCode == OK_login{
+                    println("Login exitoso")
+                    
+                    self.pasarSiguienteEscena()
+                    
+                }
+                else if(respuesta.statusCode == ContraseñaUsuario_Invalido){
+                    
+                    alerta = UIAlertController(title: "Error", message: "Usuario o contraseña incorrecta. Intenta de nuevo", preferredStyle: UIAlertControllerStyle.Alert)
+                    alerta.addAction(UIAlertAction(title: "Aceptar", style: UIAlertActionStyle.Cancel, handler: nil))
+                    self.presentViewController(alerta, animated: true, completion: nil)
+                    self.indicadorActividad.stopAnimating()
+                    
+                }
+                else{
+                    alerta = UIAlertController(title: "Error", message: respuesta.body.objectForKey("error_description") as? String, preferredStyle: UIAlertControllerStyle.Alert)
+                    alerta.addAction(UIAlertAction(title: "Aceptar", style: UIAlertActionStyle.Cancel, handler: nil))
+                    self.presentViewController(alerta, animated: true, completion: nil)
+                    self.indicadorActividad.stopAnimating()
+                }
+        })
         
     }
     
@@ -215,7 +231,7 @@ class login_VC: UIViewController, UITextFieldDelegate {
                         self.infoPerfil.organizacion = []
                     }
                     
-                    var viewCtrl_Siguiente = home_VC() //view controller siguiente
+                    var viewCtrl_Siguiente = inicio_VC() //view controller siguiente
                     //        var viewCtrl_Siguiente = perfiles_VC()
                     
                     //        viewCtrl_Siguiente.modalPresentationStyle = .OverFullScreen
@@ -235,13 +251,13 @@ class login_VC: UIViewController, UITextFieldDelegate {
         })
     }
     
-    // MARK: ---------------------------
-    // MARK: Delgados para los textField
-    // MARK: ---------------------------
+    // MARK: ----------------------------
+    // MARK: Interacción con el textField
+    // MARK: ----------------------------
 
-    func campoEditado() {
+    func comenzoEdiccionCampo() {
         
-        if tFi_nomUsur.text.isEmpty{
+        if tFi_nomUsur.text.isEmpty{ //deshabilitar boton y borrar la contraseña
             btn_Aceptar.enabled = false
             
             UIView.animateWithDuration(0.4, delay: 0, options: UIViewAnimationOptions.CurveEaseIn, animations: {
@@ -249,7 +265,7 @@ class login_VC: UIViewController, UITextFieldDelegate {
                 self.tFi_contraseña.text = ""
                 }, completion: nil)
         }
-        else if tFi_contraseña.text.isEmpty {
+        else if tFi_contraseña.text.isEmpty {//deshabilitar boton
             btn_Aceptar.enabled = false
             
             UIView.animateWithDuration(0.4, delay: 0, options: UIViewAnimationOptions.CurveEaseIn, animations: {
@@ -257,12 +273,21 @@ class login_VC: UIViewController, UITextFieldDelegate {
                 }, completion: nil)
             
         }
-        else{
+        else{ //habilitar boton
             btn_Aceptar.enabled = true
             UIView.animateWithDuration(0.4, delay: 0, options: UIViewAnimationOptions.CurveEaseIn, animations: {
                 self.btn_Aceptar.backgroundColor = UIColor.blueColor()
                 }, completion: nil)
         }
+    }
+
+    func textFieldDidBeginEditing(textField: UITextField) {
+        
+       view_rectLogin.frame.origin.y -= 190
+    }
+    
+    func textFieldDidEndEditing(textField: UITextField) {
+        view_rectLogin.frame.origin.y += 190
     }
 }
 

@@ -9,18 +9,23 @@
 import Uikit
 
 class CeldaBase: UITableViewCell {
-    var alto:CGFloat  = 30.0
+    
+    var alto:CGFloat
 
      init(tamañoAlto:CGFloat) {
         alto = tamañoAlto
-        super.init()
+        
+        super.init(style: .Default, reuseIdentifier: "fecha")
+        
     }
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+        alto = 44.0
         super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
 
     required init(coder aDecoder: NSCoder) {
+        alto = 0
         super.init(coder: aDecoder)
     }
 }

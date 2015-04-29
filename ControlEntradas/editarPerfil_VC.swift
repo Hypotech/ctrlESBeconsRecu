@@ -1,36 +1,77 @@
-//
-//  editarPerfil_VC.swift
-//  ControlEntradas
-//
-//  Created by desarrolloRM on 06/04/15.
-//  Copyright (c) 2015 Desarrollo RM. All rights reserved.
-//
+/*  Este viewController es mostrado cuando se el usuario desea editar su perfil.
+*
+*
+*  editarPerfil_VC.swift
+*  ControlEntradas
+*
+*  Created by desarrolloRM on 06/04/15.
+*  Copyright (c) 2015 Desarrollo RM. All rights reserved.
+*/
 
 import UIKit
 
+protocol perfilCambiosDelegate{
+    func actualizarPerfil(datosPerfil:Perfil)
+}
 
-class editarPerfil_VC: UIViewController {
+class editarPerfil_VC: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     // MARK: -----------
     // MARK: Propiedades
     // MARK: -----------
-    
-    var viewBar:UIView!
-    var lbl_title:UILabel!
-    var infoUsuario:tablaDatosPerfil!
+
     var podio:PKTClient!
+    var delegado:perfilCambiosDelegate!
     
-    private var celd_nombre:UITableViewCell!
-    private var celd_telfno:UITableViewCell!
-    private var celd_email:UITableViewCell!
-    private var celd_orgcion:UITableViewCell!
     private var datosPerfil = Perfil()
+    private var infoUsuario:tablaDatosPerfil!
+    
+//    private var tFi_Nombre:UITextField!
+//    private var tFi_Apellidos:UITextField!
+//    private var tFi_Nacimento:UITextField!
+//    private var img_usuario:UIImageView!
+    private var selectorImgs = UIImagePickerController()
+    private var view_FotoUsuario:usuario_View! //foto de usuario + un filtro
+    
     // MARK: -------------------
     // MARK: Inicializar widgets
     // MARK: -------------------
+    
     override func viewDidLoad(){
         super.viewDidLoad()
+        
+        let superVDim = self.view.frame //dimensiones del superView
+        
+        selectorImgs.delegate = self
 
+        //****************************************** Posicion de los wigets **************************************//
+        
+        view_FotoUsuario = usuario_View(ubicacion: CGRect(x: 0, y: 0,
+                                                          width: superVDim.width,
+                                                          height: P_ALT_IMG_USR * superVDim.height))
+        
+        var view_cambiarFoto = UIView(frame: CGRect(origin:
+                                        CGPoint(x: (superVDim.width - S_V_CFB.width) / 2,
+                                                y: view_FotoUsuario.container.frame.maxY  - S_V_CFB.height - 8),
+                                                    size: S_V_CFB))
+        
+        var img_fondo = UIImageView(frame: CGRect(origin: CGPoint.zeroPoint,
+                                                  size:view_cambiarFoto.frame.size))
+        
+        var btn_tomarFoto = UIButton(frame: CGRect( x: 0, y: 0,
+                                                    width: view_cambiarFoto.frame.width,
+                                                    height: view_cambiarFoto.frame.height/2))
+        
+        var btn_ElegirFoto = UIButton(frame: CGRectOffset(btn_tomarFoto.frame, 0, btn_tomarFoto.frame.maxY))
+        
+        var btn_guardar = UIButton(frame: CGRect(origin: CGPoint(x: (superVDim.width - S_BTN_GUAR.width) / 2,
+                                                                 y: superVDim.height - S_BTN_GUAR.height - 5),
+                                                 size: S_BTN_GUAR))
+        
+         //*******************************************************************************************************//
+        
+        //#################################### Personalización de los widgets ####################################//
+        
         obtenerPerfil()
         
         self.navigationController?.navigationBar.barStyle  = UIBarStyle.Black
@@ -39,7 +80,32 @@ class editarPerfil_VC: UIViewController {
         navigationItem.title = "✏️Edicción de perfil"
         
         self.view.backgroundColor = UIColor.whiteColor()
+        
+        btn_tomarFoto.setTitle("Tomar Foto", forState: .Normal)
+        btn_tomarFoto.backgroundColor = UIColor(red: 0.56, green: 0.76, blue: 0.21, alpha: 0.3)
+        
+        btn_ElegirFoto.setTitle("Elegir de la Biblioteca", forState: .Normal)
+        btn_ElegirFoto.backgroundColor = UIColor(red: 0.3, green: 0.76, blue: 0.2, alpha: 0.4)
+        
+        img_fondo.image = UIImage(named: "elegir_foto.png")
+        
+//        view_cambiarFoto.backgroundColor = .greenColor()
+        
+        view_cambiarFoto.addSubview(img_fondo)
+        view_cambiarFoto.addSubview(btn_tomarFoto)
+        view_cambiarFoto.addSubview(btn_ElegirFoto)
+        //########################################################################################################//
+        
+//        super.view.addSubview(img_usuario)
+//        super.view.addSubview(img_filtro)
+        super.view.addSubview(view_FotoUsuario.container)
+        super.view.addSubview(view_cambiarFoto)
+        super.view.addSubview(btn_guardar)
     }
+
+    // MARK: ---------------------------
+    // MARK: Interacción con los botones
+    // MARK: ---------------------------
     
     func IrAInicio(){
         self.dismissViewControllerAnimated(true, completion: nil) //regresa al viewController anterior (inicio)
@@ -61,7 +127,7 @@ class editarPerfil_VC: UIViewController {
             
         })
         
-        //************************************* Obtener datos usuario *************************************//
+        //************************************* Obtener datos de usuario *************************************//
         podio.performRequest(PKTUserAPI.requestForUserStatus(), completion: {
             (respuesta,error) -> () in
             
@@ -80,7 +146,8 @@ class editarPerfil_VC: UIViewController {
                         var cadena = link as NSString
                         
                         var data = NSData(contentsOfURL: NSURL(string: cadena)!)
-                        self.datosPerfil.imagenUsuario = UIImage(data: data!)
+                        self.view_FotoUsuario.setUsuario(UIImage(data: data!)!)
+//                        self.datosPerfil.imagenUsuario = UIImage(data: data!)
                     }
                 }
                 else{
@@ -110,12 +177,43 @@ class editarPerfil_VC: UIViewController {
             }
             
             var superVDim = self.view.frame
-            var ubicTabla = superVDim
-            ubicTabla.origin.y = self.navigationController!.navigationBar.frame.maxY + 20
+            var ubicTabla = CGRect( x: (superVDim.width - 300) / 2,
+                                    y: self.view_FotoUsuario.container.frame.maxY,
+                                    width: 300,
+                                    height: 350)
             
-            self.infoUsuario = tablaDatosPerfil(superVDim: ubicTabla,datos: self.datosPerfil)
+            self.infoUsuario = tablaDatosPerfil(ubicacion: ubicTabla,datos: self.datosPerfil)
             self.view.addSubview(self.infoUsuario.viewTabla)
+            
         })
         //*****************************************************************************************************//
     }
+
+    // MARK: ------------------------------------------
+    // MARK: Funciones delegadas para cambiar la imagen
+    // MARK: ------------------------------------------
+    
+    func seleccionarImagen(){
+        
+        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera)
+        {
+            selectorImgs.sourceType = UIImagePickerControllerSourceType.Camera
+            self.presentViewController(selectorImgs, animated: true, completion: nil)
+        }
+        else{
+            selectorImgs.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
+            self.presentViewController(selectorImgs, animated: true, completion: nil)
+        }
+    }
+    
+    func imagePickerController(picker: UIImagePickerController!, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]!)
+    {
+        selectorImgs.dismissViewControllerAnimated(true, completion: nil)
+        datosPerfil.imagenUsuario = info [UIImagePickerControllerOriginalImage] as? UIImage
+//        tbl_infoPerfil.setImageUsr(datosPerfil.imagenUsuario) //actualizamos la tabla
+        
+        self.delegado.actualizarPerfil(datosPerfil) //mandamos a actualizar el perfil en inicio_VC
+        
+    }
+    
 }

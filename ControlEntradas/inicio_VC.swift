@@ -9,38 +9,38 @@
 import UIKit
 
 
-class home_VC: UIViewController{
+class inicio_VC: UIViewController,perfilCambiosDelegate{
     
     // MARK: -----------
     // MARK: Propiedades
     // MARK: -----------
     
-    var historial: tablaAnualHsitorial!
-    var CelEntradasSalidas:[Cell_EntradaSalida] = []
+    private var historial: tablaAnualHsitorial!
     var infoPerfil:Perfil = Perfil()
     var podio: PKTClient!
     var VC_anterior:UIViewController!
+    var CelEntradasSalidas:[Cell_EntradaSalida] = []
     
     private var lbl_nomUsr = UILabel()
-    private var img_usuario:UIImageView!
     private var btn_beacon:UIButton!
-    private var img_filtro:UIImageView!
+    private var img_usuario:UIImageView!
+//    private var img_filtro:UIImageView!
     
     // MARK: -------------------
     // MARK: Inicializar widgets
     // MARK: -------------------
     
     override func viewDidLoad() {
-        var superView = self.view.frame
+        var superVDim = self.view.frame
         
         //****************************** Posicion de los wigets ******************************//
         
         img_usuario = UIImageView(frame: CGRect(x: 0,
                                                 y: 0,
-                                                width: superView.width,
-                                                height: ALTURA_IMG_USR))
+                                                width: superVDim.width,
+                                                height: P_ALT_IMG_USR * superVDim.height))
         
-        img_filtro = UIImageView(frame: img_usuario.frame)
+        var img_filtro = UIImageView(frame: img_usuario.frame)
         
         var btn_edit_perf = UIButton(frame: CGRect(x: img_usuario.frame.minX + 20,
                                                 y: img_usuario.frame.minY + 30,
@@ -59,8 +59,8 @@ class home_VC: UIViewController{
 
         var posicion_Historial = CGRect(x: 0,
                                         y: btn_beacon.frame.maxY,
-                                        width: superView.width,
-                                        height: superView.height - btn_beacon.frame.maxY )
+                                        width: superVDim.width,
+                                        height: superVDim.height - btn_beacon.frame.maxY )
         
         historial = tablaAnualHsitorial(ubicacion: posicion_Historial)
 //        var celdTmp = Cell_EntradaSalida(style: .Default, reuseIdentifier: "foo")
@@ -69,7 +69,7 @@ class home_VC: UIViewController{
         //***********************************************************************************//
 
         //######################### Personalización de los widgets #########################//
-        lbl_nomUsr.font = UIFont(name: "NexaBold", size: 13.0)
+        lbl_nomUsr.font = UIFont(name: "NexaBold", size: 15.0)
         lbl_nomUsr.textColor = UIColor.whiteColor()
         lbl_nomUsr.shadowColor = UIColor.blackColor()
         lbl_nomUsr.shadowOffset = CGSize(width: 1, height: 1)
@@ -90,7 +90,7 @@ class home_VC: UIViewController{
         btn_beacon.addTarget(self, action: "btnBeconPresionado", forControlEvents: .TouchUpInside)
         btn_beacon.setImage(UIImage(named: "boton_buscar.png"), forState: .Normal)
         btn_beacon.setImage(UIImage(named: "boton_buscar_on.png"), forState: .Highlighted)
-        //###############################################################################//
+        //##################################################################################//
         
         self.view.backgroundColor = UIColor.whiteColor()
         self.view.addSubview(img_usuario)
@@ -120,15 +120,16 @@ class home_VC: UIViewController{
     func irEditarPerfilEscena(){
         var editPerfViewCtrl = editarPerfil_VC()
         editPerfViewCtrl.podio = self.podio
+        editPerfViewCtrl.delegado = self
         
         //Se agrega una animación entre su transición
 //        editPerfViewCtrl.modalPresentationStyle = .OverFullScreen
 //        editPerfViewCtrl.modalTransitionStyle = .CrossDissolve
         
-        var navController = UINavigationController(rootViewController: editPerfViewCtrl)
+//        var navController = UINavigationController(rootViewController: editPerfViewCtrl)
         
         //        navController.transitioningDelegate = self.animator! //agregar una animación personalizada
-        self.presentViewController(navController, animated: true, completion: nil)
+        self.presentViewController(editPerfViewCtrl, animated: true, completion: nil)
     }
     
     func irAjustesEscena(){
@@ -216,5 +217,22 @@ class home_VC: UIViewController{
         popUp.modalTransitionStyle = .CrossDissolve
         
         self.presentViewController(popUp, animated: true, completion: nil)
+    }
+    
+    // MARK: -------------------------------------------------
+    // MARK: Funciones para la interacción con editarPerfil_VC
+    // MARK: -------------------------------------------------
+    
+    func actualizarPerfil(datosPerfil:Perfil){
+        infoPerfil = datosPerfil
+        img_usuario.image = infoPerfil.imagenUsuario
+        
+        var documentDirectory = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true) [0] as NSString
+        var pngFilePath = NSString(format: "%@/test.png", documentDirectory)
+        println("la ruta es: \(pngFilePath)")
+        
+        var ImageData = UIImagePNGRepresentation(infoPerfil.imagenUsuario)
+        ImageData.writeToFile(pngFilePath, atomically: true)
+
     }
 }

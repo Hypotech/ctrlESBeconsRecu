@@ -1,10 +1,12 @@
-//
-//  tablaDatosPerfil.swift
-//  ControlEntradas
-//
-//  Created by desarrolloRM on 07/04/15.
-//  Copyright (c) 2015 Desarrollo RM. All rights reserved.
-//
+/*  Clase que maneja el despligue de los datos de perfil del usuario en una tabla, asi como la
+*   invocaión de las funciones delegadas, dado un evento de edición.
+*
+*  tablaDatosPerfil.swift
+*  ControlEntradas
+*
+*  Created by desarrolloRM on 07/04/15.
+*  Copyright (c) 2015 Desarrollo RM. All rights reserved.
+*/
 
 import UIKit
 
@@ -15,104 +17,119 @@ class tablaDatosPerfil:NSObject, UITableViewDataSource, UITableViewDelegate {
     // MARK: -----------
     
     var viewTabla:UITableView!
-    var celdasDatosPerfil:[UITableViewCell] = []
+//    var delegado:tablaPerfildelegate!
+    
+    private var celdasDatosPerfil:[UITableViewCell] = []
+    private var img_usr = UIImageView(frame: CGRect(x: 0, y: 0, width: 100, height: 80))
     private var datosPerfil:Perfil
     
     // MARK: -------------------
     // MARK: Inicializar widgets
     // MARK: -------------------
-    init(superVDim:CGRect, datos:Perfil) {
+    init(ubicacion:CGRect, datos:Perfil) {
 
         datosPerfil = datos
         super.init()
-        viewTabla = UITableView(frame: CGRect(  x: superVDim.minX, y: superVDim.minY,
-                                                width: superVDim.width,
-                                                height: superVDim.height - 120.0 - ESPACIO_BOTTOM),
-            style: .Grouped)
         
-        var celd_nombre = UITableViewCell(style: .Value2, reuseIdentifier: "perfilCelda")
-        var celd_organizacion = UITableViewCell(style: .Value2, reuseIdentifier: "perfilCelda")
-        var celd_telefono = UITableViewCell(style: .Value2, reuseIdentifier: "perfilCelda")
-        var celd_email = UITableViewCell(style: .Value2, reuseIdentifier: "perfilCelda")
-        var celd_imagen = UITableViewCell(style: .Default, reuseIdentifier: "perfilCelda")
+        //****************************** Posicion de los wigets ******************************//
         
-        celd_nombre.textLabel?.text = "Nombre"
-        celd_organizacion.textLabel?.text = "Organización"
-        celd_telefono.textLabel?.text = "Teléfono"
-        celd_email.textLabel?.text = "Email"
+        viewTabla = UITableView(frame: CGRect(  x: ubicacion.minX, y: ubicacion.minY,
+                                                width: ubicacion.width,
+                                                height: ubicacion.height - 120.0 - ESPACIO_BOTTOM),
+                                style: .Grouped)
+
+        println("ancho de un reglon: \(viewTabla.frame.width)")
         
-        var img_usr = UIImageView(frame: CGRect(x: 0, y: 0, width: 100, height: 80))
-        celd_imagen.addSubview(img_usr)
+        var tFi_nombre = tFiPersonalizado(frame:CGRect( x: 0,
+                                                        y: 0,
+                                                        width: viewTabla.frame.width,
+                                                        height: 44))
         
-        celd_nombre.detailTextLabel?.text = datosPerfil.nombre
-        celd_organizacion.detailTextLabel?.text = concatenaArray(datosPerfil.organizacion)
-        celd_telefono.detailTextLabel?.text = concatenaArray(datosPerfil.telefono)
-        celd_email.detailTextLabel?.text = concatenaArray(datosPerfil.email)
-        img_usr.image = datosPerfil.imagenUsuario
-            
-        celdasDatosPerfil = [celd_nombre,celd_organizacion, celd_telefono,celd_email,celd_imagen]
+        var tFi_email = tFiPersonalizado(frame: tFi_nombre.frame)
         
+        var tFi_organizacion = tFiPersonalizado(frame: tFi_nombre.frame)
+        
+        var celd_nacimiento = celda_Fecha(tamaño: CGSize(width: viewTabla.frame.width, height: 44))
+        
+        //***********************************************************************************//
+        
+        //######################### Personalización de los widgets #########################//
+//        viewTabla.rowHeight = 44.0
+//        
+//        println("alto de un reglon: \(viewTabla.rowHeight)")
+        
+        var celd_nombre = UITableViewCell(style: .Default, reuseIdentifier: "perfilCelda")
+        var celd_organizacion = UITableViewCell(style: .Default, reuseIdentifier: "perfilCelda")
+//        var celd_telefono = UITableViewCell(style: .Default, reuseIdentifier: "perfilCelda")
+        var celd_email = UITableViewCell(style: .Default, reuseIdentifier: "perfilCelda")
+        
+        tFi_nombre.textField.placeholder = "Nombre"
+//            datosPerfil.nombre
+        tFi_email.textField.placeholder = "Email"
+//            concatenaArray(datosPerfil.email)
+        tFi_organizacion.textField.placeholder = "Organización"
+//            concatenaArray(datosPerfil.organizacion)
+        
+        celd_nombre.addSubview(tFi_nombre)
+        celd_organizacion.addSubview(tFi_organizacion)
+//        celd_telefono.addSubview(tFi_nombre)
+        celd_email.addSubview(tFi_email)
+        
+        celdasDatosPerfil = [celd_nombre,celd_organizacion,/* celd_telefono,*/celd_email,celd_nacimiento]
+        //##################################################################################//
+        
+        //{{{{{{{{{{{ Delegados }}}}}}}}}}}}
         viewTabla.delegate = self
         viewTabla.dataSource = self
+        //{{{{{{{{{{{{{{{{{}}}}}}}}}}}}}}}}}
+        
+        viewTabla.separatorStyle = .None
+        viewTabla.allowsSelection = true
+        viewTabla.userInteractionEnabled = true
+//        viewTabla.scrollEnabled = false
     }
     
     // MARK: ----------------------------------------------------
     // MARK: Funciones delegadas para la interacción con la tabla
     // MARK: ----------------------------------------------------
-    
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        return 2
-    }
-    
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-
-        if indexPath.section == 0{
-            return 100.0
-        }
-        return 40.0
-    }
 
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        
-        if indexPath.section == 1{
-            return celdasDatosPerfil[indexPath.row]
-        }
-        return celdasDatosPerfil[4]
-    }
-    
-//    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-//        var historialViewController = historial_VC()
-//        var navController = UINavigationController(rootViewController: historialViewController)
-//        historialViewController.celdaEntradasSalidas = historial //pasamos el historial
-//        
-//        //        navController.transitioningDelegate = self.animator! //agregar una animación personalizada
-//        ViewControlador.presentViewController(navController, animated: true, completion: nil)
-//    }
-    func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        
-        return 20.0
+        return celdasDatosPerfil[indexPath.row]
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-
-        if section == 0{
-            return 1
-        }
-            return 4
+        return celdasDatosPerfil.count
     }
     
-    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         
-        var lbl_header = UILabel(frame: CGRect(x: 0, y: 0, width: 350, height: 30))
+        var celda = celdasDatosPerfil[indexPath.row]
         
-        if  section == 0{
-            lbl_header.text = "Foto"
+        if celda.isKindOfClass( celda_Fecha){
+            
+            var cel_fecha = celda as celda_Fecha
+            return cel_fecha.alto
         }
-        else{
-            lbl_header.text = "Generales"
-        }
-        return lbl_header
+        return 44.0
     }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        
+        var celda = celdasDatosPerfil[indexPath.row]
+        
+        if celda.isKindOfClass(celda_Fecha){
+            
+            var cel_fecha = celda as celda_Fecha
+            cel_fecha.abrirDatePicker(tableView)
+        }
+    }
+    // MARK: ----------------
+    // MARK: Metodos publicos
+    // MARK: ----------------
+    
+    // MARK: ---------------------
+    // MARK: Funciones de utilidad
+    // MARK: ---------------------
     
     private func concatenaArray(array:NSArray) -> String {
         
@@ -129,4 +146,6 @@ class tablaDatosPerfil:NSObject, UITableViewDataSource, UITableViewDelegate {
         }
         return cadenaResult
     }
+    
+ 
 }
