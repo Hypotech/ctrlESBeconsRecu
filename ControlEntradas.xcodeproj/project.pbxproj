@@ -172,7 +172,7 @@
 		ABC005431AC5BAD9005B309F /* registro_E_S_Notificaciones.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABC005341AC5BAD9005B309F /* registro_E_S_Notificaciones.swift */; };
 		ABC005441AC5BAD9005B309F /* SFSwiftNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABC005351AC5BAD9005B309F /* SFSwiftNotification.swift */; };
 		ABC005451AC5BAD9005B309F /* smile-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = ABC005361AC5BAD9005B309F /* smile-icon.png */; };
-		ABC005461AC5BAD9005B309F /* structuras.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABC005371AC5BAD9005B309F /* structuras.swift */; };
+		ABC005461AC5BAD9005B309F /* estructuras.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABC005371AC5BAD9005B309F /* estructuras.swift */; };
 		ABC005471AC5BAD9005B309F /* testnavbar.png in Resources */ = {isa = PBXBuildFile; fileRef = ABC005381AC5BAD9005B309F /* testnavbar.png */; };
 		ABE7BF4A1ACA11EE00AF8FB9 /* tablaMensualHsitorial.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABE7BF491ACA11EE00AF8FB9 /* tablaMensualHsitorial.swift */; };
 		ABE9767D1AD2FFBD004FB2F3 /* Settings-icon.png in Resources */ = {isa = PBXBuildFile; fileRef = ABE9767C1AD2FFBD004FB2F3 /* Settings-icon.png */; };
@@ -187,7 +187,8 @@
 		ABF2B0CA1AEFE5ED008217DA /* boton_back_verde.png in Resources */ = {isa = PBXBuildFile; fileRef = ABF2B0C51AEFE5ED008217DA /* boton_back_verde.png */; };
 		ABF2B0CB1AEFE5ED008217DA /* elegir_foto.png in Resources */ = {isa = PBXBuildFile; fileRef = ABF2B0C61AEFE5ED008217DA /* elegir_foto.png */; };
 		ABF2B0CD1AF009FE008217DA /* celda_Fecha.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABF2B0CC1AF009FE008217DA /* celda_Fecha.swift */; };
-		ABF2B0FF1AF03583008217DA /* tFiPersonalizado.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABF2B0FE1AF03583008217DA /* tFiPersonalizado.swift */; };
+		ABF2B0FF1AF03583008217DA /* textField_Formulario.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABF2B0FE1AF03583008217DA /* textField_Formulario.swift */; };
+		ABFDE7101AF19DD20072B9D7 /* nacimientoPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABFDE70F1AF19DD20072B9D7 /* nacimientoPicker.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -479,7 +480,7 @@
 		ABC005341AC5BAD9005B309F /* registro_E_S_Notificaciones.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = registro_E_S_Notificaciones.swift; sourceTree = "<group>"; };
 		ABC005351AC5BAD9005B309F /* SFSwiftNotification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SFSwiftNotification.swift; sourceTree = "<group>"; };
 		ABC005361AC5BAD9005B309F /* smile-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "smile-icon.png"; sourceTree = "<group>"; };
-		ABC005371AC5BAD9005B309F /* structuras.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = structuras.swift; sourceTree = "<group>"; };
+		ABC005371AC5BAD9005B309F /* estructuras.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = estructuras.swift; sourceTree = "<group>"; };
 		ABC005381AC5BAD9005B309F /* testnavbar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = testnavbar.png; sourceTree = "<group>"; };
 		ABE7BF491ACA11EE00AF8FB9 /* tablaMensualHsitorial.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = tablaMensualHsitorial.swift; sourceTree = "<group>"; };
 		ABE9767C1AD2FFBD004FB2F3 /* Settings-icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Settings-icon.png"; sourceTree = "<group>"; };
@@ -493,8 +494,9 @@
 		ABF2B0C41AEFE5ED008217DA /* boton_back_verde_on.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = boton_back_verde_on.png; sourceTree = "<group>"; };
 		ABF2B0C51AEFE5ED008217DA /* boton_back_verde.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = boton_back_verde.png; sourceTree = "<group>"; };
 		ABF2B0C61AEFE5ED008217DA /* elegir_foto.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = elegir_foto.png; sourceTree = "<group>"; };
-		ABF2B0CC1AF009FE008217DA /* celda_Fecha.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = celda_Fecha.swift; sourceTree = "<group>"; };
-		ABF2B0FE1AF03583008217DA /* tFiPersonalizado.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = tFiPersonalizado.swift; sourceTree = "<group>"; };
+		ABF2B0CC1AF009FE008217DA /* celda_Fecha.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = celda_Fecha.swift; path = ../celda_Fecha.swift; sourceTree = "<group>"; };
+		ABF2B0FE1AF03583008217DA /* textField_Formulario.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = textField_Formulario.swift; sourceTree = "<group>"; };
+		ABFDE70F1AF19DD20072B9D7 /* nacimientoPicker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = nacimientoPicker.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -893,6 +895,7 @@
 			isa = PBXGroup;
 			children = (
 				AB5374FF1AD4A0270030F786 /* tablaDatosPerfil.swift */,
+				ABFDE70F1AF19DD20072B9D7 /* nacimientoPicker.swift */,
 			);
 			name = PerfilUsuario;
 			sourceTree = "<group>";
@@ -900,7 +903,6 @@
 		ABC004F01AC5B354005B309F = {
 			isa = PBXGroup;
 			children = (
-				ABF2B0CC1AF009FE008217DA /* celda_Fecha.swift */,
 				ABC005281AC5B47C005B309F /* EstimoteSDK.framework */,
 				ABC005261AC5B457005B309F /* CoreLocation.framework */,
 				ABC005241AC5B451005B309F /* CoreBluetooth.framework */,
@@ -934,11 +936,11 @@
 				ABC005481AC5BB08005B309F /* Views Controllers */,
 				ABC004FE1AC5B354005B309F /* AppDelegate.swift */,
 				ABC005001AC5B354005B309F /* ViewController.swift */,
+				ABF2B0CC1AF009FE008217DA /* celda_Fecha.swift */,
 				ABC005021AC5B354005B309F /* Main.storyboard */,
 				ABC005051AC5B354005B309F /* Images.xcassets */,
 				ABC005071AC5B354005B309F /* LaunchScreen.xib */,
 				ABC004FC1AC5B354005B309F /* Supporting Files */,
-				ABF2B0FE1AF03583008217DA /* tFiPersonalizado.swift */,
 			);
 			path = ControlEntradas;
 			sourceTree = "<group>";
@@ -999,7 +1001,7 @@
 			isa = PBXGroup;
 			children = (
 				AB88FE081ACB0CEB00A57D2A /* usuario_View.swift */,
-				ABC005371AC5BAD9005B309F /* structuras.swift */,
+				ABC005371AC5BAD9005B309F /* estructuras.swift */,
 				AB88FE0B1ACB11FC00A57D2A /* constantesSimbolicas.swift */,
 			);
 			name = Generales;
@@ -1038,6 +1040,7 @@
 		ABC0054B1AC5BBC3005B309F /* Tablas */ = {
 			isa = PBXGroup;
 			children = (
+				ABFDE70E1AF19C410072B9D7 /* textField */,
 				ABC0052A1AC5BAD9005B309F /* CeldaBase.swift */,
 				ABA011421ADC412B00E04ACF /* PerfilUsuario */,
 				ABE7BF481ACA117200AF8FB9 /* Usuarios */,
@@ -1065,6 +1068,14 @@
 				AB6C721D1ACB19A700B87704 /* Celda_Usuario.swift */,
 			);
 			name = Usuarios;
+			sourceTree = "<group>";
+		};
+		ABFDE70E1AF19C410072B9D7 /* textField */ = {
+			isa = PBXGroup;
+			children = (
+				ABF2B0FE1AF03583008217DA /* textField_Formulario.swift */,
+			);
+			name = textField;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1261,7 +1272,7 @@
 				ABA010E91ADC2B5E00E04ACF /* UIProgressView+AFNetworking.m in Sources */,
 				AB6C721E1ACB19A700B87704 /* Celda_Usuario.swift in Sources */,
 				ABA0113D1ADC2B5E00E04ACF /* PKTImageCache.m in Sources */,
-				ABC005461AC5BAD9005B309F /* structuras.swift in Sources */,
+				ABC005461AC5BAD9005B309F /* estructuras.swift in Sources */,
 				ABA011411ADC2B5E00E04ACF /* README.md in Sources */,
 				ABA011221ADC2B5E00E04ACF /* PKTStatus.m in Sources */,
 				ABA0110B1ADC2B5E00E04ACF /* PKTDateItemFieldValue.m in Sources */,
@@ -1278,7 +1289,7 @@
 				ABA010E11ADC2B5E00E04ACF /* AFURLSessionManager.m in Sources */,
 				AB3CBF511AD4575900AC043E /* comunicacion.swift in Sources */,
 				ABA0110E1ADC2B5E00E04ACF /* PKTDurationItemFieldValue.m in Sources */,
-				ABF2B0FF1AF03583008217DA /* tFiPersonalizado.swift in Sources */,
+				ABF2B0FF1AF03583008217DA /* textField_Formulario.swift in Sources */,
 				ABA010E61ADC2B5E00E04ACF /* UIAlertView+AFNetworking.m in Sources */,
 				ABA011071ADC2B5E00E04ACF /* PKTCalendarEvent.m in Sources */,
 				ABA011401ADC2B5E00E04ACF /* UIImageView+PKTRemoteImage.m in Sources */,
@@ -1288,6 +1299,7 @@
 				ABA010DD1ADC2B5E00E04ACF /* AFSecurityPolicy.m in Sources */,
 				ABA011351ADC2B5E00E04ACF /* PKTDateValueTransformer.m in Sources */,
 				ABA011091ADC2B5E00E04ACF /* PKTCategoryOption.m in Sources */,
+				ABFDE7101AF19DD20072B9D7 /* nacimientoPicker.swift in Sources */,
 				AB37C4B81AEAA60900D12500 /* TerminosYCondiciones_VC.swift in Sources */,
 				ABA011231ADC2B5E00E04ACF /* PKTStringItemFieldValue.m in Sources */,
 				AB21EFB21ADD998300FEA659 /* listaHorizontalMeses.swift in Sources */,

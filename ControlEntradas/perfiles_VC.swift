@@ -18,7 +18,7 @@ class perfiles_VC: UIViewController,SFSwiftNotificationProtocol {
     private var logoEmpresa:usuario_View!
     private var celdaEntradasSalidas:[Cell_EntradaSalida] = []
     private var registroActual:registrado = .ninguna
-    private var arrayAccess:[accesos] = []
+//    private var arrayAccess:[accesos] = []
     private var beacon = beaconManipulador()
     
     var formatterES = NSDateFormatter()

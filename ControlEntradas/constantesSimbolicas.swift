@@ -114,3 +114,9 @@ let naranja_texto = UIColor.orangeColor()
 // MARK: ----------------------------------
 
 let S_BTN_ATRS = CGSize(width: 40, height: 40)
+
+// MARK: ----------------------------------
+// MARK: Constantes textField_Formulario
+// MARK: ----------------------------------
+
+let grosorLinea:CGFloat = 0.5

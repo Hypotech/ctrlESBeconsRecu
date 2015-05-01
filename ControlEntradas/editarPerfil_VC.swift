@@ -50,17 +50,17 @@ class editarPerfil_VC: UIViewController, UIImagePickerControllerDelegate, UINavi
                                                           width: superVDim.width,
                                                           height: P_ALT_IMG_USR * superVDim.height))
         
-        var view_cambiarFoto = UIView(frame: CGRect(origin:
+        var view_contenedorBtns = UIView(frame: CGRect(origin:
                                         CGPoint(x: (superVDim.width - S_V_CFB.width) / 2,
                                                 y: view_FotoUsuario.container.frame.maxY  - S_V_CFB.height - 8),
-                                                    size: S_V_CFB))
+                                                      size: S_V_CFB))
         
-        var img_fondo = UIImageView(frame: CGRect(origin: CGPoint.zeroPoint,
-                                                  size:view_cambiarFoto.frame.size))
+        var img_fondoXView_cambiarFoto = UIImageView(frame: CGRect(origin: CGPoint.zeroPoint,
+                                                  size:view_contenedorBtns.frame.size))
         
         var btn_tomarFoto = UIButton(frame: CGRect( x: 0, y: 0,
-                                                    width: view_cambiarFoto.frame.width,
-                                                    height: view_cambiarFoto.frame.height/2))
+                                                    width: view_contenedorBtns.frame.width,
+                                                    height: view_contenedorBtns.frame.height/2))
         
         var btn_ElegirFoto = UIButton(frame: CGRectOffset(btn_tomarFoto.frame, 0, btn_tomarFoto.frame.maxY))
         
@@ -82,24 +82,22 @@ class editarPerfil_VC: UIViewController, UIImagePickerControllerDelegate, UINavi
         self.view.backgroundColor = UIColor.whiteColor()
         
         btn_tomarFoto.setTitle("Tomar Foto", forState: .Normal)
-        btn_tomarFoto.backgroundColor = UIColor(red: 0.56, green: 0.76, blue: 0.21, alpha: 0.3)
+//        btn_tomarFoto.backgroundColor = UIColor(red: 0.56, green: 0.76, blue: 0.21, alpha: 0.3)
         
         btn_ElegirFoto.setTitle("Elegir de la Biblioteca", forState: .Normal)
-        btn_ElegirFoto.backgroundColor = UIColor(red: 0.3, green: 0.76, blue: 0.2, alpha: 0.4)
+//        btn_ElegirFoto.backgroundColor = UIColor(red: 0.3, green: 0.76, blue: 0.2, alpha: 0.4)
         
-        img_fondo.image = UIImage(named: "elegir_foto.png")
+        img_fondoXView_cambiarFoto.image = UIImage(named: "elegir_foto.png")
         
 //        view_cambiarFoto.backgroundColor = .greenColor()
         
-        view_cambiarFoto.addSubview(img_fondo)
-        view_cambiarFoto.addSubview(btn_tomarFoto)
-        view_cambiarFoto.addSubview(btn_ElegirFoto)
+        view_contenedorBtns.addSubview(img_fondoXView_cambiarFoto)
+        view_contenedorBtns.addSubview(btn_tomarFoto)
+        view_contenedorBtns.addSubview(btn_ElegirFoto)
         //########################################################################################################//
         
-//        super.view.addSubview(img_usuario)
-//        super.view.addSubview(img_filtro)
         super.view.addSubview(view_FotoUsuario.container)
-        super.view.addSubview(view_cambiarFoto)
+        super.view.addSubview(view_contenedorBtns)
         super.view.addSubview(btn_guardar)
     }
 
@@ -180,7 +178,7 @@ class editarPerfil_VC: UIViewController, UIImagePickerControllerDelegate, UINavi
             var ubicTabla = CGRect( x: (superVDim.width - 300) / 2,
                                     y: self.view_FotoUsuario.container.frame.maxY,
                                     width: 300,
-                                    height: 350)
+                                    height: 590)
             
             self.infoUsuario = tablaDatosPerfil(ubicacion: ubicTabla,datos: self.datosPerfil)
             self.view.addSubview(self.infoUsuario.viewTabla)

@@ -18,8 +18,6 @@ class BeaconEncontrado_VC: UIViewController {
         var btn_reg_Entrada = UIButton.buttonWithType(UIButtonType.System) as UIButton
         var btn_reg_Salida = UIButton.buttonWithType(UIButtonType.System) as UIButton
         
-        var gestoTap = UITapGestureRecognizer(target: self, action: "desaparecerPopUp")
-        
         //************************** Posicion de los wigets **************************//
 
         contenedor = UIView(frame: CGRect(x: (superView.width - S_CONTENEDOR.width) / 2,
@@ -92,7 +90,9 @@ class BeaconEncontrado_VC: UIViewController {
         contenedor.addSubview(btn_reg_Salida)
         contenedor.addSubview(lbl_abajo_Salida)
         
+        var gestoTap = UITapGestureRecognizer(target: self, action: "desaparecerPopUp")
         var algo = UITapGestureRecognizer(target: self, action: "noHaceNada")
+        
         contenedor.addGestureRecognizer(algo)
 //        contenedor.userInteractionEnabled = false
         

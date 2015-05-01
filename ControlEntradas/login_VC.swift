@@ -68,8 +68,10 @@ class login_VC: UIViewController,UITextFieldDelegate {
         
         //####################### Personalizando los widgets ########################//
         
-        btn_atras.backgroundColor = UIColor.greenColor()
+        btn_atras.setImage(UIImage(named:"boton_back_verde.png"), forState: .Normal)
+        btn_atras.setImage(UIImage(named:"boton_back_verde_on.png"), forState: .Highlighted)
         btn_atras.addTarget(self, action: "irAtras", forControlEvents: .TouchUpInside)
+        
         img_Empresa.image = UIImage(named: "Logo_republica.png")
         
         tFi_nomUsur.borderStyle = .RoundedRect

@@ -6,11 +6,6 @@
 
 import UIKit
 
-struct accesos {
-    var fechaEntrada:NSDate
-    var fechaSalida:NSDate
-}
-
 enum registrado{
     case ninguna
     case entrada
@@ -48,3 +43,11 @@ struct Perfil {
         organizacion = []
     }
 }
+
+enum componentePicker:Int{
+    case Dia = 0
+    case Mes
+    case Año
+}
+
+let mesesArray = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"]
