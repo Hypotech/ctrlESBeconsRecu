@@ -26,16 +26,14 @@ class tablaDatosPerfil:NSObject, UITableViewDataSource, UITableViewDelegate {
     // MARK: -------------------
     // MARK: Inicializar widgets
     // MARK: -------------------
-    init(ubicacion:CGRect, datos:Perfil) {
-
+    
+    init(ubicacion:CGRect,datos:Perfil) {
         datosPerfil = datos
         super.init()
         
         //****************************** Posicion de los wigets ******************************//
         
-        viewTabla = UITableView(frame: CGRect(  x: ubicacion.minX, y: ubicacion.minY,
-                                                width: ubicacion.width,
-                                                height: ubicacion.height - 120.0 - ESPACIO_BOTTOM),
+        viewTabla = UITableView(frame: ubicacion,
                                 style: .Grouped)
 
         println("ancho de un reglon: \(viewTabla.frame.width)")
@@ -48,6 +46,11 @@ class tablaDatosPerfil:NSObject, UITableViewDataSource, UITableViewDelegate {
         var tFi_email = textField_Formulario(frame: tFi_nombre.frame)
         
         var tFi_organizacion = textField_Formulario(frame: tFi_nombre.frame)
+        
+        var btn_guardarCambios = UIButton(frame: CGRect(x: viewTabla.frame.minX,
+                                                        y: viewTabla.frame.maxY + 8,
+                                                        width: viewTabla.frame.width,
+                                                        height: 40))
         
         celd_nacimiento = celda_Fecha(tamaño: CGSize(width: viewTabla.frame.width, height: 44))
         
@@ -73,6 +76,11 @@ class tablaDatosPerfil:NSObject, UITableViewDataSource, UITableViewDelegate {
         celd_email.addSubview(tFi_email)
         
         celdasDatosPerfil = [celd_nombre,celd_organizacion,/* celd_telefono,*/celd_email,celd_nacimiento]
+        
+        btn_guardarCambios.addTarget(self, action: "guardarCambios", forControlEvents: .TouchUpInside)
+        btn_guardarCambios.setTitle("GUARDAR CAMBIOS", forState: .Normal)
+        btn_guardarCambios.setTitleColor(.blueColor(), forState: .Normal)
+        
         //##################################################################################//
         
         //{{{{{{{{{{{ Delegados }}}}}}}}}}}}
@@ -84,6 +92,7 @@ class tablaDatosPerfil:NSObject, UITableViewDataSource, UITableViewDelegate {
         viewTabla.separatorStyle = .None
         viewTabla.allowsSelection = true
         viewTabla.userInteractionEnabled = true
+        viewTabla.bounces = false
 //        viewTabla.scrollEnabled = false
     }
     
@@ -144,6 +153,23 @@ class tablaDatosPerfil:NSObject, UITableViewDataSource, UITableViewDelegate {
         return cadenaResult
     }
     
+    
+    // MARK: ---------------------
+    // MARK: Funciones de utilidad
+    // MARK: ---------------------
+    
+    func setPerfil(datos:Perfil){
+        
+        datosPerfil = datos
+    }
+    
+    // MARK: ---------------------------------------------
+    // MARK: Funciones para la interacción con los botones
+    // MARK: ---------------------------------------------
+    
+    func guardarCambios(){
+        
+    }
 //    func textFieldSeleccionado(_:String){
 //        celd_nacimiento.abrirDatePicker(viewTabla)
 //    }

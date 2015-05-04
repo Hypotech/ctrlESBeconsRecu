@@ -32,6 +32,8 @@
 		AB3F0D0B1ACCA1AA00D03898 /* inicio_VC.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB3F0D0A1ACCA1AA00D03898 /* inicio_VC.swift */; };
 		AB4AA71F1AEEFA0E0008A3ED /* ajustes_popup.png in Resources */ = {isa = PBXBuildFile; fileRef = AB4AA71E1AEEFA0D0008A3ED /* ajustes_popup.png */; };
 		AB5375001AD4A0270030F786 /* tablaDatosPerfil.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB5374FF1AD4A0270030F786 /* tablaDatosPerfil.swift */; };
+		AB60053F1AF7D9C700C0F3C3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ABC005021AC5B354005B309F /* Main.storyboard */; };
+		AB6005401AF7D9CD00C0F3C3 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = ABC005071AC5B354005B309F /* LaunchScreen.xib */; };
 		AB6C721E1ACB19A700B87704 /* Celda_Usuario.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB6C721D1ACB19A700B87704 /* Celda_Usuario.swift */; };
 		AB7330001AE1582B00D277E9 /* login1eraVez_VC.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB732FFF1AE1582B00D277E9 /* login1eraVez_VC.swift */; };
 		AB7330051AE1988700D277E9 /* Fontfabric - Nexa-Light-Italic.otf in Resources */ = {isa = PBXBuildFile; fileRef = AB7330021AE1988700D277E9 /* Fontfabric - Nexa-Light-Italic.otf */; };
@@ -151,9 +153,7 @@
 		ABBA6C5C1AEEA90300FDE2B7 /* registroEmail_VC.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABBA6C5B1AEEA90300FDE2B7 /* registroEmail_VC.swift */; };
 		ABC004FF1AC5B354005B309F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABC004FE1AC5B354005B309F /* AppDelegate.swift */; };
 		ABC005011AC5B354005B309F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABC005001AC5B354005B309F /* ViewController.swift */; };
-		ABC005041AC5B354005B309F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ABC005021AC5B354005B309F /* Main.storyboard */; };
 		ABC005061AC5B354005B309F /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ABC005051AC5B354005B309F /* Images.xcassets */; };
-		ABC005091AC5B354005B309F /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = ABC005071AC5B354005B309F /* LaunchScreen.xib */; };
 		ABC005151AC5B354005B309F /* ControlEntradasTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABC005141AC5B354005B309F /* ControlEntradasTests.swift */; };
 		ABC005231AC5B448005B309F /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABC005221AC5B448005B309F /* SystemConfiguration.framework */; };
 		ABC005251AC5B451005B309F /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABC005241AC5B451005B309F /* CoreBluetooth.framework */; };
@@ -1159,6 +1159,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AB6005401AF7D9CD00C0F3C3 /* LaunchScreen.xib in Resources */,
+				AB60053F1AF7D9C700C0F3C3 /* Main.storyboard in Resources */,
 				AB08A2071AE8508400BC5398 /* boton_buscar.png in Resources */,
 				ABE976831AD3085C004FB2F3 /* nature.png in Resources */,
 				AB7330071AE1988700D277E9 /* Nexa Bold.otf in Resources */,
@@ -1174,7 +1176,6 @@
 				AB08A2011AE8508400BC5398 /* icono_entrada.png in Resources */,
 				ABA010EC1ADC2B5E00E04ACF /* LICENSE in Resources */,
 				AB08A2021AE8508400BC5398 /* icono_salida.png in Resources */,
-				ABC005041AC5B354005B309F /* Main.storyboard in Resources */,
 				AB7330051AE1988700D277E9 /* Fontfabric - Nexa-Light-Italic.otf in Resources */,
 				ABE9767F1AD3002A004FB2F3 /* user.png in Resources */,
 				ABE976851AD31CD5004FB2F3 /* Edit_icon.png in Resources */,
@@ -1187,7 +1188,6 @@
 				AB08A2061AE8508400BC5398 /* boton_buscar_on.png in Resources */,
 				ABE9767D1AD2FFBD004FB2F3 /* Settings-icon.png in Resources */,
 				AB4AA71F1AEEFA0E0008A3ED /* ajustes_popup.png in Resources */,
-				ABC005091AC5B354005B309F /* LaunchScreen.xib in Resources */,
 				AB08A2001AE8508400BC5398 /* filtro_foto.png in Resources */,
 				ABF2B0CB1AEFE5ED008217DA /* elegir_foto.png in Resources */,
 				ABF2B0C81AEFE5ED008217DA /* boton_back_blanco.png in Resources */,

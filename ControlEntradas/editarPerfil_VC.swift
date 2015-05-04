@@ -64,10 +64,16 @@ class editarPerfil_VC: UIViewController, UIImagePickerControllerDelegate, UINavi
         
         var btn_ElegirFoto = UIButton(frame: CGRectOffset(btn_tomarFoto.frame, 0, btn_tomarFoto.frame.maxY))
         
-        var btn_guardar = UIButton(frame: CGRect(origin: CGPoint(x: (superVDim.width - S_BTN_GUAR.width) / 2,
-                                                                 y: superVDim.height - S_BTN_GUAR.height - 5),
-                                                 size: S_BTN_GUAR))
+//        var btn_guardar = UIButton(frame: CGRect(origin: CGPoint(x: (superVDim.width - S_BTN_GUAR.width) / 2,
+//                                                                 y: superVDim.height - S_BTN_GUAR.height - 5),
+//                                                 size: S_BTN_GUAR))
         
+//        var ubicTabla = CGRect( x: (superVDim.width - 300) / 2,
+//                                y: self.view_FotoUsuario.container.frame.maxY,
+//                                width: 300,
+//                                height: superVDim.height - self.view_FotoUsuario.container.frame.maxY - ESPACIO_BOTTOM)
+//        
+//        infoUsuario = tablaDatosPerfil(ubicacion: ubicTabla)
          //*******************************************************************************************************//
         
         //#################################### Personalización de los widgets ####################################//
@@ -82,9 +88,11 @@ class editarPerfil_VC: UIViewController, UIImagePickerControllerDelegate, UINavi
         self.view.backgroundColor = UIColor.whiteColor()
         
         btn_tomarFoto.setTitle("Tomar Foto", forState: .Normal)
+        btn_tomarFoto.setTitleColor(gris_texto, forState: .Normal)
 //        btn_tomarFoto.backgroundColor = UIColor(red: 0.56, green: 0.76, blue: 0.21, alpha: 0.3)
         
         btn_ElegirFoto.setTitle("Elegir de la Biblioteca", forState: .Normal)
+        btn_ElegirFoto.setTitleColor(gris_texto, forState: .Normal)
 //        btn_ElegirFoto.backgroundColor = UIColor(red: 0.3, green: 0.76, blue: 0.2, alpha: 0.4)
         
         img_fondoXView_cambiarFoto.image = UIImage(named: "elegir_foto.png")
@@ -98,7 +106,7 @@ class editarPerfil_VC: UIViewController, UIImagePickerControllerDelegate, UINavi
         
         super.view.addSubview(view_FotoUsuario.container)
         super.view.addSubview(view_contenedorBtns)
-        super.view.addSubview(btn_guardar)
+//        super.view.addSubview(btn_guardar)
     }
 
     // MARK: ---------------------------
@@ -174,13 +182,16 @@ class editarPerfil_VC: UIViewController, UIImagePickerControllerDelegate, UINavi
                 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&//
             }
             
-            var superVDim = self.view.frame
+            let superVDim = self.view.frame //dimensiones del superView
             var ubicTabla = CGRect( x: (superVDim.width - 300) / 2,
-                                    y: self.view_FotoUsuario.container.frame.maxY,
-                                    width: 300,
-                                    height: 590)
+                y: self.view_FotoUsuario.container.frame.maxY,
+                width: 300,
+                height: superVDim.height - self.view_FotoUsuario.container.frame.maxY - ESPACIO_BOTTOM)
             
-            self.infoUsuario = tablaDatosPerfil(ubicacion: ubicTabla,datos: self.datosPerfil)
+            self.infoUsuario = tablaDatosPerfil(ubicacion: ubicTabla, datos: self.datosPerfil)
+
+            
+//            self.infoUsuario.setPerfil(self.datosPerfil)
             self.view.addSubview(self.infoUsuario.viewTabla)
             
         })

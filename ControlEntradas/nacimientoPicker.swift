@@ -26,9 +26,9 @@ class nacimientoPicker: NSObject, UIPickerViewDataSource, UIPickerViewDelegate  
     
     private let añosArray:[String]
 
-    // MARK: -----------
-    // MARK: Constructor
-    // MARK: -----------
+    // MARK: -------------------
+    // MARK: Inicializar widgets
+    // MARK: -------------------
     
     init(frame:CGRect){
         
@@ -104,9 +104,9 @@ class nacimientoPicker: NSObject, UIPickerViewDataSource, UIPickerViewDelegate  
     
     func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int{
 
-        let comp_enum = componentePicker(rawValue: component)!
+        let tipo_componente = componentePicker(rawValue: component)!
         
-        switch comp_enum{
+        switch tipo_componente{
         case .Dia:
             return 31
         case .Mes:

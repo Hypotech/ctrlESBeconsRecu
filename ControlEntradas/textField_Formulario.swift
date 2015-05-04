@@ -22,13 +22,14 @@ class textField_Formulario:UIView{
     
     override init(frame: CGRect) {
 
-        var frameTexField =  CGRect(x: frame.minX + 10,
+        var frameTextField =  CGRect(x: frame.minX + 10,
                                     y: frame.minY + 14,
                                     width: frame.width - 20,
                                     height: frame.height - 14)
         
-        textField = UITextField(frame: frameTexField) //textField un poco más chico que el view contenedor
+        textField = UITextField(frame: frameTextField) //textField un poco más chico que su view contenedor
         super.init(frame: frame)
+        
         //****************************** Posicion de los wigets ******************************//
         let alturaEsquinas = frame.height * 0.2
         

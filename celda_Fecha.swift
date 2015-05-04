@@ -15,29 +15,53 @@ class celda_Fecha: CeldaBase,nacimientoPickerDelegate {
     // MARK: Propiedades
     // MARK: -----------
     
+    var dia:Int{
+        get{
+            return fechaArray[0].toInt()!
+        }
+        set{
+            if (0 > newValue && newValue <= diasXmes[fechaArray[1].toInt()!]){
+                fechaArray[0] = "\(newValue)"
+            }
+        }
+    }
+    
+    var mes:u_int{
+        get{
+            return u_int (fechaArray[1].toInt()!)
+        }
+        set{
+            if (mes > 0 && mes < 13){
+                fechaArray[1] = "\(newValue)"
+            }
+        }
+    }
+    
+    var año:Int{
+        get{
+            return fechaArray[2].toInt()!
+        }
+        set{
+            fechaArray[2] = "\(newValue)"
+        }
+    }
+    
+    private var fechaArray = ["1","1","1942"]
+    private let diasXmes = [31,28,31,30,31,30,31,31,30,31,30,31]
+    
     private var expandido = false
-//    private var lbl_fechaNacimiento:UILabel
     private var lbl_placeHolder:UILabel
     private var Pick_fecha:nacimientoPicker
-//    var tFi_fecha:textField_Formulario
-    
     private var formatoFecha = NSDateFormatter()
     
     // MARK: -------------------
     // MARK: Inicializar widgets
     // MARK: -------------------
+    
     init(tamaño:CGSize){
         
         //****************************** Posicion de los wigets ******************************//
         lbl_placeHolder = UILabel(frame: CGRect(x: 10, y: 0, width: 140, height: tamaño.height))
-//
-//        lbl_fechaNacimiento = UILabel(frame: CGRect( x: tamaño.width - 90,
-//                                                y: 0,
-//                                                width: 130,
-//                                                height: tamaño.height))
-        
-//        tFi_fecha = textField_Formulario(frame: CGRect( origin: CGPoint.zeroPoint,
-//                                                        size: tamaño))
         
         let alturaEsquinas = tamaño.height * 0.2
         
@@ -66,13 +90,9 @@ class celda_Fecha: CeldaBase,nacimientoPickerDelegate {
         
        formatoFecha.dateStyle = .ShortStyle
         
-//        tFi_fecha.textField.placeholder = "Fecha de nacimiento"
         lbl_placeHolder.text = "Fecha de nacimiento"
         lbl_placeHolder.textColor = UIColor.lightGrayColor()
-//
-//        lbl_fechaNacimiento.text = "Seleccione"
-//        lbl_fechaNacimiento.textColor = UIColor.lightGrayColor()
-        
+
         linea_baja.backgroundColor = UIColor.lightGrayColor()
         linea_izq.backgroundColor = linea_baja.backgroundColor
         linea_der.backgroundColor = linea_baja.backgroundColor
@@ -80,8 +100,6 @@ class celda_Fecha: CeldaBase,nacimientoPickerDelegate {
         super.init(tamañoAlto: 44.0)
         
         Pick_fecha.delegado = self
-//        tFi_fecha.delegado = self
-//        self.addSubview(tFi_fecha)
         self.addSubview(linea_baja)
         self.addSubview(linea_izq)
         self.addSubview(linea_der)
@@ -90,7 +108,6 @@ class celda_Fecha: CeldaBase,nacimientoPickerDelegate {
     }
 
     required init(coder aDecoder: NSCoder) {
-//        tFi_fecha = textField_Formulario(coder: aDecoder)
         lbl_placeHolder = UILabel(coder: aDecoder)
         Pick_fecha = nacimientoPicker(frame: CGRect.zeroRect)
         super.init(coder: aDecoder)
@@ -131,7 +148,7 @@ class celda_Fecha: CeldaBase,nacimientoPickerDelegate {
 //        abrirDatePicker()
 //    }
     
-    var fechaArray = ["","",""]
+
     func cambioFecha(valor:String, componente:Int){
         
         let comp_enum = componentePicker(rawValue: componente)!
