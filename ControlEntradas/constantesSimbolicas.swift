@@ -17,6 +17,15 @@ import UIKit
 let S_REG_EMAIL = CGSize(width: 300, height: 50)
 let S_REG_PODIO = S_REG_EMAIL
 
+
+// MARK: --------------------------
+// MARK: Constantes login_VC
+// MARK: --------------------------
+
+// Nota: coordenas relativas a su contenedor
+
+let S_BTN_INGR = S_REG_PODIO
+
 // MARK: -----------------------------
 // MARK: Constantes registroEmail_VC
 // MARK: -----------------------------
@@ -77,6 +86,14 @@ let OK_login = 200
 let P_ALT_IMG_USR:CGFloat =  0.3927 /*CGFloat(175.0)*/
 let S_IMG_BEACON = CGSize(width: 70, height: 70)
 
+// MARK: --------------------
+// MARK: Constantes ajustes_VC
+// MARK: --------------------
+
+let S_IMG_FONDO = CGSize(width: 240, height: 260)
+
+
+
 // MARK: -----------------------------
 // MARK: Constantes de editarPerfil_VC
 // MARK: -----------------------------
@@ -110,10 +127,12 @@ let gris_texto = UIColor(red: 153/255, green: 153/255, blue: 153/255, alpha: 1.0
 let naranja_texto = UIColor.orangeColor()
 
 // MARK: ----------------------------------
-// MARK: Constantes TerminosYCondiciones_VC
+// MARK: Constantes Genericos
 // MARK: ----------------------------------
 
-let S_BTN_ATRS = CGSize(width: 40, height: 40)
+let S_BTN_ATRS = CGSize(width: 30, height: 30)
+let S_BTN_EPER = S_BTN_ATRS
+let S_BTN_AJUS = S_BTN_ATRS
 
 // MARK: ----------------------------------
 // MARK: Constantes textField_Formulario

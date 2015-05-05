@@ -16,8 +16,8 @@ class usuario_View{
     // MARK: -----------
     var container:UIView
     
-    internal var img_usuario:UIImageView
-    internal var img_filtro:UIImageView
+    private var img_usuario:UIImageView?
+    private var img_filtro:UIImageView?
     
     // MARK: -------------------
     // MARK: Inicializar widgets
@@ -30,22 +30,28 @@ class usuario_View{
             img_usuario = UIImageView(frame: ubicacion)
             img_filtro = UIImageView(frame: ubicacion)
             
-            img_filtro.image = filtro
-            img_usuario.image = usuario
+            img_filtro?.image = filtro
+
+            img_usuario?.image = usuario
+            img_usuario?.contentMode = .ScaleAspectFit
             
             container.backgroundColor = UIColor.brownColor()
-            container.addSubview(img_usuario)
-            container.addSubview(img_filtro)
+            container.addSubview(img_usuario!)
+            container.addSubview(img_filtro!)
     }
     
-    func setUsuario(imagen:UIImage){
+    func setUsuario(imagen:UIImage?){
         
-        img_usuario.image = imagen
+        if (imagen != nil){
+            img_usuario!.image = imagen
+        }
     }
     
-    func setFiltro(imagen:UIImage){
+    func setFiltro(imagen:UIImage?){
 
-        img_filtro.image = imagen
+        if (imagen != nil){
+            img_filtro!.image = imagen
+        }
     }
     
 }

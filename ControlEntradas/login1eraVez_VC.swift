@@ -52,7 +52,8 @@ class login1eraVez_VC: UIViewController {
         btn_registroXEmail.addTarget(self, action: "resgitarxEmail", forControlEvents: .TouchUpInside)
         
         var atributos =  [  NSUnderlineStyleAttributeName : NSUnderlineStyle.StyleSingle.rawValue,
-                            NSForegroundColorAttributeName: UIColor.blueColor() ]
+                            NSForegroundColorAttributeName: verde_textoSelect,
+                            NSFontAttributeName: btn_ingresar.titleLabel!.font.fontWithSize(13.0) ]
         
         var cadenaForamteada = NSMutableAttributedString(string: "INGRESAR", attributes:atributos)
         

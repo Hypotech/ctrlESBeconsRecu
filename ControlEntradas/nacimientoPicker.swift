@@ -50,7 +50,6 @@ class nacimientoPicker: NSObject, UIPickerViewDataSource, UIPickerViewDelegate  
         
         contenedor = UIView(frame: frame)
         
-        println("alto de contenedor: \(contenedor.frame.height)")
         
         var separador = UIView(frame: CGRect(x: 0, y: 0, width: contenedor.frame.width, height: 0.9))
         

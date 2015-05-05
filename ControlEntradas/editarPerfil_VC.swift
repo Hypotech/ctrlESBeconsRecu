@@ -26,10 +26,6 @@ class editarPerfil_VC: UIViewController, UIImagePickerControllerDelegate, UINavi
     private var datosPerfil = Perfil()
     private var infoUsuario:tablaDatosPerfil!
     
-//    private var tFi_Nombre:UITextField!
-//    private var tFi_Apellidos:UITextField!
-//    private var tFi_Nacimento:UITextField!
-//    private var img_usuario:UIImageView!
     private var selectorImgs = UIImagePickerController()
     private var view_FotoUsuario:usuario_View! //foto de usuario + un filtro
     
@@ -45,6 +41,8 @@ class editarPerfil_VC: UIViewController, UIImagePickerControllerDelegate, UINavi
         selectorImgs.delegate = self
 
         //****************************************** Posicion de los wigets **************************************//
+        
+        var btn_atras = UIButton(frame: CGRect(origin: CGPoint(x: 10, y: 30), size:S_BTN_ATRS))
         
         view_FotoUsuario = usuario_View(ubicacion: CGRect(x: 0, y: 0,
                                                           width: superVDim.width,
@@ -64,28 +62,67 @@ class editarPerfil_VC: UIViewController, UIImagePickerControllerDelegate, UINavi
         
         var btn_ElegirFoto = UIButton(frame: CGRectOffset(btn_tomarFoto.frame, 0, btn_tomarFoto.frame.maxY))
         
-        var btn_guardar = UIButton(frame: CGRect(origin: CGPoint(x: (superVDim.width - S_BTN_GUAR.width) / 2,
-                                                                 y: superVDim.height - S_BTN_GUAR.height - 5),
-                                                 size: S_BTN_GUAR))
         
+        var btn_guardarCambios = UIButton(frame: CGRect(origin: CGPoint(x: (superVDim.width - S_BTN_GUAR.width) / 2,
+            y: superVDim.height - S_BTN_GUAR.height - 10),
+            size: S_BTN_GUAR))
+        
+        let ubicTabla = CGRect( x: (superVDim.width - 300) / 2,
+                                y: self.view_FotoUsuario.container.frame.maxY,
+                                width: 300,
+                                height: btn_guardarCambios.frame.minY
+                                        - view_FotoUsuario.container.frame.maxY
+                                        - 10)
+        
+        infoUsuario = tablaDatosPerfil(ubicacion: ubicTabla)
+
          //*******************************************************************************************************//
         
         //#################################### Personalización de los widgets ####################################//
         
+        btn_atras.setImage(UIImage(named:"boton_back_blanco.png"), forState: .Normal)
+        btn_atras.setImage(UIImage(named:"boton_back_blanco_on.png"), forState: .Highlighted)
+        btn_atras.addTarget(self, action: "irAtras", forControlEvents: .TouchUpInside)
+        
         obtenerPerfil()
-        
-        self.navigationController?.navigationBar.barStyle  = UIBarStyle.Black
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "〈 Inicio", style: .Plain, target: self, action: "IrAInicio")
-        self.navigationItem.leftBarButtonItem?.tintColor = UIColor.greenColor()
-        navigationItem.title = "✏️Edicción de perfil"
-        
+
         self.view.backgroundColor = UIColor.whiteColor()
         
-        btn_tomarFoto.setTitle("Tomar Foto", forState: .Normal)
-//        btn_tomarFoto.backgroundColor = UIColor(red: 0.56, green: 0.76, blue: 0.21, alpha: 0.3)
         
-        btn_ElegirFoto.setTitle("Elegir de la Biblioteca", forState: .Normal)
+        var text_tomarFoto_normal = NSMutableAttributedString(string: "Tomar Foto",
+                                                attributes: [ NSFontAttributeName: UIFont.systemFontOfSize(12.0),
+                                                              NSForegroundColorAttributeName: gris_texto ])
+        
+        var text_tomarFoto_hilighted = NSMutableAttributedString(string: "Tomar Foto",
+                                                attributes: [ NSFontAttributeName: UIFont.systemFontOfSize(12.0),
+                                                            NSForegroundColorAttributeName: UIColor.whiteColor() ])
+
+        btn_tomarFoto.setAttributedTitle(text_tomarFoto_normal, forState: .Normal)
+        btn_tomarFoto.setAttributedTitle(text_tomarFoto_hilighted, forState: .Highlighted)
+        btn_tomarFoto.addTarget(self, action: "tomarFoto", forControlEvents: .TouchUpInside)
+        
+        
+        let text_ElegirFoto_normal = NSAttributedString(string: "Elegir de la Biblioteca",
+                                             attributes: [ NSFontAttributeName: UIFont.systemFontOfSize(12.0),
+                                                           NSForegroundColorAttributeName: gris_texto ])
+        
+        var text_ElegirFoto_hilighted = NSMutableAttributedString(string: "Elegir de la Biblioteca",
+                                            attributes: [ NSFontAttributeName: UIFont.systemFontOfSize(12.0),
+                                                          NSForegroundColorAttributeName: UIColor.whiteColor() ])
+        
+        btn_ElegirFoto.setAttributedTitle(text_ElegirFoto_normal, forState: .Normal)
+        btn_ElegirFoto.setAttributedTitle(text_ElegirFoto_hilighted, forState: .Highlighted)
+        btn_ElegirFoto.addTarget(self, action: "elegirFotoBiblioteca", forControlEvents: .TouchUpInside)
 //        btn_ElegirFoto.backgroundColor = UIColor(red: 0.3, green: 0.76, blue: 0.2, alpha: 0.4)
+        
+//        btn_guardarCambios.setTitle("GUARDAR CAMBIOS", forState: .Normal)
+//        btn_guardarCambios.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+//        btn_guardarCambios.backgroundColor = UIColor.blueColor()
+//        btn_guardarCambios.setTitleColor(UIColor.whiteColor(), forState: .Highlighted)
+        
+        btn_guardarCambios.setImage(UIImage(named:"boton_guardar_cambios.png"), forState: .Normal)
+        btn_guardarCambios.setImage(UIImage(named:"boton_guardar_cambios_on.png"), forState: .Highlighted)
+        btn_guardarCambios.addTarget(self, action: "guardarCambios", forControlEvents: .TouchUpInside)
         
         img_fondoXView_cambiarFoto.image = UIImage(named: "elegir_foto.png")
         
@@ -94,11 +131,15 @@ class editarPerfil_VC: UIViewController, UIImagePickerControllerDelegate, UINavi
         view_contenedorBtns.addSubview(img_fondoXView_cambiarFoto)
         view_contenedorBtns.addSubview(btn_tomarFoto)
         view_contenedorBtns.addSubview(btn_ElegirFoto)
+//        infoUsuario.viewTabla.backgroundColor = UIColor.greenColor()
+        
         //########################################################################################################//
         
         super.view.addSubview(view_FotoUsuario.container)
+        super.view.addSubview(btn_atras)
         super.view.addSubview(view_contenedorBtns)
-        super.view.addSubview(btn_guardar)
+        self.view.addSubview(infoUsuario.viewTabla)
+        super.view.addSubview(btn_guardarCambios)
     }
 
     // MARK: ---------------------------
@@ -109,9 +150,13 @@ class editarPerfil_VC: UIViewController, UIImagePickerControllerDelegate, UINavi
         self.dismissViewControllerAnimated(true, completion: nil) //regresa al viewController anterior (inicio)
     }
     
+    func irAtras(){
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
     func obtenerPerfil(){
         
-        //*************************************** Obtener Organizacion ************************************//
+        //""""""""""""""""""""""""""""""""""""""" Obtener Organizacion """"""""""""""""""""""""""""""""""""""""//
         self.podio.performRequest(PKTOrganizationAPI.requestForAllOrganizations(), completion: {
             (respuestaOrg,errorORG) -> () in
             
@@ -125,7 +170,8 @@ class editarPerfil_VC: UIViewController, UIImagePickerControllerDelegate, UINavi
             
         })
         
-        //************************************* Obtener datos de usuario *************************************//
+        
+        //"""""""""""""""""""""""""""""""""""""" Obtener datos de usuario """""""""""""""""""""""""""""""""""""//
         podio.performRequest(PKTUserAPI.requestForUserStatus(), completion: {
             (respuesta,error) -> () in
             
@@ -141,11 +187,16 @@ class editarPerfil_VC: UIViewController, UIImagePickerControllerDelegate, UINavi
                     let link: AnyObject? = image!.objectForKey("link")
                     if !(link is NSNull){
                         
-                        var cadena = link as NSString
+                        let cadenaLink = link as NSString
                         
-                        var data = NSData(contentsOfURL: NSURL(string: cadena)!)
-                        self.view_FotoUsuario.setUsuario(UIImage(data: data!)!)
-//                        self.datosPerfil.imagenUsuario = UIImage(data: data!)
+                        let data = NSData(contentsOfURL: NSURL(string: cadenaLink)!)
+
+                        if (data != nil) {
+                            self.view_FotoUsuario.setUsuario(UIImage(data: data!)!)
+                        }
+                        else{
+                            println("Imagen no cargada")
+                        }
                     }
                 }
                 else{
@@ -174,44 +225,69 @@ class editarPerfil_VC: UIViewController, UIImagePickerControllerDelegate, UINavi
                 //&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&//
             }
             
-            var superVDim = self.view.frame
-            var ubicTabla = CGRect( x: (superVDim.width - 300) / 2,
-                                    y: self.view_FotoUsuario.container.frame.maxY,
-                                    width: 300,
-                                    height: 590)
-            
-            self.infoUsuario = tablaDatosPerfil(ubicacion: ubicTabla,datos: self.datosPerfil)
-            self.view.addSubview(self.infoUsuario.viewTabla)
+            self.infoUsuario.setPerfil(self.datosPerfil)
             
         })
-        //*****************************************************************************************************//
     }
 
-    // MARK: ------------------------------------------
-    // MARK: Funciones delegadas para cambiar la imagen
-    // MARK: ------------------------------------------
     
-    func seleccionarImagen(){
+    func tomarFoto(){
         
-        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera)
+        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera) //si hay camara disponible
         {
             selectorImgs.sourceType = UIImagePickerControllerSourceType.Camera
             self.presentViewController(selectorImgs, animated: true, completion: nil)
         }
+            
         else{
-            selectorImgs.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
-            self.presentViewController(selectorImgs, animated: true, completion: nil)
+            var alerta = UIAlertController( title: "Atención",
+                                            message: "Camara no disponible. Se abrirá la biblioteca de imagenes",//"Camara no encontrada",
+                                            preferredStyle: UIAlertControllerStyle.Alert )
+            
+            alerta.addAction(UIAlertAction(title: "Aceptar", style: UIAlertActionStyle.Cancel, handler: { 
+                _ -> () in
+                
+                //se abre la biblioteca de fotos (despues de que se da tap en el boton aceptar)
+                self.selectorImgs.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
+                self.presentViewController(self.selectorImgs, animated: true, completion: nil)
+            }))
+            self.presentViewController(alerta, animated: true, completion: nil)
+            
         }
     }
+    
+    
+    func elegirFotoBiblioteca(){
+        
+            selectorImgs.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
+            self.presentViewController(selectorImgs, animated: true, completion: nil)
+        
+    }
+    
+    func guardarCambios(){
+        
+    }
+    
+    // MARK: ----------------------------------------------
+    // MARK: Funciones delegadas para el selector de imagen
+    // MARK: ----------------------------------------------
     
     func imagePickerController(picker: UIImagePickerController!, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]!)
     {
         selectorImgs.dismissViewControllerAnimated(true, completion: nil)
         datosPerfil.imagenUsuario = info [UIImagePickerControllerOriginalImage] as? UIImage
-//        tbl_infoPerfil.setImageUsr(datosPerfil.imagenUsuario) //actualizamos la tabla
+        view_FotoUsuario.setUsuario(datosPerfil.imagenUsuario)
         
         self.delegado.actualizarPerfil(datosPerfil) //mandamos a actualizar el perfil en inicio_VC
         
     }
+
     
+    // MARK: -------------------------------------------------
+    // MARK: Funciones para personalizar el view controller
+    // MARK: -------------------------------------------------
+    override func preferredStatusBarStyle() -> UIStatusBarStyle{
+        
+        return .LightContent
+    }
 }

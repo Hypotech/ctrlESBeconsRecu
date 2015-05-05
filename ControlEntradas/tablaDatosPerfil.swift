@@ -20,34 +20,33 @@ class tablaDatosPerfil:NSObject, UITableViewDataSource, UITableViewDelegate {
 //    var delegado:tablaPerfildelegate!
     
     private var celdasDatosPerfil:[UITableViewCell] = []
-    private var datosPerfil:Perfil
+    private var datosPerfil = Perfil()
     private var celd_nacimiento:celda_Fecha!
+    private var tFi_nombre:textField_Formulario!
+    private var tFi_email:textField_Formulario!
+    private var tFi_organizacion:textField_Formulario!
     
     // MARK: -------------------
     // MARK: Inicializar widgets
     // MARK: -------------------
-    init(ubicacion:CGRect, datos:Perfil) {
+    
+    init(ubicacion:CGRect) {
 
-        datosPerfil = datos
         super.init()
         
         //****************************** Posicion de los wigets ******************************//
         
-        viewTabla = UITableView(frame: CGRect(  x: ubicacion.minX, y: ubicacion.minY,
-                                                width: ubicacion.width,
-                                                height: ubicacion.height - 120.0 - ESPACIO_BOTTOM),
-                                style: .Grouped)
-
-        println("ancho de un reglon: \(viewTabla.frame.width)")
+        viewTabla = UITableView(frame:  ubicacion,
+                                style: .Plain)
         
-        var tFi_nombre = textField_Formulario(frame:CGRect( x: 0,
+        tFi_nombre = textField_Formulario(frame:CGRect( x: 0,
                                                         y: 0,
                                                         width: viewTabla.frame.width,
                                                         height: 44))
         
-        var tFi_email = textField_Formulario(frame: tFi_nombre.frame)
+        tFi_email = textField_Formulario(frame: tFi_nombre.frame)
         
-        var tFi_organizacion = textField_Formulario(frame: tFi_nombre.frame)
+        tFi_organizacion = textField_Formulario(frame: tFi_nombre.frame)
         
         celd_nacimiento = celda_Fecha(tamaño: CGSize(width: viewTabla.frame.width, height: 44))
         
@@ -61,11 +60,11 @@ class tablaDatosPerfil:NSObject, UITableViewDataSource, UITableViewDelegate {
         var celd_email = UITableViewCell(style: .Default, reuseIdentifier: "perfilCelda")
         
         tFi_nombre.textField.placeholder = "Nombre"
-//            datosPerfil.nombre
+        
         tFi_email.textField.placeholder = "Email"
-//            concatenaArray(datosPerfil.email)
+        tFi_email.textField.keyboardType = .EmailAddress
+        
         tFi_organizacion.textField.placeholder = "Organización"
-//            concatenaArray(datosPerfil.organizacion)
         
         celd_nombre.addSubview(tFi_nombre)
         celd_organizacion.addSubview(tFi_organizacion)
@@ -73,6 +72,14 @@ class tablaDatosPerfil:NSObject, UITableViewDataSource, UITableViewDelegate {
         celd_email.addSubview(tFi_email)
         
         celdasDatosPerfil = [celd_nombre,celd_organizacion,/* celd_telefono,*/celd_email,celd_nacimiento]
+        
+        
+        viewTabla.separatorStyle = .None
+        viewTabla.allowsSelection = true
+//        viewTabla.backgroundColor = UIColor.lightGrayColor()
+        
+        //        viewTabla.scrollEnabled = false
+        
         //##################################################################################//
         
         //{{{{{{{{{{{ Delegados }}}}}}}}}}}}
@@ -80,11 +87,7 @@ class tablaDatosPerfil:NSObject, UITableViewDataSource, UITableViewDelegate {
         viewTabla.dataSource = self
 //        celd_nacimiento.tFi_fecha.delegado = self //solo para la celda fecha de nacimiento
         //{{{{{{{{{{{{{{{{{}}}}}}}}}}}}}}}}}
-        
-        viewTabla.separatorStyle = .None
-        viewTabla.allowsSelection = true
-        viewTabla.userInteractionEnabled = true
-//        viewTabla.scrollEnabled = false
+
     }
     
     // MARK: ----------------------------------------------------
@@ -124,6 +127,19 @@ class tablaDatosPerfil:NSObject, UITableViewDataSource, UITableViewDelegate {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     
+    // MARK: ------------------
+    // MARK: Funciones publicas
+    // MARK: ------------------
+    
+    func setPerfil(datos:Perfil){
+//        datosPerfil = datos
+        
+        tFi_nombre.textField.text = datos.nombre
+        tFi_email.textField.text = concatenaArray(datos.email)
+        tFi_organizacion.textField.text = concatenaArray(datos.telefono)
+        
+    }
+    
     // MARK: ---------------------
     // MARK: Funciones de utilidad
     // MARK: ---------------------
@@ -143,7 +159,7 @@ class tablaDatosPerfil:NSObject, UITableViewDataSource, UITableViewDelegate {
         }
         return cadenaResult
     }
-    
+
 //    func textFieldSeleccionado(_:String){
 //        celd_nacimiento.abrirDatePicker(viewTabla)
 //    }

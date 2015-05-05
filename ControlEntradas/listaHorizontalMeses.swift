@@ -13,6 +13,7 @@ protocol listaHorizontalMesesDelegado{
 }
 
 class listaHorizontalMeses: NSObject {
+    
     private var botonesMeses:[botonMes] = []
     var viewScroll:UIScrollView!
     var delegado:listaHorizontalMesesDelegado?

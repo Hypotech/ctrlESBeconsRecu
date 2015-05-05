@@ -12,6 +12,7 @@ class perfiles_VC: UIViewController,SFSwiftNotificationProtocol {
     // MARK: -----------
     // MARK: Propiedades
     // MARK: -----------
+    
     private var tabla: tablaUsuarios!
     private var Usuarios:[Celda_Usuario] = []
     private var btn_Registrar: UIButton!
@@ -29,6 +30,7 @@ class perfiles_VC: UIViewController,SFSwiftNotificationProtocol {
     // MARK: -------------------
     // MARK: Inicializar widgets
     // MARK: -------------------
+    
     override func viewDidLoad() {
         println("Cargado en memoria")
         
@@ -63,6 +65,7 @@ class perfiles_VC: UIViewController,SFSwiftNotificationProtocol {
         formatterES.timeZone = NSTimeZone()
         
         formatterFecha.dateStyle = NSDateFormatterStyle.ShortStyle
+        
         //###########################################################################//
         
         

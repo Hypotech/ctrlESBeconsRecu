@@ -8,9 +8,14 @@
 
 import UIKit
 
+protocol popUpBeaconDelegate{
+    func popUpDesaparecera()
+}
+
 class BeaconEncontrado_VC: UIViewController {
     
     private var contenedor:UIView!
+    var delegado:popUpBeaconDelegate?
     
     override func viewDidLoad() {
         var superView = self.view.frame
@@ -25,7 +30,7 @@ class BeaconEncontrado_VC: UIViewController {
             width: S_CONTENEDOR.width,
             height: S_CONTENEDOR.height))
         
-        var img_BackgroungContenedor = UIImageView(frame: CGRect(origin: CGPoint.zeroPoint,
+        var img_FondoContenedor = UIImageView(frame: CGRect(origin: CGPoint.zeroPoint,
                                                                  size: CGSize(width: S_CONTENEDOR.width, height: S_CONTENEDOR.height + 6)))
         
         var img_Becon = UIImageView(frame: R_IMG_BECON)
@@ -76,12 +81,12 @@ class BeaconEncontrado_VC: UIViewController {
         lbl_abajo_Salida.font = lbl_abajo_Entrada.font
         lbl_abajo_Salida.textColor = UIColor.grayColor()
         
-        img_BackgroungContenedor.image = UIImage(named: "pop_up.png")
+        img_FondoContenedor.image = UIImage(named: "pop_up.png")
 //        img_BackgroungContenedor.backgroundColor = UIColor.greenColor()
 //        contenedor.backgroundColor = UIColor.whiteColor()
         //#############################################//
 
-        contenedor.addSubview(img_BackgroungContenedor)
+        contenedor.addSubview(img_FondoContenedor)
         contenedor.addSubview(img_Becon)
         contenedor.addSubview(lbl_beacon)
         contenedor.addSubview(lbl_hora)
@@ -102,6 +107,13 @@ class BeaconEncontrado_VC: UIViewController {
         
     }
     
+    override func viewDidDisappear(animated: Bool) {
+        delegado?.popUpDesaparecera()
+    }
+    
+    // MARK: ----------------------------------------
+    // MARK: Acciones para la interacción con Buttons
+    // MARK: ----------------------------------------
     func desaparecerPopUp(){
         self.dismissViewControllerAnimated(true, completion: nil)
     }

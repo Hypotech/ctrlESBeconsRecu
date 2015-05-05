@@ -9,22 +9,23 @@
 import UIKit
 
 
-class inicio_VC: UIViewController,perfilCambiosDelegate{
+class inicio_VC: UIViewController,perfilCambiosDelegate,beaconRepublicaDelegate,popUpBeaconDelegate{
     
     // MARK: -----------
     // MARK: Propiedades
     // MARK: -----------
     
-    private var historial: tablaAnualHsitorial!
-    var infoPerfil:Perfil = Perfil()
     var podio: PKTClient!
+    var infoPerfil:Perfil = Perfil()
     var VC_anterior:UIViewController!
     var CelEntradasSalidas:[Cell_EntradaSalida] = []
     
-    private var lbl_nomUsr = UILabel()
     private var btn_beacon:UIButton!
-    private var img_usuario:UIImageView!
-//    private var img_filtro:UIImageView!
+    private var lbl_nomUsr = UILabel()
+    private var historial: tablaAnualHsitorial!
+    private var view_usuario:usuario_View!
+    
+    private var manejaBeacon:beaconManipulador!
     
     // MARK: -------------------
     // MARK: Inicializar widgets
@@ -35,26 +36,23 @@ class inicio_VC: UIViewController,perfilCambiosDelegate{
         
         //****************************** Posicion de los wigets ******************************//
         
-        img_usuario = UIImageView(frame: CGRect(x: 0,
-                                                y: 0,
-                                                width: superVDim.width,
-                                                height: P_ALT_IMG_USR * superVDim.height))
+        view_usuario = usuario_View(ubicacion: CGRect(x: 0,
+                                                      y: 0,
+                                                      width: superVDim.width,
+                                                      height: P_ALT_IMG_USR * superVDim.height))
         
-        var img_filtro = UIImageView(frame: img_usuario.frame)
-        
-        var btn_edit_perf = UIButton(frame: CGRect(x: img_usuario.frame.minX + 20,
-                                                y: img_usuario.frame.minY + 30,
-                                                width: 25,
-                                                height: 25))
+        var btn_edit_perf = UIButton(frame: CGRect(origin: CGPoint( x: 20,
+                                                                    y: 30),
+                                                   size: S_BTN_EPER))
         
         var btn_ajustes = UIButton(frame:CGRect(origin: CGPoint(
-                                                            x: img_usuario.frame.maxX - 50,
+                                                            x: view_usuario.container.frame.maxX - 50,
                                                             y: btn_edit_perf.frame.minY),
-                                                size:   btn_edit_perf.frame.size))
+                                                size:   S_BTN_AJUS))
 
         btn_beacon = UIButton(frame: CGRect(origin: CGPoint(
-            x: img_usuario.frame.minX + (img_usuario.frame.width - S_IMG_BEACON.width)  / 2,
-            y: img_usuario.frame.maxY - S_IMG_BEACON.height / 2),
+            x: view_usuario.container.frame.minX + (view_usuario.container.frame.width - S_IMG_BEACON.width)  / 2,
+            y: view_usuario.container.frame.maxY - S_IMG_BEACON.height / 2),
                                             size: S_IMG_BEACON))
 
         var posicion_Historial = CGRect(x: 0,
@@ -63,9 +61,9 @@ class inicio_VC: UIViewController,perfilCambiosDelegate{
                                         height: superVDim.height - btn_beacon.frame.maxY )
         
         historial = tablaAnualHsitorial(ubicacion: posicion_Historial)
-//        var celdTmp = Cell_EntradaSalida(style: .Default, reuseIdentifier: "foo")
-//        celdTmp.setCelda("9:30 am", salida: "7:00 pm")
-//        historial.CelEntradasSalidas.append(celdTmp)
+        
+        manejaBeacon = beaconManipulador()
+
         //***********************************************************************************//
 
         //######################### Personalización de los widgets #########################//
@@ -83,18 +81,16 @@ class inicio_VC: UIViewController,perfilCambiosDelegate{
         btn_ajustes.setImage(UIImage(named:"boton_configuracion_on.png"), forState: .Highlighted)
         btn_ajustes.addTarget(self, action: "irAjustesEscena", forControlEvents: UIControlEvents.TouchUpInside)
         
-        img_usuario.backgroundColor = UIColor.grayColor()
-        img_usuario.contentMode = .ScaleAspectFit
-        img_filtro.image = UIImage(named: "filtro_foto.png")
-        
-        btn_beacon.addTarget(self, action: "btnBeconPresionado", forControlEvents: .TouchUpInside)
+        btn_beacon.addTarget(self, action: "buscarBeacon", forControlEvents: .TouchUpInside)
         btn_beacon.setImage(UIImage(named: "boton_buscar.png"), forState: .Normal)
         btn_beacon.setImage(UIImage(named: "boton_buscar_on.png"), forState: .Highlighted)
         //##################################################################################//
         
+        manejaBeacon.delegado = self
+        println("cargo vista")
+        
         self.view.backgroundColor = UIColor.whiteColor()
-        self.view.addSubview(img_usuario)
-        self.view.addSubview(img_filtro)
+        self.view.addSubview(view_usuario.container)
         self.view.addSubview(btn_edit_perf)
         self.view.addSubview(btn_ajustes)
         self.view.addSubview(lbl_nomUsr)
@@ -109,8 +105,8 @@ class inicio_VC: UIViewController,perfilCambiosDelegate{
         
         label.frame.size = expectSize
         
-        label.frame.origin = CGPoint(  x: img_usuario.frame.minX +  (img_usuario.frame.width - lbl_nomUsr.frame.width) / 2,
-            y: img_usuario.frame.maxY / 2 + 20)
+        label.frame.origin = CGPoint(  x: view_usuario.container.frame.minX +  (view_usuario.container.frame.width - lbl_nomUsr.frame.width) / 2,
+            y: view_usuario.container.frame.maxY / 2 + 20)
     }
     
     // MARK: ----------------------------------------
@@ -123,8 +119,8 @@ class inicio_VC: UIViewController,perfilCambiosDelegate{
         editPerfViewCtrl.delegado = self
         
         //Se agrega una animación entre su transición
-//        editPerfViewCtrl.modalPresentationStyle = .OverFullScreen
-//        editPerfViewCtrl.modalTransitionStyle = .CrossDissolve
+        editPerfViewCtrl.modalPresentationStyle = .OverFullScreen
+        editPerfViewCtrl.modalTransitionStyle = .CrossDissolve
         
 //        var navController = UINavigationController(rootViewController: editPerfViewCtrl)
         
@@ -137,13 +133,13 @@ class inicio_VC: UIViewController,perfilCambiosDelegate{
         ajustesViewCtrl.ref_loginVC = self.VC_anterior
         
         //Se agrega una animación entre su transición
-//        ajustesViewCtrl.modalPresentationStyle = .OverFullScreen
-//        ajustesViewCtrl.modalTransitionStyle = .CrossDissolve
+        ajustesViewCtrl.modalPresentationStyle = .OverFullScreen
+        ajustesViewCtrl.modalTransitionStyle = .CrossDissolve
         
-        var navController = UINavigationController(rootViewController: ajustesViewCtrl)
+//        var navController = UINavigationController(rootViewController: ajustesViewCtrl)
         
         //        navController.transitioningDelegate = self.animator! //agregar una animación personalizada
-        self.presentViewController(navController, animated: true, completion: nil)
+        self.presentViewController(ajustesViewCtrl, animated: true, completion: nil)
     }
     
     func tapRegistrar() {
@@ -166,7 +162,7 @@ class inicio_VC: UIViewController,perfilCambiosDelegate{
                         var cadena = link as NSString
                         
                         var data = NSData(contentsOfURL: NSURL(string: cadena)!)
-                        self.img_usuario.image = UIImage(data: data!)
+                        self.view_usuario.setUsuario(UIImage(data: data!)!)
                         
                         println("Se ha cargado la imagen")
                     }
@@ -204,19 +200,39 @@ class inicio_VC: UIViewController,perfilCambiosDelegate{
     }
     
     func llenarConPerfil(){
-        img_usuario.image = infoPerfil.imagenUsuario
+        view_usuario.setUsuario(infoPerfil.imagenUsuario)
         lbl_nomUsr.text = infoPerfil.nombre.uppercaseString
         
         calcularAncho(&(self.lbl_nomUsr))
     }
     
-    func btnBeconPresionado(){
+    func buscarBeacon(){
 
-        var popUp = BeaconEncontrado_VC()
-        popUp.modalPresentationStyle = .OverFullScreen
-        popUp.modalTransitionStyle = .CrossDissolve
-        
-        self.presentViewController(popUp, animated: true, completion: nil)
+        if presentadoPopup == false {
+            
+            if manejaBeacon.hayBeacon == true{
+
+                var popUp = BeaconEncontrado_VC()
+                popUp.modalPresentationStyle = .OverFullScreen
+                popUp.modalTransitionStyle = .CrossDissolve
+                
+                popUp.delegado = self
+                
+                self.presentViewController(popUp, animated: true, completion: nil)
+                presentadoPopup = true
+            }
+            else{
+                
+                var popUp = BeaconNoEncontrado_VC()
+                popUp.modalPresentationStyle = .OverFullScreen
+                popUp.modalTransitionStyle = .CrossDissolve
+                
+                popUp.delegado = self
+                
+                self.presentViewController(popUp, animated: true, completion: nil)
+                presentadoPopup = true
+            }
+        }
     }
     
     // MARK: -------------------------------------------------
@@ -225,14 +241,61 @@ class inicio_VC: UIViewController,perfilCambiosDelegate{
     
     func actualizarPerfil(datosPerfil:Perfil){
         infoPerfil = datosPerfil
-        img_usuario.image = infoPerfil.imagenUsuario
+        view_usuario.setUsuario(infoPerfil.imagenUsuario)
         
-        var documentDirectory = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true) [0] as NSString
-        var pngFilePath = NSString(format: "%@/test.png", documentDirectory)
-        println("la ruta es: \(pngFilePath)")
+        var documentDirectorio = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true) [0] as NSString
         
-        var ImageData = UIImagePNGRepresentation(infoPerfil.imagenUsuario)
-        ImageData.writeToFile(pngFilePath, atomically: true)
+        var rutaArchivoPNG = NSString(format: "%@/test.png", documentDirectorio)
+        println("la ruta es: \(rutaArchivoPNG)")
+        
+        var ImagenData = UIImagePNGRepresentation(infoPerfil.imagenUsuario)
+        ImagenData.writeToFile(rutaArchivoPNG, atomically: true)
 
+    }
+    
+    // MARK: -------------------------------------------------
+    // MARK: Funciones para personalizar el view controller
+    // MARK: -------------------------------------------------
+    override func preferredStatusBarStyle() -> UIStatusBarStyle{
+        
+        return .LightContent
+    }
+    
+    // MARK: -------------------------------------------------
+    // MARK: Funciones delgadas para responder al Beacon
+    // MARK: -------------------------------------------------
+    
+    private var presentadoPopup = false
+    
+    func foo(){
+        
+        if presentadoPopup == false{
+            var popUp = BeaconEncontrado_VC()
+            popUp.modalPresentationStyle = .OverFullScreen
+            popUp.modalTransitionStyle = .CrossDissolve
+            
+            popUp.delegado = self
+            
+            self.presentViewController(popUp, animated: true, completion: nil)
+            presentadoPopup = true
+        }
+    }
+    
+    // MARK: -------------------------------------------------
+    // MARK: Funciones delgadas para responder al PopUp
+    // MARK: -------------------------------------------------
+    
+    func popUpDesaparecera(){
+
+        presentadoPopup = false
+    }
+    
+    // MARK: -------------------------------------------------
+    // MARK: Otros delgados del view controller inicio_VC
+    // MARK: -------------------------------------------------
+    
+    override func viewDidDisappear(animated: Bool) {
+        manejaBeacon = nil
+        println("Desapareci")
     }
 }

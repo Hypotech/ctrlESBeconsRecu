@@ -14,11 +14,11 @@ class login_VC: UIViewController,UITextFieldDelegate {
     var view_rectLogin:UIView! //Contenedor que agrupa los elemntos de login_VC
     var tFi_nomUsur:UITextField! //Recibe el nombre del usuario
     var tFi_contraseña:UITextField! //Recibe la contraseña
-    var btn_Aceptar:UIButton! //boton para disparar el "logeo"
+    var btn_Ingresar:UIButton! //boton para disparar el "logeo"
     var podio:PKTClient!
     
-    private var idCliente = "prueba-bkh64f"
-    private var secretCode = "aAa5sgR8D6hlKVBJSORdhMLPdihFJlCPHZseunLcBI42rXnmthNjZwYWbkoF90cJ"
+    private var idCliente = "rpbkasistencia"
+    private var secretCode = "YQgHf9awjWA8cVS2vY9Jn1JcSBydGPqDhAjuU4mIqQ6Mh90hkuKJvTMJ4rCKK4Cu"
     private var indicadorActividad:UIActivityIndicatorView!
     private var infoPerfil:Perfil = Perfil()
     private var tecladoHabilitado = false
@@ -29,7 +29,7 @@ class login_VC: UIViewController,UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        var superVDim = self.view.frame //Superview dimensiones
+        let superVDim = self.view.frame //Superview dimensiones
         let view_altDeseado:CGFloat = 220
         
         //************************************* Posicion de los wigets ******************************************//
@@ -53,16 +53,15 @@ class login_VC: UIViewController,UITextFieldDelegate {
                                                     width: tFi_nomUsur.frame.width,
                                                     height: tFi_nomUsur.frame.height))
         
-        btn_Aceptar = UIButton.buttonWithType(UIButtonType.System) as UIButton
-        btn_Aceptar.frame = CGRect( x: tFi_contraseña.frame.width/2 - tFi_contraseña.frame.width/8,
-                                    y: tFi_contraseña.frame.maxY + 20,
-                                    width: tFi_contraseña.frame.width/4,
-                                    height: 35)
+        btn_Ingresar = UIButton(frame: CGRect(origin: CGPoint(
+                                                                x: (view_rectLogin.frame.width - S_BTN_INGR.width) / 2 ,
+                                                                y: tFi_contraseña.frame.maxY + 20),
+                                              size: S_BTN_INGR))
         
-        indicadorActividad = UIActivityIndicatorView(frame: CGRect( x: btn_Aceptar.frame.maxX + 10,
-                                                                    y: btn_Aceptar.frame.minY,
-                                                                    width: btn_Aceptar.frame.height,
-                                                                    height: btn_Aceptar.frame.height))
+        indicadorActividad = UIActivityIndicatorView(frame: CGRect( x: btn_Ingresar.frame.maxX - 40,
+                                                                    y: btn_Ingresar.frame.minY,
+                                                                    width: 40,
+                                                                    height: 40))
         
         //*******************************************************************************************************//
         
@@ -78,7 +77,7 @@ class login_VC: UIViewController,UITextFieldDelegate {
         
         tFi_nomUsur.placeholder = "Email"
         tFi_nomUsur.textColor = UIColor.blackColor()
-        tFi_nomUsur.addTarget(self, action: "comenzoEdiccionCampo", forControlEvents: .EditingChanged)
+//        tFi_nomUsur.addTarget(self, action: "comenzoEdiccionCampo", forControlEvents: .EditingChanged)
         tFi_nomUsur.keyboardType = .EmailAddress
         tFi_nomUsur.autocapitalizationType = .None
         tFi_nomUsur.autocorrectionType = .No
@@ -88,15 +87,12 @@ class login_VC: UIViewController,UITextFieldDelegate {
         tFi_contraseña.textColor = UIColor.blackColor()
         tFi_contraseña.secureTextEntry =  true
         tFi_contraseña.clearButtonMode = .WhileEditing
-        tFi_contraseña.addTarget(self, action: "comenzoEdiccionCampo", forControlEvents: .EditingChanged)
-
+//        tFi_contraseña.addTarget(self, action: "comenzoEdiccionCampo", forControlEvents: .EditingChanged)
         
-        btn_Aceptar.setTitleColor(UIColor.blackColor(), forState: .Normal)
-        btn_Aceptar.setTitleColor(UIColor.whiteColor(), forState: .Disabled)
-        btn_Aceptar.setTitle("Aceptar", forState: .Normal)
-        btn_Aceptar.addTarget(self, action: "ejecutarLogin", forControlEvents: .TouchUpInside)
-        btn_Aceptar.enabled = false
-        btn_Aceptar.backgroundColor = UIColor.lightGrayColor()
+        btn_Ingresar.setImage(UIImage(named:"boton_ingresar.png"), forState: .Normal)
+        btn_Ingresar.setImage(UIImage(named:"boton_ingresar_on.png"), forState: .Highlighted)
+        btn_Ingresar.addTarget(self, action: "ejecutarLogin", forControlEvents: .TouchUpInside)
+//        btn_Ingresar.enabled = false
         
         indicadorActividad.color = UIColor.blackColor()
         indicadorActividad.stopAnimating()
@@ -106,8 +102,7 @@ class login_VC: UIViewController,UITextFieldDelegate {
         
         view_rectLogin.addSubview(tFi_nomUsur)
         view_rectLogin.addSubview(tFi_contraseña)
-        view_rectLogin.addSubview(btn_Aceptar)
-//        view_rectLogin.addSubview(btn_cuentaNueva)
+        view_rectLogin.addSubview(btn_Ingresar)
         view_rectLogin.addSubview(indicadorActividad)
         
         view_rectLogin.backgroundColor = UIColor.whiteColor()
@@ -166,16 +161,24 @@ class login_VC: UIViewController,UITextFieldDelegate {
                 }
                 else if(respuesta.statusCode == ContraseñaUsuario_Invalido){
                     
-                    alerta = UIAlertController(title: "Error", message: "Usuario o contraseña incorrecta. Intenta de nuevo", preferredStyle: UIAlertControllerStyle.Alert)
+                    alerta = UIAlertController( title: "Error",
+                                                message: "Usuario o contraseña incorrecta. Intenta de nuevo",
+                                                preferredStyle: UIAlertControllerStyle.Alert)
+                    
                     alerta.addAction(UIAlertAction(title: "Aceptar", style: UIAlertActionStyle.Cancel, handler: nil))
                     self.presentViewController(alerta, animated: true, completion: nil)
+                    
                     self.indicadorActividad.stopAnimating()
                     
                 }
                 else{
-                    alerta = UIAlertController(title: "Error", message: respuesta.body.objectForKey("error_description") as? String, preferredStyle: UIAlertControllerStyle.Alert)
+                    alerta = UIAlertController( title: "Error", message:
+                                                respuesta.body.objectForKey("error_description") as? String,
+                                                preferredStyle: UIAlertControllerStyle.Alert )
+                    
                     alerta.addAction(UIAlertAction(title: "Aceptar", style: UIAlertActionStyle.Cancel, handler: nil))
                     self.presentViewController(alerta, animated: true, completion: nil)
+                    
                     self.indicadorActividad.stopAnimating()
                 }
         })
@@ -201,7 +204,13 @@ class login_VC: UIViewController,UITextFieldDelegate {
                         var cadena = link as NSString
                         
                         var data = NSData(contentsOfURL: NSURL(string: cadena)!)
-                        self.infoPerfil.imagenUsuario = UIImage(data: data!) //Se obtiene la iamgen del usuario
+                        
+                        if (data != nil) {
+                            self.infoPerfil.imagenUsuario = UIImage(data: data!) //Se obtiene la imagen del usuario
+                        }
+                        else{
+                            println("Imagen no cargada")
+                        }
                     }
                 }
                 else{
@@ -260,25 +269,22 @@ class login_VC: UIViewController,UITextFieldDelegate {
     func comenzoEdiccionCampo() {
         
         if tFi_nomUsur.text.isEmpty{ //deshabilitar boton y borrar la contraseña
-            btn_Aceptar.enabled = false
+            btn_Ingresar.enabled = false
             
             UIView.animateWithDuration(0.4, delay: 0, options: UIViewAnimationOptions.CurveEaseIn, animations: {
-                self.btn_Aceptar.backgroundColor = UIColor.lightGrayColor()
                 self.tFi_contraseña.text = ""
                 }, completion: nil)
         }
         else if tFi_contraseña.text.isEmpty {//deshabilitar boton
-            btn_Aceptar.enabled = false
+            btn_Ingresar.enabled = false
             
             UIView.animateWithDuration(0.4, delay: 0, options: UIViewAnimationOptions.CurveEaseIn, animations: {
-                self.btn_Aceptar.backgroundColor = UIColor.lightGrayColor()
                 }, completion: nil)
             
         }
         else{ //habilitar boton
-            btn_Aceptar.enabled = true
+            btn_Ingresar.enabled = true
             UIView.animateWithDuration(0.4, delay: 0, options: UIViewAnimationOptions.CurveEaseIn, animations: {
-                self.btn_Aceptar.backgroundColor = UIColor.blueColor()
                 }, completion: nil)
         }
     }
