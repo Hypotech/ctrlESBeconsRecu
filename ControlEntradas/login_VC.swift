@@ -151,36 +151,53 @@ class login_VC: UIViewController,UITextFieldDelegate {
         indicadorActividad.startAnimating()
         
         podio.authenticateAsUserWithEmail(tFi_nomUsur.text, password: tFi_contraseña.text, completion: {
-                (respuesta, error) -> () in
+            (respuesta, error) -> () in
+            
+            if (error != nil){ //si hay un error
+                var descripcionError: AnyObject? = error.userInfo? ["NSLocalizedDescription"]
                 
-                if respuesta.statusCode == OK_login{
-                    println("Login exitoso")
-                    
-                    self.pasarSiguienteEscena()
-                    
-                }
-                else if(respuesta.statusCode == ContraseñaUsuario_Invalido){
-                    
-                    alerta = UIAlertController( title: "Error",
-                                                message: "Usuario o contraseña incorrecta. Intenta de nuevo",
-                                                preferredStyle: UIAlertControllerStyle.Alert)
-                    
-                    alerta.addAction(UIAlertAction(title: "Aceptar", style: UIAlertActionStyle.Cancel, handler: nil))
-                    self.presentViewController(alerta, animated: true, completion: nil)
-                    
-                    self.indicadorActividad.stopAnimating()
-                    
-                }
-                else{
-                    alerta = UIAlertController( title: "Error", message:
-                                                respuesta.body.objectForKey("error_description") as? String,
-                                                preferredStyle: UIAlertControllerStyle.Alert )
-                    
-                    alerta.addAction(UIAlertAction(title: "Aceptar", style: UIAlertActionStyle.Cancel, handler: nil))
-                    self.presentViewController(alerta, animated: true, completion: nil)
-                    
-                    self.indicadorActividad.stopAnimating()
-                }
+                alerta = UIAlertController( title: "Error al intentar iniciar sesión",
+                                            message:descripcionError as? String,
+                                            preferredStyle: UIAlertControllerStyle.Alert )
+
+                
+                alerta.addAction(UIAlertAction(title: "Aceptar", style: UIAlertActionStyle.Cancel, handler: nil))
+                self.presentViewController(alerta, animated: true, completion: nil)
+                
+                self.indicadorActividad.stopAnimating()
+                
+                return
+            }
+            
+            if respuesta.statusCode == OK_login{
+                println("Login exitoso")
+                
+                self.pasarSiguienteEscena()
+                
+            }
+            else if(respuesta.statusCode == ContraseñaUsuario_Invalido){
+                
+                alerta = UIAlertController( title: "Error",
+                    message: "Usuario o contraseña incorrecta. Intenta de nuevo",
+                    preferredStyle: UIAlertControllerStyle.Alert)
+                
+                alerta.addAction(UIAlertAction(title: "Aceptar", style: UIAlertActionStyle.Cancel, handler: nil))
+                self.presentViewController(alerta, animated: true, completion: nil)
+                
+                self.indicadorActividad.stopAnimating()
+                
+            }
+            else{
+                
+                alerta = UIAlertController( title: "Error", message:
+                    respuesta.body.objectForKey("error_description") as? String,
+                    preferredStyle: UIAlertControllerStyle.Alert )
+                
+                alerta.addAction(UIAlertAction(title: "Aceptar", style: UIAlertActionStyle.Cancel, handler: nil))
+                self.presentViewController(alerta, animated: true, completion: nil)
+                
+                self.indicadorActividad.stopAnimating()
+            }
         })
         
     }
@@ -190,6 +207,22 @@ class login_VC: UIViewController,UITextFieldDelegate {
         //************************************* Obtener datos usuario *************************************//
         podio.performRequest(PKTUserAPI.requestForUserStatus(), completion: {
             (respuesta,error) -> () in
+            
+            if (error != nil){ //si hay un error
+                
+                var descripcionError: AnyObject? = error.userInfo? ["NSLocalizedDescription"]
+                
+                var alerta = UIAlertController( title: "Error al descargar datos",
+                    message:descripcionError as? String,
+                    preferredStyle: UIAlertControllerStyle.Alert )
+                
+                alerta.addAction(UIAlertAction(title: "Aceptar", style: UIAlertActionStyle.Cancel, handler: nil))
+                self.presentViewController(alerta, animated: true, completion: nil)
+                
+                self.indicadorActividad.stopAnimating()
+                
+                return
+            }
             
             let perfil:AnyObject? = respuesta.body.objectForKey("profile")
             

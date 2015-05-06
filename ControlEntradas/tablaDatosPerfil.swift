@@ -76,8 +76,8 @@ class tablaDatosPerfil:NSObject, UITableViewDataSource, UITableViewDelegate {
         
         viewTabla.separatorStyle = .None
         viewTabla.allowsSelection = true
+        viewTabla.keyboardDismissMode = .OnDrag
 //        viewTabla.backgroundColor = UIColor.lightGrayColor()
-        
         //        viewTabla.scrollEnabled = false
         
         //##################################################################################//
@@ -85,7 +85,6 @@ class tablaDatosPerfil:NSObject, UITableViewDataSource, UITableViewDelegate {
         //{{{{{{{{{{{ Delegados }}}}}}}}}}}}
         viewTabla.delegate = self
         viewTabla.dataSource = self
-//        celd_nacimiento.tFi_fecha.delegado = self //solo para la celda fecha de nacimiento
         //{{{{{{{{{{{{{{{{{}}}}}}}}}}}}}}}}}
 
     }
@@ -122,8 +121,10 @@ class tablaDatosPerfil:NSObject, UITableViewDataSource, UITableViewDelegate {
             
             var cel_fecha = celda as celda_Fecha
             cel_fecha.abrirDatePicker(tableView)
+            
+            tableView.scrollToRowAtIndexPath(indexPath, atScrollPosition: UITableViewScrollPosition.Top, animated: true)
         }
-        
+
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     
@@ -132,7 +133,6 @@ class tablaDatosPerfil:NSObject, UITableViewDataSource, UITableViewDelegate {
     // MARK: ------------------
     
     func setPerfil(datos:Perfil){
-//        datosPerfil = datos
         
         tFi_nombre.textField.text = datos.nombre
         tFi_email.textField.text = concatenaArray(datos.email)
@@ -140,6 +140,11 @@ class tablaDatosPerfil:NSObject, UITableViewDataSource, UITableViewDelegate {
         
     }
     
+    func desaparecerTeclado(){
+        tFi_nombre.textField.resignFirstResponder()
+        tFi_email.textField.resignFirstResponder()
+        tFi_organizacion.textField.resignFirstResponder()
+    }
     // MARK: ---------------------
     // MARK: Funciones de utilidad
     // MARK: ---------------------
@@ -159,8 +164,4 @@ class tablaDatosPerfil:NSObject, UITableViewDataSource, UITableViewDelegate {
         }
         return cadenaResult
     }
-
-//    func textFieldSeleccionado(_:String){
-//        celd_nacimiento.abrirDatePicker(viewTabla)
-//    }
 }

@@ -75,26 +75,33 @@ class ajustes_VC:UIViewController {
         img_icono_engrane.image = UIImage(named: "boton_configuracion_on.png")
         
 //        btn_logout.backgroundColor = UIColor(red: 0.4, green: 0.1, blue: 0.6, alpha: 0.6);
-        btn_logout.setTitle("Logout", forState: .Normal)
+        btn_logout.setTitle("   Salir", forState: .Normal)
+        btn_logout.setTitleColor(UIColor.lightGrayColor(), forState: .Normal)
         btn_logout.addTarget(self, action: "realizarLogout", forControlEvents: UIControlEvents.TouchUpInside)
+        btn_logout.contentHorizontalAlignment = .Left
         
         
 //        btn_contacto.backgroundColor = UIColor(red: 0.3, green: 0.5, blue: 0.6, alpha: 0.6);
-        btn_contacto.setTitle("Contacto", forState: .Normal)
+        btn_contacto.setTitle("   Contacto", forState: .Normal)
+        btn_contacto.setTitleColor(UIColor.lightGrayColor(), forState: .Normal)
         btn_contacto.addTarget(self, action: "irContacto", forControlEvents: UIControlEvents.TouchUpInside)
+        btn_contacto.contentHorizontalAlignment = .Left
         
 //        btn_avisoPriva.backgroundColor = UIColor(red: 0.1, green: 0.5, blue: 0.2, alpha: 0.6);
-        btn_avisoPriva.setTitle("Aviso de Privacidad", forState: .Normal)
+        btn_avisoPriva.setTitle("   Aviso de Privacidad", forState: .Normal)
+        btn_avisoPriva.setTitleColor(UIColor.lightGrayColor(), forState: .Normal)
         btn_avisoPriva.addTarget(self, action: "irAvisoPrivacidad", forControlEvents: UIControlEvents.TouchUpInside)
+        btn_avisoPriva.contentHorizontalAlignment = .Left
         
 //        btn_TerminosCond.backgroundColor = UIColor(red: 0.7, green: 0.5, blue: 0.2, alpha: 0.6);
-        btn_TerminosCond.setTitle("Terminos y Condiciones", forState: .Normal)
+        btn_TerminosCond.setTitle("   Terminos y Condiciones", forState: .Normal)
+        btn_TerminosCond.setTitleColor(UIColor.lightGrayColor(), forState: .Normal)
         btn_TerminosCond.addTarget(self, action: "irTerminosCondiciones", forControlEvents: UIControlEvents.TouchUpInside)
+        btn_TerminosCond.contentHorizontalAlignment = .Left
         
         var gestoTap = UITapGestureRecognizer(target: self, action: "desaparecerPopUp")
         var algo = UITapGestureRecognizer(target: self, action: "noHaceNada")
 
-//        img_fondo.backgroundColor = UIColor.redColor()
         img_fondo.userInteractionEnabled = true
         img_fondo.image = UIImage(named: "ajustes_popup.png")
         img_fondo.addGestureRecognizer(algo)
@@ -104,9 +111,9 @@ class ajustes_VC:UIViewController {
         img_fondo.addSubview(btn_TerminosCond)
 
         
-        self.view.backgroundColor = UIColor(red: 0.5, green: 0.50, blue: 0.50, alpha: 0.5)
         //##################################################################################//
         
+        self.view.backgroundColor = UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 0.5)
 //        self.view.addSubview(btn_logout)
         self.view.addGestureRecognizer(gestoTap)
         self.view.addSubview(img_fondo)

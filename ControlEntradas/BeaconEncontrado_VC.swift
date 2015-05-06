@@ -101,7 +101,7 @@ class BeaconEncontrado_VC: UIViewController {
         contenedor.addGestureRecognizer(algo)
 //        contenedor.userInteractionEnabled = false
         
-        self.view.backgroundColor = UIColor(red: 0.2, green: 0.2, blue: 0.2, alpha: 0.5)
+        self.view.backgroundColor = UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 0.5)
         self.view.addGestureRecognizer(gestoTap)
         self.view.addSubview(contenedor)
         

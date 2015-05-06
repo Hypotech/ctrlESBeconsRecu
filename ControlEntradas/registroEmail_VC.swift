@@ -22,7 +22,7 @@ class registroEmail_VC: UIViewController {
     // MARK: ---------------------------------------
     override func viewDidLoad() {
         super.viewDidLoad()
-        let espacioHoriz:CGFloat = 60
+        let espacioHoriz:CGFloat = 30
         let espacioCentro:CGFloat = 110
         let textField_Alto:CGFloat = 40
         let superVDim = self.view.frame //Superview dimensiones
@@ -78,6 +78,11 @@ class registroEmail_VC: UIViewController {
         super.view.addSubview(btn_Registrar)
         
         //*******************************************************************************************************//
+    }
+    
+    override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
+
+        tbl_formulario.desaparecerTeclado()
     }
     
     // MARK: ----------------------------------------

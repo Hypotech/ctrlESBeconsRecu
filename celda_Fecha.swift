@@ -61,7 +61,7 @@ class celda_Fecha: CeldaBase,nacimientoPickerDelegate {
     init(tamaño:CGSize){
         
         //****************************** Posicion de los wigets ******************************//
-        lbl_placeHolder = UILabel(frame: CGRect(x: 10, y: 0, width: 140, height: tamaño.height))
+        lbl_placeHolder = UILabel(frame: CGRect(x: 10, y: 0, width: tamaño.width - 20, height: tamaño.height))
         
         let alturaEsquinas = tamaño.height * 0.2
         
@@ -91,7 +91,7 @@ class celda_Fecha: CeldaBase,nacimientoPickerDelegate {
         formatoFecha.dateStyle = .ShortStyle
         
         lbl_placeHolder.text = "Fecha de nacimiento"
-        lbl_placeHolder.textColor = UIColor.lightGrayColor()
+        lbl_placeHolder.textColor = UIColor(white: 0.76,alpha: 1.0)
         
         linea_baja.backgroundColor = UIColor.lightGrayColor()
         linea_izq.backgroundColor = linea_baja.backgroundColor
@@ -113,6 +113,9 @@ class celda_Fecha: CeldaBase,nacimientoPickerDelegate {
         super.init(coder: aDecoder)
     }
     
+    // MARK: ---------------------
+    // MARK: Funciones publicas
+    // MARK: ---------------------
     func abrirDatePicker(tableView: UITableView){
         
         expandido = !expandido
@@ -138,22 +141,22 @@ class celda_Fecha: CeldaBase,nacimientoPickerDelegate {
             alto =  44.0
             Pick_fecha.contenedor.removeFromSuperview()
             lbl_placeHolder.textColor = UIColor.blackColor()
+            
+            lbl_placeHolder.text = concatenaArray(fechaArray)
         }
         
         tableView.beginUpdates()
         tableView.endUpdates()
     }
     
-    //    func textFieldSeleccionado(_:String){
-    //        abrirDatePicker()
-    //    }
-    
-    
+    // MARK: ------------------------------------
+    // MARK: Funciones delegadas nacimientoPicker
+    // MARK: ------------------------------------
     func cambioFecha(valor:String, componente:Int){
         
-        let comp_enum = componentePicker(rawValue: componente)!
+        let posibleComponente = componentePicker(rawValue: componente)!
         
-        switch comp_enum{
+        switch posibleComponente{
         case .Dia:
             fechaArray[0] = valor
         case .Mes:
