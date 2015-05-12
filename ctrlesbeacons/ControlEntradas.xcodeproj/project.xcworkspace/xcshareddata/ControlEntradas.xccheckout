@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>A4CA45E4-CCEA-4FA3-92FA-45543B75B90A</string>
+	<key>IDESourceControlProjectName</key>
+	<string>ControlEntradas</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>2168DB223E834943C0EA08BB040351ADE356724C</key>
+		<string>https://github.com/Hypotech/ctrlESBecons.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>ControlEntradas.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>2168DB223E834943C0EA08BB040351ADE356724C</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>https://github.com/Hypotech/ctrlESBecons.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>2168DB223E834943C0EA08BB040351ADE356724C</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>2168DB223E834943C0EA08BB040351ADE356724C</string>
+			<key>IDESourceControlWCCName</key>
+			<string>ControlEntradas</string>
+		</dict>
+	</array>
+</dict>
+</plist>
